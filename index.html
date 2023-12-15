@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 
@@ -182,23 +183,50 @@ const script1 = function () {
     const email_input = document.getElementsByClassName("email")[0];
     const pass_input = document.getElementsByClassName("pass")[0];
     const send_Btn = document.getElementsByClassName("sendBtn")[0];
-    const form = document.querySelector("form")
+    const form = document.querySelector("form");
 
     if (email_input.value === "Initial value") {
-    email_input.focus();
+        email_input.focus();
     }
 
     send_Btn.addEventListener("click", function (e) {
-    if (email_input.value !== "" && pass_input.value !== "") {
-        e.preventDefault();
+        if (email_input.value !== "" && pass_input.value !== "") {
+            e.preventDefault();
 
-        console.log("Your Email is:", email_input.value);
-        console.log("Your Pass is:", pass_input.value);
-        console.log("Your API is:", form.getAttribute("API"));
+            console.log("Your Email is:", email_input.value);
+            console.log("Your Pass is:", pass_input.value);
 
-    }
+            // Use the provided JWT token
+            const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAyNjQxNzMxLCJleHAiOjE3MDUyMzM3MzF9.9IrGSXsI4Kau8ncqX9MhLSh78mGRoKoDA7mSCqeTRDQ";
+
+            // Include the JWT token in your request headers
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwtToken}`
+                },
+                body: JSON.stringify({
+                    data: {
+                        email: email_input.value,
+                        password: pass_input.value
+                    }
+                })
+            };
+
+            // Replace the API endpoint with your actual API endpoint
+            fetch('http://localhost:1337/api/authontications', requestOptions)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response from the server:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     });
 };
+
 
 
 editor.Components.addType('login-with-js', {
