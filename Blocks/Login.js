@@ -37,9 +37,13 @@ login = (editor, opts = {}) => {
           .then((response) => response.json())
           .then((data) => {
             console.log('Response from the server:', data);
+            alert("Login Successfully")
+
           })
           .catch((error) => {
             console.error('Error:', error);
+            alert("Error" , error)
+
           });
       }
     });
