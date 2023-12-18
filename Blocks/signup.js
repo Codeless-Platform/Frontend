@@ -37,6 +37,7 @@ signup = (editor, opts = {}) => {
                     .then((response) => response.json())
                     .then((data) => {
                         console.log('Response from the server:', data);
+                        alert("Sign Up Successfully")
                     })
                     .catch((error) => {
                         console.error('Error:', error);
