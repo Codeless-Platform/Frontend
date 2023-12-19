@@ -21,7 +21,9 @@ signup = (editor, opts = {}) => {
                 console.log('Your Pass is:', pass_input.value);
 
 
-                const apiLink = 'http://localhost:1337/api/auth/local/register';
+                //const apiLink = 'http://localhost:1337/api/auth/local/register';
+                // const jwtToken = form.getAttribute('JwtToken');
+                apiLink = form.getAttribute('API');
 
                 // Include the JWT token in your request headers
                 const requestOptions = {

@@ -30,7 +30,8 @@ login = (editor, opts = {}) => {
 
         };
 
-        const apiLink = 'http://localhost:1337/api/auth/local';
+        //const apiLink = 'http://localhost:1337/api/auth/local';
+        const apiLink = form.getAttribute('API');
 
         // Replace the API endpoint with your actual API endpoint
         fetch(apiLink, requestOptions)
