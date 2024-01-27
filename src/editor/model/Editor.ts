@@ -782,7 +782,6 @@ export default class EditorModel extends Model {
           ...opts,
         })
       : '';
-    html += js ? `<script>${js}</script>` : '';
     return html;
   }
 

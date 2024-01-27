@@ -5,6 +5,7 @@ import { createEl } from '../../utils/dom';
 interface ExportTemplateRunOptions {
   optsHtml?: EditorParam<'getHtml', 0>;
   optsCss?: EditorParam<'getCss', 0>;
+  optsJs?: EditorParam<'getJs', 0>;
 }
 
 export default {
@@ -18,11 +19,14 @@ export default {
     if (!this.editors) {
       const oHtmlEd = this.buildEditor('htmlmixed', 'hopscotch', 'HTML');
       const oCsslEd = this.buildEditor('css', 'hopscotch', 'CSS');
+      const oJslEd = this.buildEditor('javascript', 'hopscotch', 'JS');
       this.htmlEditor = oHtmlEd.model;
       this.cssEditor = oCsslEd.model;
+      this.jsEditor = oJslEd.model;
       const editors = createEl('div', { class: `${pfx}export-dl` });
       editors.appendChild(oHtmlEd.el);
       editors.appendChild(oCsslEd.el);
+      editors.appendChild(oJslEd.el);
       this.editors = editors;
     }
 
@@ -35,6 +39,7 @@ export default {
       .once('change:open', () => editor.stopCommand(`${this.id}`));
     this.htmlEditor.setContent(editor.getHtml(opts.optsHtml));
     this.cssEditor.setContent(editor.getCss(opts.optsCss));
+    this.jsEditor.setContent(editor.getJs(opts.optsJs));
   },
 
   stop(editor) {
