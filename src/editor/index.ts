@@ -84,6 +84,7 @@ import SelectorManager, { SelectorEvent } from '../selector_manager';
 import StorageManager, { StorageEvent, StorageOptions, ProjectData } from '../storage_manager';
 import StyleManager, { StyleManagerEvent } from '../style_manager';
 import TraitManager from '../trait_manager';
+import EventManager from '../event_manager';
 import UndoManagerModule from '../undo_manager';
 import UtilsModule from '../utils';
 import html from '../utils/html';
@@ -221,6 +222,12 @@ export default class Editor implements IBaseModule<EditorConfig> {
   }
   get TraitManager(): TraitManager {
     return this.em.Traits;
+  }
+  get Events(): EventManager {
+    return this.em.Events;
+  }
+  get EventManager(): EventManager {
+    return this.em.Events;
   }
   get Selectors(): SelectorManager {
     return this.em.Selectors;

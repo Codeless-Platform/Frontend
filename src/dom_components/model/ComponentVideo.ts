@@ -43,10 +43,22 @@ export default class ComponentVideo extends ComponentImage {
     this.updatePropsFromAttr();
     this.updateTraits();
     this.on('change:provider', this.updateTraits);
+    this.on('change:click', this.updateScript);
     this.on('change:videoId change:provider', this.updateSrc);
     super.initialize(props, opts);
   }
-
+  updateScript() {
+    let s = '';
+    if (this.get('click')) {
+      s = `
+            var element = document.querySelector('#${this.getId()}');
+          element.addEventListener('click', function(event) {
+              console.log('Element clicked!');
+            });
+            `;
+    }
+    this.set('script', s);
+  }
   updatePropsFromAttr() {
     if (this.get('provider') === defProvider) {
       const { controls, autoplay, loop } = this.get('attributes')!;
@@ -75,14 +87,14 @@ export default class ComponentVideo extends ComponentImage {
     switch (prov) {
       case yt:
       case ytnc:
-        traits = this.getYoutubeTraits();
+        traits = [...this.getYoutubeTraits(), ...this.getClickTrait()];
         break;
       case vi:
-        traits = this.getVimeoTraits();
+        traits = [...this.getVimeoTraits(), ...this.getClickTrait()];
         break;
       default:
         tagName = 'video';
-        traits = this.getSourceTraits();
+        traits = [...this.getSourceTraits(), ...this.getClickTrait()];
     }
 
     this.set({ tagName }, { silent: true }); // avoid break in view
@@ -304,6 +316,17 @@ export default class ComponentVideo extends ComponentImage {
       name: 'controls',
       changeProp: true,
     };
+  }
+
+  getClickTrait() {
+    return [
+      {
+        type: 'checkbox',
+        label: 'Click',
+        name: 'click',
+        changeProp: true,
+      },
+    ];
   }
 
   /**

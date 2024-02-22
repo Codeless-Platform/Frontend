@@ -134,6 +134,8 @@ export type { default as PropertyStack } from './style_manager/model/PropertySta
 export type { default as Sector } from './style_manager/model/Sector';
 export type { default as Sectors } from './style_manager/model/Sectors';
 export type { default as Trait } from './trait_manager/model/Trait';
+export type { default as Event } from './event_manager/model/Event';
 export type { default as Traits } from './trait_manager/model/Traits';
+export type { default as Events } from './event_manager/model/Events';
 
 export default grapesjs;

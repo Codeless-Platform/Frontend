@@ -64,6 +64,7 @@ const commandsDef = [
   ['open-layers', 'OpenLayers', 'open-layers'],
   ['open-styles', 'OpenStyleManager', 'open-sm'],
   ['open-traits', 'OpenTraitManager', 'open-tm'],
+  ['open-events', 'OpenEventManager', 'open-em'],
   ['open-blocks', 'OpenBlocks', 'open-blocks'],
   ['open-assets', 'OpenAssets', 'open-assets'],
   ['component-select', 'SelectComponent', 'select-comp'],

@@ -3,9 +3,9 @@ import { $, SetOptions, View } from '../../common';
 import Component from '../../dom_components/model/Component';
 import EditorModel from '../../editor/model/Editor';
 import { capitalize } from '../../utils/mixins';
-import Trait from '../model/Trait';
+import Event from '../model/Event';
 
-export default class TraitView extends View<Trait> {
+export default class EventView extends View<Event> {
   pfx: string;
   ppfx: string;
   config: any;
@@ -17,8 +17,8 @@ export default class TraitView extends View<Trait> {
   noLabel?: boolean;
   em: EditorModel;
   target: Component;
-  createLabel?: (data: { label: string; component: Component; trait: TraitView }) => string | HTMLElement;
-  createInput?: (data: ReturnType<TraitView['getClbOpts']>) => string | HTMLElement;
+  createLabel?: (data: { label: string; component: Component; event: EventView }) => string | HTMLElement;
+  createInput?: (data: ReturnType<EventView['getClbOpts']>) => string | HTMLElement;
 
   events: any = {};
 
@@ -35,7 +35,7 @@ export default class TraitView extends View<Trait> {
     return `<div class="${ppfx}label" title="${label}">${label}</div>`;
   }
 
-  templateInput(data: ReturnType<TraitView['getClbOpts']>) {
+  templateInput(data: ReturnType<EventView['getClbOpts']>) {
     const { clsField } = this;
     console.log(clsField);
     return `<div class="${clsField}" data-input></div>`;
@@ -74,7 +74,7 @@ export default class TraitView extends View<Trait> {
   getClbOpts() {
     return {
       component: this.target,
-      trait: this.model,
+      event: this.model,
       elInput: this.getInputElem(),
     };
   }
@@ -86,9 +86,9 @@ export default class TraitView extends View<Trait> {
 
   init() {}
   removed() {}
-  onRender(props: ReturnType<TraitView['getClbOpts']>) {}
-  onUpdate(props: ReturnType<TraitView['getClbOpts']>) {}
-  onEvent(props: ReturnType<TraitView['getClbOpts']> & { event: Event }) {}
+  onRender(props: ReturnType<EventView['getClbOpts']>) {}
+  onUpdate(props: ReturnType<EventView['getClbOpts']>) {}
+  onEvent(props: ReturnType<EventView['getClbOpts']> & { event: Event }) {}
 
   /**
    * Fires when the input is changed
@@ -118,7 +118,7 @@ export default class TraitView extends View<Trait> {
    * On change callback
    * @private
    */
-  onValueChange(model: Trait, value: string, opts: SetOptions & { fromTarget?: boolean } = {}) {
+  onValueChange(model: Event, value: string, opts: SetOptions & { fromTarget?: boolean } = {}) {
     if (opts.fromTarget) {
       this.setInputValue(model.get('value'));
       this.postUpdate();
@@ -142,7 +142,7 @@ export default class TraitView extends View<Trait> {
         this.createLabel({
           label,
           component: target,
-          trait: this,
+          event: this,
         }) || '';
     }
 
@@ -157,7 +157,7 @@ export default class TraitView extends View<Trait> {
   getLabel() {
     const { em } = this;
     const { label, name } = this.model.attributes;
-    return em.t(`traitManager.traits.labels.${name}`) || capitalize(label || name).replace(/-/g, ' ');
+    return em.t(`eventManager.events.labels.${name}`) || capitalize(label || name).replace(/-/g, ' ');
   }
 
   /**
@@ -183,7 +183,7 @@ export default class TraitView extends View<Trait> {
       const max = md.get('max');
       const value = this.getModelValue();
       const input: JQuery<HTMLInputElement> = $(`<input type="${type}">`);
-      const i18nAttr = em.t(`traitManager.traits.attributes.${name}`) || {};
+      const i18nAttr = em.t(`eventManager.events.attributes.${name}`) || {};
       // console.log(i18nAttr);
       input.attr({
         placeholder,
@@ -276,7 +276,7 @@ export default class TraitView extends View<Trait> {
     const { $el, pfx, ppfx, model } = this;
     const { type, id } = model.attributes;
     const hasLabel = this.hasLabel && this.hasLabel();
-    const cls = `${pfx}trait`;
+    const cls = `${pfx}event`;
     delete this.$input;
     let tmpl = `<div class="${cls} ${cls}--${type}">
       ${hasLabel ? `<div class="${ppfx}label-wrp" data-label></div>` : ''}
@@ -299,4 +299,4 @@ export default class TraitView extends View<Trait> {
     return this;
   }
 }
-TraitView.prototype.eventCapture = ['change'];
+EventView.prototype.eventCapture = ['change'];

@@ -70,7 +70,7 @@ export default {
     },
   },
   styleManager: {
-    empty: 'Select an element before using Style Manager',
+    empty: 'Select an elements before using Style Manager',
     layer: 'Layer',
     fileButton: 'Images',
     sectors: {
@@ -136,6 +136,33 @@ export default {
   traitManager: {
     empty: 'Select an element before using Trait Manager',
     label: 'Component settings',
+    traits: {
+      // The core library generates the name by their `name` property
+      labels: {
+        // id: 'Id',
+        // alt: 'Alt',
+        // title: 'Title',
+        // href: 'Href',
+      },
+      // In a simple trait, like text input, these are used on input attributes
+      attributes: {
+        id: traitInputAttr,
+        alt: traitInputAttr,
+        title: traitInputAttr,
+        href: { placeholder: 'eg. https://google.com' },
+      },
+      // In a trait like select, these are used to translate option names
+      options: {
+        target: {
+          false: 'This window',
+          _blank: 'New window',
+        },
+      },
+    },
+  },
+  eventManager: {
+    empty: 'Select an element before using Event Manager',
+    label: 'Component Events',
     traits: {
       // The core library generates the name by their `name` property
       labels: {

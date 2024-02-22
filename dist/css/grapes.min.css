@@ -1253,7 +1253,8 @@ span.CodeMirror-selectedtext {
   filter: alpha(opacity=50);
   pointer-events: none;
 }
-.gjs-traits-label {
+.gjs-traits-label,
+.gjs-events-label {
   border-bottom: 1px solid var(--gjs-main-dark-color);
   font-weight: lighter;
   margin-bottom: 5px;
@@ -1271,7 +1272,8 @@ span.CodeMirror-selectedtext {
   font-weight: lighter;
   padding: 10px;
 }
-.gjs-trt-trait {
+.gjs-trt-trait,
+.gjs-evt-event {
   display: flex;
   justify-content: flex-start;
   padding: 5px 10px;
@@ -1279,10 +1281,12 @@ span.CodeMirror-selectedtext {
   align-items: center;
   text-align: left;
 }
-.gjs-trt-traits {
+.gjs-trt-traits,
+.gjs-evt-events {
   font-size: var(--gjs-font-size);
 }
-.gjs-trt-trait .gjs-label {
+.gjs-trt-trait .gjs-label,
+.gjs-evt-event .gjs-label {
   text-align: left;
   text-overflow: ellipsis;
   overflow: hidden;

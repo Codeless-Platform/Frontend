@@ -6857,6 +6857,11 @@ grapesjs-navbar@^1.0.2:
   resolved "https://registry.npmjs.org/grapesjs-navbar/-/grapesjs-navbar-1.0.2.tgz"
   integrity sha512-JYTi5LwBkjSt3Cv3DxK4OcnOrsFSXLpi2/1sobnlfZ9hjp2b286BJbC58f0RNw1yx5n/12IhEzk9Nj4sAiSSwQ==
 
+grapesjs-plugin-forms@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/grapesjs-plugin-forms/-/grapesjs-plugin-forms-2.0.6.tgz"
+  integrity sha512-4rDob01NLiJWas5JW1FCpQc/4R4oS4wc/qr7pQwjGUiDzHNPKZLix10FqUKEv7hnzPmBaR2ejBL87sMwz11Tlw==
+
 graphemer@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/graphemer/-/graphemer-1.4.0.tgz"
