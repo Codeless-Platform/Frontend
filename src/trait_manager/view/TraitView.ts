@@ -37,7 +37,6 @@ export default class TraitView extends View<Trait> {
 
   templateInput(data: ReturnType<TraitView['getClbOpts']>) {
     const { clsField } = this;
-    console.log(clsField);
     return `<div class="${clsField}" data-input></div>`;
   }
 

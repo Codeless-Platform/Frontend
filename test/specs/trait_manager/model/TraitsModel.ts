@@ -28,7 +28,6 @@ describe('TraitModels', () => {
     expect(trait).toBeTruthy();
   });
   test('Traits undo property', () => {
-    // console.log(656);
     em.loadOnStart();
     const wrapper = em.Components.getWrapper();
     wrapper!.append(target);

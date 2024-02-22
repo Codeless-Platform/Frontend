@@ -69,7 +69,6 @@ export interface EventProperties {
 type EventOption = {
   id: string;
   label?: string;
-  // handler?: Trait;
 };
 
 /**
@@ -88,18 +87,15 @@ export default class Event extends Model<EventProperties> {
   el?: HTMLElement;
 
   defaults() {
-    // console.log(5);
     return {
-      type: 'select',
-      label: '',
       name: '',
-      unit: '',
-      step: 1,
-      value: '',
+      id: '',
       default: '',
+      eventx: '',
+      handler: '',
       placeholder: '',
       target: this.target,
-      changeProp: false,
+      changeProp: true,
     };
   }
 

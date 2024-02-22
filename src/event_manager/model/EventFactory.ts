@@ -2,7 +2,6 @@ import { EventManagerConfig } from '../config/config';
 import { isString } from 'underscore';
 import Event, { EventProperties } from './Event';
 import EditorModel from '../../editor/model/Editor';
-import Trait from '../../trait_manager/model/Trait';
 import Component from '../../dom_components/model/Component';
 
 export default class EventFactory {
@@ -23,7 +22,6 @@ export default class EventFactory {
   private buildFromString(name: string, em: EditorModel): Event {
     const obj: EventProperties = {
       name: name,
-      label: 'Event',
       eventx: '',
       handler: '',
     };

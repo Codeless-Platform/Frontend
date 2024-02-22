@@ -198,13 +198,11 @@ export default class Trait extends Model<TraitProperties> {
     }
 
     this.setTargetValue(value, valueOpts);
-    // console.log("656");
 
     if (opts.partial === false) {
       this.setTargetValue('');
 
       this.setTargetValue(value);
-      // console.log(656);
     }
   }
 

@@ -37,7 +37,6 @@ export default class EventView extends View<Event> {
 
   templateInput(data: ReturnType<EventView['getClbOpts']>) {
     const { clsField } = this;
-    console.log(clsField);
     return `<div class="${clsField}" data-input></div>`;
   }
 
