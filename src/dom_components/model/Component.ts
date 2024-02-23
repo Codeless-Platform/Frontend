@@ -153,7 +153,18 @@ export default class Component extends StyleableModel<ComponentProperties> {
       'script-export': '',
       attributes: {},
       traits: ['id', 'title'],
-      events: ['event', 'handler'],
+      events: [
+        {
+          eventx: [
+            { value: 'click', name: 'Click' },
+            { value: 'dbclick', name: 'Double Click' },
+          ],
+          handler: [
+            { value: 'redirecttourl', name: 'Redirect To Url' },
+            { value: 'xx', name: 'xx' },
+          ],
+        },
+      ],
       propagate: '',
       dmode: '',
       toolbar: null,
@@ -263,7 +274,6 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.initToolbar();
     this.initScriptProps();
     this.listenTo(this, 'change:script', this.scriptUpdated);
-    this.listenTo(this, 'change:click', this.updateEvents);
     this.listenTo(this, 'change:tagName', this.tagUpdated);
     this.listenTo(this, 'change:attributes', this.attrUpdated);
     this.listenTo(this, 'change:attributes:id', this._idUpdated);
@@ -699,7 +709,6 @@ export default class Component extends StyleableModel<ComponentProperties> {
         attributes.id = id;
       }
     }
-
     return attributes;
   }
 

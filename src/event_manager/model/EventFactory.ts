@@ -22,8 +22,8 @@ export default class EventFactory {
   private buildFromString(name: string, em: EditorModel): Event {
     const obj: EventProperties = {
       name: name,
-      eventx: '',
-      handler: '',
+      eventx: [],
+      handler: [],
     };
 
     switch (name) {

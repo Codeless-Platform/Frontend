@@ -36,8 +36,8 @@ export interface EventProperties {
    * If `true` the event value is applied on component
    */
   changeProp?: boolean;
-  eventx?: string;
-  handler?: string;
+  eventx?: Record<string, any>[];
+  handler?: Record<string, any>[];
 
   attributes?: Record<string, any>;
   valueTrue?: string;
@@ -91,8 +91,8 @@ export default class Event extends Model<EventProperties> {
       name: '',
       id: '',
       default: '',
-      eventx: '',
-      handler: '',
+      eventx: [{ value: 'xx', name: 'xx' }],
+      handler: [{}],
       placeholder: '',
       target: this.target,
       changeProp: true,

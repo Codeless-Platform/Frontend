@@ -4,11 +4,6 @@ import { Module } from '../abstract';
 import defaults, { EventManagerConfig } from './config/config';
 import EventsView from './view/EventsView';
 import EventView from './view/EventView';
-import EventSelectView from './view/EventSelectView';
-import EventCheckboxView from './view/EventCheckboxView';
-import EventNumberView from './view/EventNumberView';
-import EventColorView from './view/EventColorView';
-import EventButtonView from './view/EventButtonView';
 import EditorModel from '../editor/model/Editor';
 import Component from '../dom_components/model/Component';
 import Event from './model/Event';
@@ -19,11 +14,6 @@ export const evCustom = `${evPfx}custom`;
 
 const typesDef: { [id: string]: { new (o: any): EventView } } = {
   text: EventView,
-  number: EventNumberView,
-  select: EventSelectView,
-  checkbox: EventCheckboxView,
-  color: EventColorView,
-  button: EventButtonView,
 };
 
 interface IEventView {
