@@ -42,23 +42,80 @@ export default class ComponentVideo extends ComponentImage {
     if (this.get('src')) this.parseFromSrc();
     this.updatePropsFromAttr();
     this.updateTraits();
+    // this.updateEventTraits();
     this.on('change:provider', this.updateTraits);
-    this.on('change:click', this.updateScript);
+    // this.on('change:click', this.updateEventTraits);
+
+    this.on('change:mouseenter', this.updateScript);
     this.on('change:videoId change:provider', this.updateSrc);
     super.initialize(props, opts);
   }
+  constructor(...args: any) {
+    super(...args);
+    this.listenTo(this, 'change:mouseenter', this.updateScript);
+    this.listenTo(this, 'change:mouseleave', this.updateScript);
+    const mouseLeaveValue = this.get('mouseleave');
+  }
+
   updateScript() {
+    const mouseEnterValue = this.get('mouseenter');
+    const mouseLeaveValue = this.get('mouseleave');
+
     let s = '';
-    if (this.get('click')) {
-      s = `
-            var element = document.querySelector('#${this.getId()}');
-          element.addEventListener('click', function(event) {
-              console.log('Element clicked!');
-            });
-            `;
+    if (mouseEnterValue === 'resize') {
+      s += `
+        var element = document.querySelector('#${this.getId()}');
+        element.addEventListener('mouseenter', function(event) {
+          element.style.width="400px";
+        });
+      `;
+    }
+
+    if (mouseEnterValue === 'fullscreen') {
+      s += `
+        var element = document.querySelector('#${this.getId()}');
+        element.addEventListener('mouseenter', function(event) {
+          element.requestFullscreen();
+        });
+      `;
+    }
+    if (mouseEnterValue === 'none') {
+      s += '';
+    }
+
+    if (mouseLeaveValue === 'reset') {
+      s += `
+        element.addEventListener('mouseleave', function(event) {
+          element.style.width="900px";
+        });
+      `;
+    }
+    if (mouseLeaveValue === 'none') {
+      s += '';
     }
     this.set('script', s);
   }
+  // updateScript() {
+  //   let s = '';
+  //   this.em.on('component:update', (component) => {
+  //     // Check if the component is the one you're interested in
+  //     if (component === this) {
+  //       // Get the value of the 'mouseenter' attribute
+  //       const mouseEnterValue = this.get('mouseenter');
+  //       console.log('MouseEnter value:', mouseEnterValue);
+  //       if (mouseEnterValue === 'autoplay') {
+  //         s = `
+  //           var element = document.querySelector('#${this.getId()}');
+
+  //         element.addEventListener('mouseenter', function(event) {
+  //             element.play();
+  //           });
+  //           `;
+  //       }
+  //     }
+  //   });
+  //   this.set('script', s);
+  // }
   updatePropsFromAttr() {
     if (this.get('provider') === defProvider) {
       const { controls, autoplay, loop } = this.get('attributes')!;
@@ -87,14 +144,14 @@ export default class ComponentVideo extends ComponentImage {
     switch (prov) {
       case yt:
       case ytnc:
-        traits = [...this.getYoutubeTraits(), ...this.getClickTrait()];
+        traits = [...this.getYoutubeTraits(), ...this.getMouseEnterTrait(), ...this.getMouseLeaveTrait()];
         break;
       case vi:
-        traits = [...this.getVimeoTraits(), ...this.getClickTrait()];
+        traits = [...this.getVimeoTraits(), ...this.getMouseEnterTrait(), ...this.getMouseLeaveTrait()];
         break;
       default:
         tagName = 'video';
-        traits = [...this.getSourceTraits(), ...this.getClickTrait()];
+        traits = [...this.getSourceTraits(), ...this.getMouseEnterTrait(), ...this.getMouseLeaveTrait()];
     }
 
     this.set({ tagName }, { silent: true }); // avoid break in view
@@ -102,7 +159,30 @@ export default class ComponentVideo extends ComponentImage {
     this.set({ traits });
     em.get('ready') && em.trigger('component:toggled');
   }
+  // updateEventTraits() {
+  //   const { em } = this;
+  //   let tagName = 'iframe';
 
+  //   let traits;
+
+  //   const clicktrait = this.get('click');
+  //   switch (clicktrait) {
+  //     case 'mouseenter':
+  //       traits = [...this.getMouseEnterTrait()];
+  //       break;
+  //     case 'mouseleave':
+  //       traits = [...this.getMouseLeaveTrait()];
+
+  //       break;
+  //     default:
+  //       traits = [...this.getMouseEnterTrait()];
+  //   }
+
+  //   this.set({ tagName }, { silent: true }); // avoid break in view
+  //   // @ts-ignore
+  //   this.set({ traits });
+  //   em.get('ready') && em.trigger('component:toggled');
+  // }
   /**
    * Set attributes by src string
    */
@@ -318,17 +398,54 @@ export default class ComponentVideo extends ComponentImage {
     };
   }
 
-  getClickTrait() {
+  // getClickTrait() {
+  //   return {
+  //     type: 'select',
+  //     label: 'click',
+  //     name: 'click',
+  //     changeProp: true,
+  //     options: [
+  //       { name: 'mouseenter', value: 'mouseenter' },
+  //       { name: 'mouseleave', value: 'mouseleave' },
+  //     ],
+  //   };
+  // }
+
+  getMouseEnterTrait() {
     return [
       {
-        type: 'checkbox',
-        label: 'Click',
-        name: 'click',
+        type: 'select',
+        label: 'MouseEnter Event',
+        name: 'mouseenter',
+        options: [
+          { value: 'fullscreen', name: 'fullscreen' },
+          { value: 'resize', name: 'resize' },
+          {
+            value: 'none',
+            name: 'none',
+          },
+        ],
         changeProp: true,
       },
     ];
   }
-
+  getMouseLeaveTrait() {
+    return [
+      {
+        type: 'select',
+        label: 'Moseleave Event',
+        name: 'mouseleave',
+        options: [
+          { value: 'reset', name: 'reset' },
+          {
+            value: 'none',
+            name: 'none',
+          },
+        ],
+        changeProp: true,
+      },
+    ];
+  }
   /**
    * Returns url to youtube video
    * @return {string}

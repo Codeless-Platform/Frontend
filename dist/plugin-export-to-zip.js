@@ -7217,7 +7217,7 @@
                     'index.html': function (e) {
                       return '<!doctype html>\n        <html lang="en">\n          <head>\n            <meta charset="utf-8">\n            <link rel="stylesheet" href="./css/style.css">\n          </head>\n          <body>'.concat(
                         e.getHtml(),
-                        '<script src="index.js"></script>\n </body>\n        </html>'
+                        '<script src="index.js"></script>\n <script src="https://cdn.tailwindcss.com"></script>\n</body>\n        </html>'
                       );
                     },
                     'index.js': function (e) {
