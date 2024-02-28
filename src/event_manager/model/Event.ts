@@ -3,38 +3,41 @@ import { Model, SetOptions } from '../../common';
 import Component from '../../dom_components/model/Component';
 import Editor from '../../editor';
 import EditorModel from '../../editor/model/Editor';
-import TraitView from '../view/TraitView';
+import EventView from '../view/EventView';
 import { isDef } from '../../utils/mixins';
+import Trait from '../../trait_manager/model/Trait';
 
 /** @private */
-export interface TraitProperties {
+export interface EventProperties {
   /**
-   * Trait type, defines how the trait should rendered.
+   * Event type, defines how the event should rendered.
    * Possible values: `text` (default), `number`, `select`, `checkbox`, `color`, `button`
    */
   type?: string;
 
   /**
-   * The name of the trait used as a key for the attribute/property.
+   * The name of the event used as a key for the attribute/property.
    * By default, the name is used as attribute name or property in case `changeProp` in enabled.
    */
   name: string;
 
   /**
-   * Trait id, eg. `my-trait-id`.
+   * Event id, eg. `my-event-id`.
    * If not specified, the `name` will be used as id.
    */
   id?: string;
 
   /**
-   * The trait label to show for the rendered trait.
+   * The event label to show for the rendered event.
    */
   label?: string | false;
 
   /**
-   * If `true` the trait value is applied on component
+   * If `true` the event value is applied on component
    */
   changeProp?: boolean;
+  eventx?: Record<string, any>[];
+  handler?: Record<string, any>[];
 
   attributes?: Record<string, any>;
   valueTrue?: string;
@@ -47,69 +50,67 @@ export interface TraitProperties {
   target?: Component;
   default?: any;
   placeholder?: string;
-  command?: string | ((editor: Editor, trait: Trait) => any);
+  command?: string | ((editor: Editor, event: Event) => any);
   options?: Record<string, any>[];
   labelButton?: string;
   text?: string;
   full?: boolean;
-  getValue?: (props: { editor: Editor; trait: Trait; component: Component }) => any;
+  getValue?: (props: { editor: Editor; event: Event; component: Component }) => any;
   setValue?: (props: {
     value: any;
     editor: Editor;
-    trait: Trait;
+    event: Event;
     component: Component;
     partial: boolean;
     emitUpdate: () => void;
   }) => void;
 }
 
-type TraitOption = {
+type EventOption = {
   id: string;
   label?: string;
 };
 
 /**
- * @typedef Trait
- * @property {String} id Trait id, eg. `my-trait-id`.
- * @property {String} type Trait type, defines how the trait should rendered. Possible values: `text` (default), `number`, `select`, `checkbox`, `color`, `button`
- * @property {String} label The trait label to show for the rendered trait.
- * @property {String} name The name of the trait used as a key for the attribute/property. By default, the name is used as attribute name or property in case `changeProp` in enabled.
- * @property {Boolean} changeProp If `true` the trait value is applied on component
+ * @typedef Event
+ * @property {String} id Event id, eg. `my-event-id`.
+ * @property {String} type Event type, defines how the event should rendered. Possible values: `text` (default), `number`, `select`, `checkbox`, `color`, `button`
+ * @property {String} label The event label to show for the rendered event.
+ * @property {String} name The name of the event used as a key for the attribute/property. By default, the name is used as attribute name or property in case `changeProp` in enabled.
+ * @property {Boolean} changeProp If `true` the event value is applied on component
  *
  */
-export default class Trait extends Model<TraitProperties> {
+export default class Event extends Model<EventProperties> {
   target!: Component;
-
   em: EditorModel;
-  view?: TraitView;
+  view?: EventView;
   el?: HTMLElement;
 
   defaults() {
     return {
-      type: 'text',
-      label: '',
       name: '',
-      unit: '',
-      step: 1,
-      value: '',
+      id: '',
       default: '',
+      eventx: [{ value: 'xx', name: 'xx' }],
+      handler: [{}],
       placeholder: '',
       target: this.target,
-      changeProp: false,
-      options: [],
+      changeProp: true,
     };
   }
 
-  constructor(prop: TraitProperties, em: EditorModel) {
+  constructor(prop: EventProperties, em: EditorModel) {
     super(prop);
     const { target, name } = this.attributes;
-    // console.log(this.attributes);
     !this.get('id') && this.set('id', name);
+    this.on('change:eventx', this.dothis);
     if (target) {
       this.setTarget(target);
-      console.log(656);
     }
     this.em = em;
+  }
+  dothis() {
+    console.log(5);
   }
 
   setTarget(target: Component) {
@@ -125,7 +126,7 @@ export default class Trait extends Model<TraitProperties> {
   }
 
   /**
-   * Get the trait id.
+   * Get the event id.
    * @returns {String}
    */
   getId() {
@@ -133,15 +134,21 @@ export default class Trait extends Model<TraitProperties> {
   }
 
   /**
-   * Get the trait type.
+   * Get the event type.
    * @returns {String}
    */
   getType() {
     return this.get('type')!;
   }
+  getEventx() {
+    return this.get('eventx');
+  }
+  getHandler() {
+    return this.get('handler');
+  }
 
   /**
-   * Get the trait name.
+   * Get the event name.
    * @returns {String}
    */
   getName() {
@@ -149,7 +156,7 @@ export default class Trait extends Model<TraitProperties> {
   }
 
   /**
-   * Get the trait label.
+   * Get the event label.
    * @param {Object} [opts={}] Options.
    * @param {Boolean} [opts.locale=true] Use the locale string from i18n module.
    * @returns {String}
@@ -158,12 +165,12 @@ export default class Trait extends Model<TraitProperties> {
     const { locale = true } = opts;
     const id = this.getId();
     const name = this.get('label') || this.getName();
-    return (locale && this.em?.t(`traitManager.traits.labels.${id}`)) || name;
+    return (locale && this.em?.t(`eventManager.events.labels.${id}`)) || name;
   }
 
   /**
-   * Get the trait value.
-   * The value is taken from component attributes by default or from properties if the trait has the `changeProp` enabled.
+   * Get the event value.
+   * The value is taken from component attributes by default or from properties if the event has the `changeProp` enabled.
    * @returns {any}
    */
   getValue() {
@@ -171,9 +178,9 @@ export default class Trait extends Model<TraitProperties> {
   }
 
   /**
-   * Update the trait value.
-   * The value is applied on component attributes by default or on properties if the trait has the `changeProp` enabled.
-   * @param {any} value Value of the trait.
+   * Update the event value.
+   * The value is applied on component attributes by default or on properties if the event has the `changeProp` enabled.
+   * @param {any} value Value of the event.
    * @param {Object} [opts={}] Options.
    * @param {Boolean} [opts.partial] If `true` the update won't be considered complete (not stored in UndoManager).
    */
@@ -185,7 +192,7 @@ export default class Trait extends Model<TraitProperties> {
       setValue({
         value,
         editor: this.em?.getEditor()!,
-        trait: this,
+        event: this,
         component: this.target,
         partial: !!opts.partial,
         emitUpdate: () => this.targetUpdated(),
@@ -201,7 +208,6 @@ export default class Trait extends Model<TraitProperties> {
 
     if (opts.partial === false) {
       this.setTargetValue('');
-
       this.setTargetValue(value);
     }
   }
@@ -214,10 +220,10 @@ export default class Trait extends Model<TraitProperties> {
   }
 
   /**
-   * Get trait options.
+   * Get event options.
    */
-  getOptions(): TraitOption[] {
-    return (this.get('options') as TraitOption[]) || [];
+  getOptions(): EventOption[] {
+    return (this.get('options') as EventOption[]) || [];
   }
 
   /**
@@ -225,7 +231,7 @@ export default class Trait extends Model<TraitProperties> {
    * @param {String} [id] Option id.
    * @returns {Object | null}
    */
-  getOption(id?: string): TraitOption | undefined {
+  getOption(id?: string): EventOption | undefined {
     const idSel = isDef(id) ? id : this.getValue();
     return this.getOptions().filter(o => this.getOptionId(o) === idSel)[0];
   }
@@ -235,7 +241,7 @@ export default class Trait extends Model<TraitProperties> {
    * @param {Object} option Option object
    * @returns {String} Option id
    */
-  getOptionId(option: TraitOption) {
+  getOptionId(option: EventOption) {
     return option.id || (option as any).value;
   }
 
@@ -246,13 +252,13 @@ export default class Trait extends Model<TraitProperties> {
    * @param {Boolean} [opts.locale=true] Use the locale string from i18n module
    * @returns {String} Option label
    */
-  getOptionLabel(id: string | TraitOption, opts: { locale?: boolean } = {}): string {
+  getOptionLabel(id: string | EventOption, opts: { locale?: boolean } = {}): string {
     const { locale = true } = opts;
     const option = (isString(id) ? this.getOption(id) : id)!;
     const optId = this.getOptionId(option);
     const label = option.label || (option as any).name || optId;
     const propName = this.getName();
-    return (locale && this.em?.t(`traitManager.traits.options.${propName}.${optId}`)) || label;
+    return (locale && this.em?.t(`eventManager.events.options.${propName}.${optId}`)) || label;
   }
 
   props() {
@@ -262,8 +268,8 @@ export default class Trait extends Model<TraitProperties> {
   targetUpdated() {
     const value = this.getTargetValue();
     this.set({ value }, { fromTarget: 1 });
-    this.em?.trigger('trait:update', {
-      trait: this,
+    this.em?.trigger('event:update', {
+      event: this,
       component: this.target,
     });
   }
@@ -277,7 +283,7 @@ export default class Trait extends Model<TraitProperties> {
     if (getValue) {
       value = getValue({
         editor: this.em?.getEditor()!,
-        trait: this,
+        event: this,
         component: target,
       });
     } else if (this.get('changeProp')) {

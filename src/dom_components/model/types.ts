@@ -2,7 +2,9 @@ import Frame from '../../canvas/model/Frame';
 import EditorModel from '../../editor/model/Editor';
 import Selectors from '../../selector_manager/model/Selectors';
 import { TraitProperties } from '../../trait_manager/model/Trait';
+import { EventProperties } from '../../event_manager/model/Event';
 import Traits from '../../trait_manager/model/Traits';
+import Events from '../../event_manager/model/Events';
 import { ResizerOptions } from '../../utils/Resizer';
 import { DomComponentsConfig } from '../config/config';
 import Component from './Component';
@@ -153,6 +155,7 @@ export interface ComponentProperties {
    * @default ''
    */
   traits?: Traits;
+  events?: Events;
   /**
        * Indicates an array of properties which will be inhereted by all NEW appended children.
        For example if you create a component likes this: `{ removable: false, draggable: false, propagate: ['removable', 'draggable'] }`
@@ -185,22 +188,24 @@ export interface SymbolToUpOptions {
   fromUndo?: boolean;
 }
 
-export interface ComponentDefinition extends Omit<ComponentProperties, 'components' | 'traits'> {
+export interface ComponentDefinition extends Omit<ComponentProperties, 'components' | 'traits' | 'events'> {
   /**
    * Children components.
    */
   components?: string | ComponentDefinition | (string | ComponentDefinition)[];
   traits?: (Partial<TraitProperties> | string)[];
+  events?: (Partial<EventProperties> | string)[];
   attributes?: Record<string, any>;
   [key: string]: unknown;
 }
 
-export interface ComponentDefinitionDefined extends Omit<ComponentProperties, 'components' | 'traits'> {
+export interface ComponentDefinitionDefined extends Omit<ComponentProperties, 'components' | 'traits' | 'events'> {
   /**
    * Children components.
    */
   components?: ComponentDefinitionDefined[] | ComponentDefinitionDefined;
   traits?: (Partial<TraitProperties> | string)[];
+  events?: (Partial<EventProperties> | string)[];
   [key: string]: any;
 }
 

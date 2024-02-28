@@ -4,6 +4,7 @@ const swv = 'sw-visibility';
 const expt = 'export-template';
 const osm = 'open-sm';
 const otm = 'open-tm';
+const oem = 'open-em';
 const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
@@ -90,6 +91,13 @@ const config: PanelsConfig = {
           command: otm,
           togglable: false,
           attributes: { title: 'Settings' },
+        },
+        {
+          id: oem,
+          className: 'fa fa-fire',
+          command: oem,
+          togglable: false,
+          attributes: { title: 'JavaScript' },
         },
         {
           id: ola,

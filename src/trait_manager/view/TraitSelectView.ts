@@ -29,7 +29,7 @@ export default class TraitSelectView extends TraitView {
       const propName = model.get('name');
       const opts = model.get('options') || [];
       const values: string[] = [];
-      let input = '<select>';
+      let input = '<select >';
 
       opts.forEach(el => {
         let attrs = '';

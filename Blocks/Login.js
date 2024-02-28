@@ -1,48 +1,50 @@
+
+
 login = (editor, opts = {}) => {
   const script1 = function () {
-    const email_input = document.getElementsByClassName('email')[0];
+    const name_input = document.getElementsByClassName('name')[0];
     const pass_input = document.getElementsByClassName('pass')[0];
     const send_Btn = document.getElementsByClassName('sendBtn')[0];
     const form = document.querySelector('form');
 
-    if (email_input.value === 'Initial value') {
-      email_input.focus();
+
+    if (name_input.value === 'Initial value') {
+      name_input.focus();
     }
 
     send_Btn.addEventListener('click', function (e) {
-      if (email_input.value !== '' && pass_input.value !== '') {
+      if (name_input.value !== '' && pass_input.value !== '') {
         e.preventDefault();
 
-        console.log('Your Email is:', email_input.value);
+        console.log('Your name is:', name_input.value);
         console.log('Your Pass is:', pass_input.value);
 
-        // Use the provided JWT token
-        const jwtToken =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAyNjQxNzMxLCJleHAiOjE3MDUyMzM3MzF9.9IrGSXsI4Kau8ncqX9MhLSh78mGRoKoDA7mSCqeTRDQ';
 
         // Include the JWT token in your request headers
         const requestOptions = {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
           },
-          body: JSON.stringify({
-            data: {
-              email: email_input.value,
-              password: pass_input.value,
-            },
-          }),
+          body: `{"identifier": "${name_input.value}", "password": "${pass_input.value}"}`,
+
         };
 
+        //const apiLink = 'http://localhost:1337/api/auth/local';
+        const apiLink = form.getAttribute('API');
+
         // Replace the API endpoint with your actual API endpoint
-        fetch('http://localhost:1337/api/authontications', requestOptions)
+        fetch(apiLink, requestOptions)
           .then((response) => response.json())
           .then((data) => {
             console.log('Response from the server:', data);
+            alert("Login Successfully")
+
           })
           .catch((error) => {
             console.error('Error:', error);
+            alert("Error" , error)
+
           });
       }
     });
@@ -52,8 +54,8 @@ login = (editor, opts = {}) => {
       defaults: {
         tagName: 'form',
         components: `
-      <label for="email-field">Email Address:</label>
-      <input class="email" type="email"></input>
+      <label for="name-field">Full Name:</label>
+      <input class="name" type="text"></input>
       <br>
       
       <label for="pass-field">Password:</label>
@@ -85,7 +87,7 @@ login = (editor, opts = {}) => {
       <path
       d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
       </svg>`,
-    category: 'Login Pages',
+    category: 'Auth Pages',
     content: { type: 'login-with-js' },
   });
 };

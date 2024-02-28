@@ -19,7 +19,7 @@ export default class ComponentVideoView extends ComponentImageView {
     // @ts-ignore
     ComponentView.prototype.initialize.apply(this, arguments);
     const { model } = this;
-    const props = ['loop', 'autoplay', 'controls', 'color', 'rel', 'modestbranding', 'poster'];
+    const props = ['loop', 'autoplay', 'controls', 'color', 'rel', 'modestbranding', 'poster', 'click'];
     const events = props.map(p => `change:${p}`).join(' ');
     this.listenTo(model, 'change:provider', this.updateProvider);
     this.listenTo(model, 'change:src', this.updateSrc);
@@ -81,6 +81,7 @@ export default class ComponentVideoView extends ComponentImageView {
           el.autoplay = model.get('autoplay');
           el.controls = model.get('controls');
           el.poster = model.get('poster');
+          model.set('click', model.get('click'));
         }
       }
     }

@@ -23,7 +23,9 @@
     <script src="./Blocks/Company4.js"></script>
     <script src="./Blocks/Portofolio.js"></script>
     <script src="./Blocks/Company5.js"></script>
-
+    <script src="./Blocks/signup.js"></script>
+    <script src="./Blocks/carousel.js"></script>
+    <script src="./Blocks/tailwind.js"></script>
 
 
 
@@ -40,7 +42,7 @@
 
 <body>
     <div id="gjs" style="height:0px; overflow:hidden;">
-        <div class="panel">
+        <div class="panel" hidden>
             <h1 class="welcome">Welcome to</h1>
             <div class="big-title">
                 <path
@@ -128,6 +130,9 @@
                 "company4",
                 "company5",
                 "portofolio",
+                "signup",
+                "carousel",
+                "tailwind",
 
             ],
             pluginsOpts: {
@@ -144,8 +149,23 @@
                 "company4": {},
                 "company5": {},
                 "portofolio": {},
+                "signup": {},
+                "carousel": {},
+                "tailwind": {}
 
 
+            },
+            canvas: {
+                styles: [
+                    'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css',
+                    "https://cdn.tailwindcss.com",
+                ],
+                scripts: [
+                    'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
+                    'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js',
+
+                ],
             },
 
             height: '100%',
@@ -196,8 +216,6 @@
         editor.Commands.add("export", {
             run: (editor) => editor.runCommand("gjs-export-zip")
         })
-
-
 
     </script>
 </body>

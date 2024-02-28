@@ -18,6 +18,7 @@ import Components from './Components';
 import Selector from '../../selector_manager/model/Selector';
 import Selectors from '../../selector_manager/model/Selectors';
 import Traits from '../../trait_manager/model/Traits';
+import Events from '../../event_manager/model/Events';
 import EditorModel from '../../editor/model/Editor';
 import {
   ComponentAdd,
@@ -35,6 +36,7 @@ import ComponentView from '../view/ComponentView';
 import { AddOptions, ExtractMethods, ObjectAny, PrevToNewIdMap, SetOptions } from '../../common';
 import CssRule, { CssRuleJSON } from '../../css_composer/model/CssRule';
 import Trait, { TraitProperties } from '../../trait_manager/model/Trait';
+import Event, { EventProperties } from '../../event_manager/model/Event';
 import { ToolbarButtonProps } from './ToolbarButton';
 
 export interface IComponent extends ExtractMethods<Component> {}
@@ -151,6 +153,18 @@ export default class Component extends StyleableModel<ComponentProperties> {
       'script-export': '',
       attributes: {},
       traits: ['id', 'title'],
+      events: [
+        {
+          eventx: [
+            { value: 'click', name: 'Click' },
+            { value: 'dbclick', name: 'Double Click' },
+          ],
+          handler: [
+            { value: 'redirecttourl', name: 'Redirect To Url' },
+            { value: 'xx', name: 'xx' },
+          ],
+        },
+      ],
       propagate: '',
       dmode: '',
       toolbar: null,
@@ -168,6 +182,10 @@ export default class Component extends StyleableModel<ComponentProperties> {
 
   get traits() {
     return this.get('traits')!;
+  }
+
+  get events() {
+    return this.get('events')!;
   }
 
   get content() {
@@ -252,6 +270,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.initClasses();
     this.initComponents();
     this.initTraits();
+    this.initEvents();
     this.initToolbar();
     this.initScriptProps();
     this.listenTo(this, 'change:script', this.scriptUpdated);
@@ -265,9 +284,9 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.views = [];
 
     // Register global updates for collection properties
-    ['classes', 'traits', 'components'].forEach(name => {
-      const events = `add remove ${name !== 'components' ? 'change' : ''}`;
-      this.listenTo(this.get(name), events.trim(), (...args) => this.emitUpdate(name, ...args));
+    ['classes', 'traits', 'components', 'events'].forEach(name => {
+      const ev = `add remove ${name !== 'components' ? 'change' : ''}`;
+      this.listenTo(this.get(name), ev.trim(), (...args) => this.emitUpdate(name, ...args));
     });
 
     if (!opt.temporary) {
@@ -310,7 +329,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
   __onChange(m: any, opts: any) {
     const changed = this.changedAttributes() || {};
     keys(changed).forEach(prop => this.emitUpdate(prop));
-    ['status', 'open', 'toolbar', 'traits'].forEach(name => delete changed[name]);
+    ['status', 'open', 'toolbar', 'traits', 'events'].forEach(name => delete changed[name]);
     // Propagate component prop changes
     if (!isEmptyObj(changed)) {
       this.__changesUp(opts);
@@ -690,7 +709,6 @@ export default class Component extends StyleableModel<ComponentProperties> {
         attributes.id = id;
       }
     }
-
     return attributes;
   }
 
@@ -1065,6 +1083,25 @@ export default class Component extends StyleableModel<ComponentProperties> {
     changed && em && em.trigger('component:toggled');
     return this;
   }
+  initEvents(changed?: any) {
+    const { em } = this;
+    const ev = 'change:events';
+    this.off(ev, this.initEvents);
+    this.__loadEvents();
+    const attrs = { ...this.get('attributes') };
+    const events = this.events;
+    events.each(event => {
+      if (!event.get('changeProp')) {
+        const name = event.get('name');
+        const value = event.getInitValue();
+        if (name && value) attrs[name] = value;
+      }
+    });
+    events.length && this.set('attributes', attrs);
+    this.on(ev, this.initEvents);
+    changed && em && em.trigger('component:toggled');
+    return this;
+  }
 
   initScriptProps() {
     if (this.opt.temporary) return;
@@ -1208,6 +1245,22 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.set('scriptUpdated', 1);
   }
 
+  updateEvents() {}
+
+  updateScript() {
+    console.log(5);
+    let s = '';
+    if (this.get('click')) {
+      s = `
+            var element = document.querySelector('#${this.getId()}');
+          element.addEventListener('click', function(event) {
+              console.log('Element clicked!');
+            });
+            `;
+    }
+    this.set('script', s);
+  }
+
   /**
    * Init toolbar
    * @private
@@ -1262,6 +1315,24 @@ export default class Component extends StyleableModel<ComponentProperties> {
 
     return this;
   }
+  __loadEvents(ev?: Events | EventProperties[], opts = {}) {
+    let eventsI = ev || this.events;
+
+    if (!(eventsI instanceof Events)) {
+      eventsI = (isFunction(eventsI) ? eventsI(this) : eventsI) as EventProperties[];
+      const events = new Events([], this.opt as any);
+      events.setTarget(this);
+
+      if (eventsI.length) {
+        eventsI.forEach(ev => ev.attributes && delete ev.attributes.value);
+        events.add(eventsI);
+      }
+
+      this.set({ events }, opts);
+    }
+
+    return this;
+  }
 
   /**
    * Get traits.
@@ -1274,6 +1345,10 @@ export default class Component extends StyleableModel<ComponentProperties> {
   getTraits(): Trait[] {
     this.__loadTraits();
     return [...this.traits.models];
+  }
+  getEvents(): Event[] {
+    this.__loadEvents();
+    return [...this.events.models];
   }
 
   /**
@@ -1291,6 +1366,12 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.set({ traits: tr });
     return this.getTraits();
   }
+  setEvents(events: EventProperties[]) {
+    const ev = isArray(events) ? events : [events];
+    // @ts-ignore
+    this.set({ events: ev });
+    return this.getEvents();
+  }
 
   /**
    * Get the trait by id/name.
@@ -1304,6 +1385,13 @@ export default class Component extends StyleableModel<ComponentProperties> {
     return (
       this.getTraits().filter(trait => {
         return trait.get('id') === id || trait.get('name') === id;
+      })[0] || null
+    );
+  }
+  getEvent(id: string) {
+    return (
+      this.getEvents().filter(event => {
+        return event.get('id') === id || event.get('name') === id;
       })[0] || null
     );
   }
@@ -1325,6 +1413,12 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.em?.trigger('component:toggled');
     return this;
   }
+  updateEvent(id: string, props: Partial<EventProperties>) {
+    const event = this.getEvent(id);
+    event && event.set(props);
+    this.em?.trigger('component:toggled');
+    return this;
+  }
 
   /**
    * Get the trait position index by id/name. Useful in case you want to
@@ -1338,6 +1432,10 @@ export default class Component extends StyleableModel<ComponentProperties> {
   getTraitIndex(id: string) {
     const trait = this.getTrait(id);
     return trait ? this.traits.indexOf(trait) : -1;
+  }
+  getEventIndex(id: string) {
+    const event = this.getEvent(id);
+    return event ? this.events.indexOf(event) : -1;
   }
 
   /**
@@ -1353,6 +1451,14 @@ export default class Component extends StyleableModel<ComponentProperties> {
     const toRemove = ids.map(id => this.getTrait(id));
     const { traits } = this;
     const removed = toRemove.length ? traits.remove(toRemove) : [];
+    this.em?.trigger('component:toggled');
+    return isArray(removed) ? removed : [removed];
+  }
+  removeEvent(id: string | string[]) {
+    const ids = isArray(id) ? id : [id];
+    const toRemove = ids.map(id => this.getEvent(id));
+    const { events } = this;
+    const removed = toRemove.length ? events.remove(toRemove) : [];
     this.em?.trigger('component:toggled');
     return isArray(removed) ? removed : [removed];
   }
@@ -1373,6 +1479,12 @@ export default class Component extends StyleableModel<ComponentProperties> {
   addTrait(trait: Parameters<Traits['add']>[0], opts: AddOptions = {}) {
     this.__loadTraits();
     const added = this.traits.add(trait, opts);
+    this.em?.trigger('component:toggled');
+    return isArray(added) ? added : [added];
+  }
+  addEvent(event: Parameters<Events['add']>[0], opts: AddOptions = {}) {
+    this.__loadEvents();
+    const added = this.events.add(event, opts);
     this.em?.trigger('component:toggled');
     return isArray(added) ? added : [added];
   }
@@ -1412,6 +1524,8 @@ export default class Component extends StyleableModel<ComponentProperties> {
     attr.classes = [];
     // @ts-ignore
     attr.traits = [];
+    // @ts-ignore
+    attr.events = [];
 
     if (this.__isSymbolTop()) {
       opt.symbol = true;
@@ -1421,9 +1535,15 @@ export default class Component extends StyleableModel<ComponentProperties> {
       // @ts-ignore
       attr.components[i] = md.clone({ ...opt, _inner: 1 });
     });
+
     this.get('traits')!.each((md, i) => {
       // @ts-ignore
       attr.traits[i] = md.clone();
+    });
+
+    this.get('events')!.each((md, i) => {
+      // @ts-ignore
+      attr.events[i] = md.clone();
     });
     this.get('classes')!.each((md, i) => {
       // @ts-ignore
@@ -1652,6 +1772,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
     delete obj.attributes.class;
     delete obj.toolbar;
     delete obj.traits;
+    delete obj.events;
     delete obj.status;
     delete obj.open; // used in Layers
     delete obj._undoexc;

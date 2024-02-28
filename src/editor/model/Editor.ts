@@ -19,6 +19,7 @@ import SelectorManager from '../../selector_manager';
 import ParserModule from '../../parser';
 import StorageManager from '../../storage_manager';
 import TraitManager from '../../trait_manager';
+import EventManager from '../../event_manager';
 import LayerManager from '../../navigator';
 import AssetManager from '../../asset_manager';
 import DeviceManager from '../../device_manager';
@@ -60,6 +61,7 @@ const deps: (new (em: EditorModel) => IModule)[] = [
   PanelManager,
   RichTextEditorModule,
   TraitManager,
+  EventManager,
   LayerManager,
   CanvasModule,
   CommandsModule,
@@ -200,6 +202,10 @@ export default class EditorModel extends Model {
 
   get Traits(): TraitManager {
     return this.get('TraitManager');
+  }
+
+  get Events(): EventManager {
+    return this.get('EventManager');
   }
 
   get Parser(): ParserModule {
@@ -782,7 +788,6 @@ export default class EditorModel extends Model {
           ...opts,
         })
       : '';
-    html += js ? `<script>${js}</script>` : '';
     return html;
   }
 

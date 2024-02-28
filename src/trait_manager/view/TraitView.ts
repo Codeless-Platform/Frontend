@@ -183,6 +183,7 @@ export default class TraitView extends View<Trait> {
       const value = this.getModelValue();
       const input: JQuery<HTMLInputElement> = $(`<input type="${type}">`);
       const i18nAttr = em.t(`traitManager.traits.attributes.${name}`) || {};
+      // console.log(i18nAttr);
       input.attr({
         placeholder,
         ...i18nAttr,
