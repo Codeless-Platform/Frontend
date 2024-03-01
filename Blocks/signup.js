@@ -84,12 +84,8 @@ signup = (editor, opts = {}) => {
 
   editor.BlockManager.add('signup', {
     label: 'signup block',
-    media: `<svg xmlns="http://www.w3.org/2000/svg" height="3em" viewBox="0 0 512 512">
-        <path
-          d="M256 32C132.3 32 32 132.3 32 256s100.3 224 224 224 224-100.3 224-224S379.7 32 256 32zm138.1 297.9c-7.8 7.8-20.5 7.8-28.3 0L256 274.3l-109.8 55.6c-7.8 3.9-17.2 1.1-22.1-5.9-4.9-7-6.1-16.1-3.3-24.3l21.9-87.5-79.7-67.7c-8.7-7.4-10.2-20.5-3-29.7 7.2-9.2 20.5-10.7 29.7-3l74.6 63.3 21.7-86.7c2.8-11.2 14.1-18.4 25.3-15.6 11.2 2.8 18.4 14.1 15.6 25.3l-21.7 86.9 68.3 57.9c11.2 9.5 13.4 26.3 4.8 38.3z"
-        />
-      </svg>
-      `,
+    media: '<img src="imgs/icons8-user-64.png" width = 50 alt="Company1 Logo">',
+
     category: 'Auth Pages',
     content: { type: 'signup-with-js' },
   });

@@ -1539,7 +1539,7 @@ body {
 
   editor.BlockManager.add('Company3', {
     label: 'Company3 block',
-    media: '<img src="enterprise.png" width = 50 alt="Company1 Logo">',
+    media: '<img src="imgs/icons8-company-50.png" width = 50 alt="Company1 Logo">',
     category: 'Landing Pages',
     content: { type: 'company3_landing_page' },
   });

@@ -17998,7 +17998,7 @@ float: left
   });
   editor.BlockManager.add('Company4', {
     label: 'Company4 Block',
-    media: '<img src="enterprise.png" width = 50 alt="Company1 Logo">',
+    media: '<img src="imgs/icons8-company-50.png" width = 50 alt="Company1 Logo">',
     category: 'Landing Pages',
     content: { type: 'company4_landing_page' },
   });
