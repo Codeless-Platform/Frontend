@@ -705,7 +705,7 @@ display: block;
   });
   editor.BlockManager.add('portfolio', {
     label: 'Portfolio Block',
-    media: '<img src="logo512.png" width = 50 alt="portfolio Logo">',
+    media: '<img src="imgs/icons8-company-50.png" width = 50 alt="Company1 Logo">',
     category: 'Portfolio',
     content: { type: 'portfolio' },
   });

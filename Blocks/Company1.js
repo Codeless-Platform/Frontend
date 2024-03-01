@@ -1039,7 +1039,7 @@ cursor: pointer;
     },
   });
   editor.BlockManager.add('Company', {
-    media: '<img src="enterprise.png" width = 50 alt="Company1 Logo">',
+    media: '<img src="imgs/icons8-company-50.png" width = 50 alt="Company1 Logo">',
     label: 'Company1 block',
     category: 'Landing Pages',
     content: { type: 'company_landing_page' },

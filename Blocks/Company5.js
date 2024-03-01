@@ -2065,7 +2065,7 @@ const pattern =
 
   editor.BlockManager.add('Trial', {
     label: 'Company5 Block',
-    media: '<img src="enterprise.png" width=50 alt="Company1 Logo">',
+    media: '<img src="imgs/icons8-company-50.png" width = 50 alt="Company1 Logo">',
     category: 'Landing Pages',
     content: { type: 'Learning' },
   });
