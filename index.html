@@ -30,6 +30,7 @@
     <script src="./plugins/saveFile.js"></script>
     <script src="./plugins/openFile.js"></script>
     <script src="./plugins/clearPage.js"></script>
+    <script src="./plugins/addPagePlugin.js"></script>
 
 
 
@@ -139,6 +140,7 @@
                 "saveFile",
                 "openFile",
                 "clearPage",
+                "addPagePlugin",
 
             ],
             pluginsOpts: {
@@ -161,6 +163,7 @@
                 "saveFile": {},
                 "openFile": {},
                 "clearPage": {},
+                "addPagePlugin": {},
 
 
             },
@@ -214,6 +217,7 @@
 
         //first create an object from panels
         const panelManager = editor.Panels;
+        const pageManager = editor.Pages;
         //add export to zip button to options panel
         const export_btn = panelManager.addButton('options', {
             id: 'export_to_zip',
@@ -221,6 +225,7 @@
             command: 'export',
             attributes: { title: 'Export to zip' },
         });
+
         //add commands to the button
         editor.Commands.add("export", {
             run: (editor) => editor.runCommand("gjs-export-zip")
