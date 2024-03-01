@@ -45,7 +45,7 @@ const config: PanelsConfig = {
       id: 'options',
       buttons: [
         {
-          active: true,
+          active: false,
           id: swv,
           className: 'fa fa-square-o',
           command: 'core:component-outline',
