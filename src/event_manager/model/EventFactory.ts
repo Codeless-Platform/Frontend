@@ -22,8 +22,23 @@ export default class EventFactory {
   private buildFromString(name: string, em: EditorModel): Event {
     const obj: EventProperties = {
       name: name,
-      eventx: [],
-      handler: [],
+      eventx: [
+        { value: 'onclick', name: 'onclick' },
+        { value: 'ondoubleclick', name: 'ondoubleclick' },
+        {
+          value: 'none',
+          name: 'none',
+        },
+      ],
+      handler: [
+        { value: 'fullscreen', name: 'fullscreen' },
+        { value: 'resize', name: 'resize' },
+        {
+          value: 'none',
+          name: 'none',
+        },
+      ],
+      changeProp: true,
     };
 
     switch (name) {

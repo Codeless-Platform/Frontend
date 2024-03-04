@@ -1,4 +1,4 @@
-import { isString, isUndefined } from 'underscore';
+import { all, isString, isUndefined, random } from 'underscore';
 import { Model, SetOptions } from '../../common';
 import Component from '../../dom_components/model/Component';
 import Editor from '../../editor';
@@ -6,6 +6,7 @@ import EditorModel from '../../editor/model/Editor';
 import EventView from '../view/EventView';
 import { isDef } from '../../utils/mixins';
 import Trait from '../../trait_manager/model/Trait';
+import { View } from 'backbone';
 
 /** @private */
 export interface EventProperties {
@@ -46,8 +47,9 @@ export interface EventProperties {
   max?: number;
   unit?: string;
   step?: number;
-  value?: any;
+  value?: string[];
   target?: Component;
+  url?: string;
   default?: any;
   placeholder?: string;
   command?: string | ((editor: Editor, event: Event) => any);
@@ -65,6 +67,7 @@ export interface EventProperties {
     emitUpdate: () => void;
   }) => void;
 }
+delegateEvents: this;
 
 type EventOption = {
   id: string;
@@ -85,14 +88,39 @@ export default class Event extends Model<EventProperties> {
   em: EditorModel;
   view?: EventView;
   el?: HTMLElement;
+  events: any = {};
+  eventCapture!: string[];
 
   defaults() {
     return {
       name: '',
       id: '',
       default: '',
-      eventx: [{ value: 'xx', name: 'xx' }],
-      handler: [{}],
+      eventx: [
+        { value: 'click', name: 'onclick' },
+        { value: 'dblclick', name: 'ondoubleclick' },
+        { value: 'blur', name: 'onblur' },
+        { value: 'change', name: 'onchange' },
+        { value: 'focus', name: 'onfocus' },
+        { value: 'keydown', name: 'onkeydown' },
+        { value: 'keypress', name: 'onkeypress' },
+        { value: 'keyup', name: 'onkeyup' },
+        { value: 'touchstart', name: 'ontouchstart' },
+        { value: 'touchmove', name: 'ontouchmove' },
+        { value: 'touchend', name: 'ontouchend' },
+        {
+          value: 'none',
+          name: 'none',
+        },
+      ],
+      handler: [
+        { value: 'fullscreen', name: 'fullscreen' },
+        { value: 'resize', name: 'resize' },
+        {
+          value: 'none',
+          name: 'none',
+        },
+      ],
       placeholder: '',
       target: this.target,
       changeProp: true,
@@ -103,14 +131,47 @@ export default class Event extends Model<EventProperties> {
     super(prop);
     const { target, name } = this.attributes;
     !this.get('id') && this.set('id', name);
-    this.on('change:eventx', this.dothis);
     if (target) {
       this.setTarget(target);
     }
     this.em = em;
+    this.on('change', this.updateScript);
   }
-  dothis() {
-    console.log(5);
+
+  updateScript() {
+    let Allevents = this.target.getEvents();
+    if (Allevents[Allevents.length - 1] == this && Allevents[Allevents.length - 1].getValue()[0]) {
+      this.target.addEvent([Allevents.length.toString()]);
+    }
+    let s = '';
+    Allevents.forEach(event => {
+      // console.log(event);
+      let eventsValue = event.getValue()[0],
+        handlresValue = event.getValue()[1];
+      if (eventsValue !== 'none') {
+        if (handlresValue === 'fullscreen') {
+          s += ` var element = document.querySelector('#${this.target.getId()}');
+        element.addEventListener('${eventsValue}', function(event) {
+          element.requestFullscreen();
+        });`;
+        }
+        if (handlresValue === 'resize') {
+          s += `
+        var element = document.querySelector('#${this.target.getId()}');
+        element.addEventListener('${eventsValue}', function(event) {
+          element.style.width="200px";
+        });`;
+        }
+        if (handlresValue === 'none') {
+          event.setValue([eventsValue, '']);
+          s = '';
+        }
+      } else {
+        event.setValue(['', handlresValue]);
+        s = '';
+      }
+      this.target.set('script', s);
+    });
   }
 
   setTarget(target: Component) {
@@ -333,7 +394,7 @@ export default class Event extends Model<EventProperties> {
 
     // Have to trigger the change
     if (final) {
-      this.set('value', '', opts);
+      this.set('value', [], opts);
       this.set(toSet, opts);
     }
   }

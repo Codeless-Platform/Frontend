@@ -153,18 +153,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
       'script-export': '',
       attributes: {},
       traits: ['id', 'title'],
-      events: [
-        {
-          eventx: [
-            { value: 'click', name: 'Click' },
-            { value: 'dbclick', name: 'Double Click' },
-          ],
-          handler: [
-            { value: 'redirecttourl', name: 'Redirect To Url' },
-            { value: 'xx', name: 'xx' },
-          ],
-        },
-      ],
+      events: ['0'],
       propagate: '',
       dmode: '',
       toolbar: null,
@@ -314,6 +303,9 @@ export default class Component extends StyleableModel<ComponentProperties> {
       this.__hasUm = true;
     }
     opts.recursive && comps.map(c => c.__postAdd(opts));
+  }
+  dothis() {
+    console.log(5);
   }
 
   __postRemove() {
