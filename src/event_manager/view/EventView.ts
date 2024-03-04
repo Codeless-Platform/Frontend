@@ -104,17 +104,10 @@ export default class EventView extends View<Event> {
    * @private
    */
   onChange(event: Event) {
-    let el = this.getEInputElem();
-    if (el && !isUndefined(el.value)) {
-      this.model.set('value', el.value);
-    }
-    this.onEvent({
-      ...this.getClbOpts(),
-      event,
-    });
-    el = this.getHInputElem();
-    if (el && !isUndefined(el.value)) {
-      this.model.set('value', el.value);
+    let eel = this.getEInputElem(),
+      hel = this.getHInputElem();
+    if (eel && !isUndefined(eel.value) && hel && !isUndefined(hel.value)) {
+      this.model.set('value', [eel.value, hel.value]);
     }
     this.onEvent({
       ...this.getClbOpts(),
@@ -222,7 +215,7 @@ export default class EventView extends View<Event> {
 
       input += '</select>';
       this.$einput = $(input);
-      const val = model.getTargetValue();
+      const val = model.getTargetValue()[0];
       const valResult = values.indexOf(val) >= 0 ? val : model.get('default');
       !isUndefined(valResult) && this.$einput!.val(valResult);
     }
@@ -257,7 +250,7 @@ export default class EventView extends View<Event> {
 
       input += '</select>';
       this.$hinput = $(input);
-      const val = model.getTargetValue();
+      const val = model.getTargetValue()[1];
       const valResult = values.indexOf(val) >= 0 ? val : model.get('default');
       !isUndefined(valResult) && this.$hinput!.val(valResult);
     }
@@ -383,7 +376,7 @@ export default class EventView extends View<Event> {
   render() {
     const { $el, pfx, ppfx, model } = this;
     const { type, id } = model.attributes;
-    const hasLabel = this.hasLabel && this.hasLabel();
+    // const hasLabel = this.hasLabel && this.hasLabel();
     const cls = `${pfx}event`;
     delete this.$hinput;
     delete this.$einput;
