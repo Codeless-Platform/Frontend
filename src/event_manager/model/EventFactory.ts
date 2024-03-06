@@ -23,21 +23,26 @@ export default class EventFactory {
     const obj: EventProperties = {
       name: name,
       eventx: [
-        { value: 'onclick', name: 'onclick' },
-        { value: 'ondoubleclick', name: 'ondoubleclick' },
+        { value: 'click', name: 'onclick' },
+        { value: 'dblclick', name: 'ondoubleclick' },
         {
           value: 'none',
           name: 'none',
         },
       ],
+
       handler: [
         { value: 'fullscreen', name: 'fullscreen' },
         { value: 'resize', name: 'resize' },
+        { value: 'redirect to url', name: 'redirect to url' },
+
         {
           value: 'none',
           name: 'none',
         },
       ],
+      // eventx2: [],
+
       changeProp: true,
     };
 

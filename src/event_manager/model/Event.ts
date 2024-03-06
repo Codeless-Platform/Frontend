@@ -5,8 +5,6 @@ import Editor from '../../editor';
 import EditorModel from '../../editor/model/Editor';
 import EventView from '../view/EventView';
 import { isDef } from '../../utils/mixins';
-import Trait from '../../trait_manager/model/Trait';
-import { View } from 'backbone';
 
 /** @private */
 export interface EventProperties {
@@ -38,6 +36,8 @@ export interface EventProperties {
    */
   changeProp?: boolean;
   eventx?: Record<string, any>[];
+  eventx2?: Record<string, any>[];
+
   handler?: Record<string, any>[];
 
   attributes?: Record<string, any>;
@@ -96,31 +96,31 @@ export default class Event extends Model<EventProperties> {
       name: '',
       id: '',
       default: '',
-      eventx: [
-        { value: 'click', name: 'onclick' },
-        { value: 'dblclick', name: 'ondoubleclick' },
-        { value: 'blur', name: 'onblur' },
-        { value: 'change', name: 'onchange' },
-        { value: 'focus', name: 'onfocus' },
-        { value: 'keydown', name: 'onkeydown' },
-        { value: 'keypress', name: 'onkeypress' },
-        { value: 'keyup', name: 'onkeyup' },
-        { value: 'touchstart', name: 'ontouchstart' },
-        { value: 'touchmove', name: 'ontouchmove' },
-        { value: 'touchend', name: 'ontouchend' },
-        {
-          value: 'none',
-          name: 'none',
-        },
-      ],
-      handler: [
-        { value: 'fullscreen', name: 'fullscreen' },
-        { value: 'resize', name: 'resize' },
-        {
-          value: 'none',
-          name: 'none',
-        },
-      ],
+      // eventx: [
+      // { value: 'click', name: 'onclick' },
+      // { value: 'dblclick', name: 'ondoubleclick' },
+      // { value: 'blur', name: 'onblur' },
+      // { value: 'change', name: 'onchange' },
+      // { value: 'focus', name: 'onfocus' },
+      // { value: 'keydown', name: 'onkeydown' },
+      // { value: 'keypress', name: 'onkeypress' },
+      // { value: 'keyup', name: 'onkeyup' },
+      // { value: 'touchstart', name: 'ontouchstart' },
+      // { value: 'touchmove', name: 'ontouchmove' },
+      // { value: 'touchend', name: 'ontouchend' },
+      //   {
+      //     value: 'none',
+      //     name: 'none',
+      //   },
+      // ],
+      // handler: [
+      //   { value: 'fullscreen', name: 'fullscreen' },
+      //   { value: 'resize', name: 'resize' },
+      //   {
+      //     value: 'none',
+      //     name: 'none',
+      //   },
+      // ],
       placeholder: '',
       target: this.target,
       changeProp: true,
@@ -143,11 +143,13 @@ export default class Event extends Model<EventProperties> {
     if (Allevents[Allevents.length - 1] == this && Allevents[Allevents.length - 1].getValue()[0]) {
       this.target.addEvent([Allevents.length.toString()]);
     }
+
     let s = '';
     Allevents.forEach(event => {
-      // console.log(event);
       let eventsValue = event.getValue()[0],
-        handlresValue = event.getValue()[1];
+        handlresValue = event.getValue()[1],
+        textValue = event.getValue()[2];
+
       if (eventsValue !== 'none') {
         if (handlresValue === 'fullscreen') {
           s += ` var element = document.querySelector('#${this.target.getId()}');
@@ -160,6 +162,20 @@ export default class Event extends Model<EventProperties> {
         var element = document.querySelector('#${this.target.getId()}');
         element.addEventListener('${eventsValue}', function(event) {
           element.style.width="200px";
+        });`;
+        }
+        if (handlresValue === 'redirect to url') {
+          let elements = document.getElementsByClassName('url');
+          Array.from(elements).forEach(element => {
+            element.removeAttribute('style');
+            // console.log(element);
+          });
+
+          s += `
+        var element = document.querySelector('#${this.target.getId()}');
+        element.addEventListener('${eventsValue}', function(event) {
+          window.location.href = '${textValue}';
+
         });`;
         }
         if (handlresValue === 'none') {
@@ -203,6 +219,9 @@ export default class Event extends Model<EventProperties> {
   }
   getEventx() {
     return this.get('eventx');
+  }
+  getEventx2() {
+    return this.get('eventx2');
   }
   getHandler() {
     return this.get('handler');
