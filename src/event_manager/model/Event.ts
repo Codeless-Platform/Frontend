@@ -1,4 +1,4 @@
-import { all, isString, isUndefined, random } from 'underscore';
+import { isString, isUndefined } from 'underscore';
 import { Model, SetOptions } from '../../common';
 import Component from '../../dom_components/model/Component';
 import Editor from '../../editor';
@@ -67,7 +67,6 @@ export interface EventProperties {
     emitUpdate: () => void;
   }) => void;
 }
-delegateEvents: this;
 
 type EventOption = {
   id: string;
@@ -122,6 +121,7 @@ export default class Event extends Model<EventProperties> {
       //   },
       // ],
       placeholder: '',
+      url: '',
       target: this.target,
       changeProp: true,
     };
@@ -165,17 +165,10 @@ export default class Event extends Model<EventProperties> {
         });`;
         }
         if (handlresValue === 'redirect to url') {
-          let elements = document.getElementsByClassName('url');
-          Array.from(elements).forEach(element => {
-            element.removeAttribute('style');
-            // console.log(element);
-          });
-
           s += `
         var element = document.querySelector('#${this.target.getId()}');
         element.addEventListener('${eventsValue}', function(event) {
-          window.location.href = '${textValue}';
-
+          window.location.href = '${this.getUrl()}';
         });`;
         }
         if (handlresValue === 'none') {
@@ -220,11 +213,11 @@ export default class Event extends Model<EventProperties> {
   getEventx() {
     return this.get('eventx');
   }
-  getEventx2() {
-    return this.get('eventx2');
-  }
   getHandler() {
     return this.get('handler');
+  }
+  getUrl() {
+    return this.get('url');
   }
 
   /**
