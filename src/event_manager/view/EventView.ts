@@ -230,7 +230,7 @@ export default class EventView extends View<Event> {
 
       this.$input = input;
     }
-    return this.$input.get(0);
+    return this.$input!.get(0);
   }
   getEventInputEl() {
     if (!this.$einput) {
@@ -357,10 +357,10 @@ export default class EventView extends View<Event> {
 
     if (isString(etpl)) {
       eel.innerHTML = etpl;
-      this.handlerelInput = eel.firstChild as HTMLInputElement;
+      this.eventxelInput = eel.firstChild as HTMLInputElement;
     } else {
       appendInput ? eel.appendChild(etpl!) : eel.insertBefore(etpl!, eel.firstChild);
-      this.handlerelInput = etpl as HTMLInputElement;
+      this.eventxelInput = etpl as HTMLInputElement;
     }
     const el = $el.find('[handler-input]')[0];
     let htpl: HTMLElement | string | undefined = model.el;
@@ -371,10 +371,10 @@ export default class EventView extends View<Event> {
 
     if (isString(htpl)) {
       el.innerHTML = htpl;
-      this.eventxelInput = el.firstChild as HTMLInputElement;
+      this.handlerelInput = el.firstChild as HTMLInputElement;
     } else {
       appendInput ? el.appendChild(htpl!) : el.insertBefore(htpl!, el.firstChild);
-      this.eventxelInput = htpl as HTMLInputElement;
+      this.handlerelInput = htpl as HTMLInputElement;
     }
   }
   renderHandlerData() {

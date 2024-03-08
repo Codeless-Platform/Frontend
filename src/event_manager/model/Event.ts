@@ -144,43 +144,39 @@ export default class Event extends Model<EventProperties> {
       this.target.addEvent([Allevents.length.toString()]);
     }
 
-    let s = '';
+    let s = `var ${this.target.getName()} = document.querySelector('#${this.target.getId()}');`;
+    let flag = false;
     Allevents.forEach(event => {
       let eventsValue = event.getValue()[0],
-        handlresValue = event.getValue()[1],
-        textValue = event.getValue()[2];
-
+        handlresValue = event.getValue()[1];
       if (eventsValue !== 'none') {
         if (handlresValue === 'fullscreen') {
-          s += ` var element = document.querySelector('#${this.target.getId()}');
-        element.addEventListener('${eventsValue}', function(event) {
+          flag = true;
+          s += `
+          element.addEventListener('${eventsValue}', function(event) {
           element.requestFullscreen();
         });`;
-        }
-        if (handlresValue === 'resize') {
+        } else if (handlresValue === 'resize') {
+          flag = true;
           s += `
-        var element = document.querySelector('#${this.target.getId()}');
-        element.addEventListener('${eventsValue}', function(event) {
+          element.addEventListener('${eventsValue}', function(event) {
           element.style.width="200px";
         });`;
-        }
-        if (handlresValue === 'redirect to url') {
+        } else if (handlresValue === 'redirect to url' && event.getUrl() != '') {
+          flag = true;
           s += `
-        var element = document.querySelector('#${this.target.getId()}');
-        element.addEventListener('${eventsValue}', function(event) {
-          window.location.href = '${this.getUrl()}';
+          element.addEventListener('${eventsValue}', function(event) {
+          window.location.href = '${event.getUrl()}';
         });`;
-        }
-        if (handlresValue === 'none') {
+        } else if (handlresValue === 'none') {
           event.setValue([eventsValue, '']);
-          s = '';
         }
       } else {
         event.setValue(['', handlresValue]);
-        s = '';
       }
-      this.target.set('script', s);
     });
+    if (!flag) s = '';
+    this.target.set('script', s);
   }
 
   setTarget(target: Component) {
