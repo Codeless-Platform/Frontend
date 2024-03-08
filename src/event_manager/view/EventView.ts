@@ -447,7 +447,7 @@ export default class EventView extends View<Event> {
     if (model.getTargetValue()[1] == 'redirect to url') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
-        <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2px">
+        <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2">
       </svg>
       <div class="${ppfx}label-wrp" data-label>
         <div class="gjs-label" title="URL">URL</div>
