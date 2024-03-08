@@ -11,19 +11,14 @@ export default class EventView extends View<Event> {
   config: any;
   clsField: string;
   eventxelInput!: HTMLInputElement;
-  externalUrl!: HTMLInputElement;
-
   handlerelInput!: HTMLInputElement;
+  elInput!: HTMLInputElement;
   einput?: HTMLInputElement;
-  urlInput?: HTMLInputElement;
-
   hinput?: HTMLInputElement;
-  // input?: HTMLInputElement;
+  input?: HTMLInputElement;
   $einput?: JQuery<HTMLInputElement>;
-  $urlInput?: JQuery<HTMLInputElement>;
-
   $hinput?: JQuery<HTMLInputElement>;
-  // $input?: JQuery<HTMLInputElement>;
+  $input?: JQuery<HTMLInputElement>;
   eventCapture!: string[];
   noLabel?: boolean;
   em: EditorModel;
@@ -43,22 +38,21 @@ export default class EventView extends View<Event> {
   templateLabel(cmp?: Component) {
     const { ppfx } = this;
     const label = this.getLabel();
-    return `<div  class="${ppfx}label" title="${label}">${label}</div>`;
+    return `<div class="${ppfx}label" title="${label}">${label}</div>`;
   }
 
-  templateInput(data: ReturnType<EventView['getClbOpts']>) {
+  arrowtemplate() {
+    const { ppfx, clsField } = this;
+    return `<div class="${ppfx}sel-arrow">
+            <div class="${ppfx}d-s-arrow"></div>
+          </div>`;
+  }
+  templateInput(data: ReturnType<EventView['getClbOpts']>, target: string) {
     const { ppfx, clsField } = this;
     return `<div class="${clsField}">
-      <div data-input></div>
-      <div class="${ppfx}sel-arrow">
-        <div class="${ppfx}d-s-arrow"></div>
-      </div>
+      <div ${target}-input></div>
+      ${target !== 'data' ? this.arrowtemplate() : ''}
     </div>`;
-  }
-
-  templateInputtext(data: ReturnType<EventView['getClbOpts']>) {
-    const { clsField } = this;
-    return `<div  class="${clsField} " data-input></div>`;
   }
 
   constructor(o: any = {}) {
@@ -95,9 +89,8 @@ export default class EventView extends View<Event> {
       component: this.target,
       event: this.model,
       eventxelInput: this.getEInputElem(),
-      externalUrl: this.getUrlInputElem(),
-
       handlerelInput: this.getHInputElem(),
+      elInput: this.getInputElem(),
     };
   }
 
@@ -118,15 +111,19 @@ export default class EventView extends View<Event> {
    */
   onChange(event: Event) {
     let eel = this.getEInputElem(),
-      url = this.getUrlInputElem(),
-      hel = this.getHInputElem();
-    if (eel && !isUndefined(eel.value) && url && !isUndefined(url.value) && hel && !isUndefined(hel.value)) {
-      this.model.set('value', [eel.value, hel.value, url.value]);
+      hel = this.getHInputElem(),
+      el = this.getInputElem();
+    if (eel && !isUndefined(eel.value) && hel && !isUndefined(hel.value)) {
+      this.model.set('value', [eel.value, hel.value]);
+    }
+    if (el && !isUndefined(el.value)) {
+      this.model.set('url', el.value);
     }
     this.onEvent({
       ...this.getClbOpts(),
       event,
     });
+    this.render();
   }
 
   getValueForTarget() {
@@ -135,10 +132,6 @@ export default class EventView extends View<Event> {
 
   setEInputValue(value: string) {
     const el = this.getEInputElem();
-    el && (el.value = value);
-  }
-  setE2InputValue(value: string) {
-    const el = this.getUrlInputElem();
     el && (el.value = value);
   }
   setHInputValue(value: string) {
@@ -205,6 +198,40 @@ export default class EventView extends View<Event> {
    * @return {HTMLElement}
    * @private
    */
+  getInputEl() {
+    if (!this.$input) {
+      const { em, model } = this;
+      const md = model;
+      const { name } = model.attributes;
+      const placeholder = md.get('placeholder') || md.get('default') || '';
+      const type = 'text';
+      const min = md.get('min');
+      const max = md.get('max');
+      const value = [''];
+      const input: JQuery<HTMLInputElement> = $(`<input type="${type}">`);
+      const i18nAttr = em.t(`eventManager.events.attributes.${name}`) || {};
+      input.attr({
+        placeholder,
+        ...i18nAttr,
+      });
+
+      if (!isUndefined(value)) {
+        md.set({ value }, { silent: true });
+        input.prop('value', value);
+      }
+
+      if (min) {
+        input.prop('min', min);
+      }
+
+      if (max) {
+        input.prop('max', max);
+      }
+
+      this.$input = input;
+    }
+    return this.$input.get(0);
+  }
   getEventInputEl() {
     if (!this.$einput) {
       const { model, em } = this;
@@ -239,32 +266,6 @@ export default class EventView extends View<Event> {
     }
 
     return this.$einput!.get(0);
-  }
-  getUrlInputEl() {
-    if (!this.$urlInput) {
-      const { em, model } = this;
-      const md = model;
-      const { name } = model.attributes;
-      const placeholder = md.get('placeholder') || md.get('default') || '';
-      const type = 'text';
-      const value = this.getModelValue();
-      const urlInput: JQuery<HTMLInputElement> = $(`<input  type="${type}">`);
-      const i18nAttr = em.t(`eventManager.events.attributes.${name}`) || {};
-      // console.log(i18nAttr);
-      urlInput.attr({
-        placeholder,
-        ...i18nAttr,
-      });
-
-      if (!isUndefined(value)) {
-        md.set({ value }, { silent: true });
-        urlInput.prop('value', value);
-      }
-
-      this.$urlInput = urlInput;
-    }
-
-    return this.$urlInput!.get(0);
   }
   getHandlerInputEl() {
     if (!this.$hinput) {
@@ -301,49 +302,18 @@ export default class EventView extends View<Event> {
 
     return this.$hinput!.get(0);
   }
-  // getInputEl() {
-  //   // if (!this.$input) {
-  //   //   const { model, em } = this;
-  //   //   const propName = model.get('name');
-  //   //   const opts = model.get('options') || [];
-  //   //   const values: string[] = [];
-  //   //   let input = '<select>';
-  //   //   opts.forEach((el) => {
-  //   //     let attrs = '';
-  //   //     let name, value, style;
-  //   //     if (isString(el)) {
-  //   //       name = el;
-  //   //       value = el;
-  //   //     } else {
-  //   //       name = el.name || el.label || el.value;
-  //   //       value = `${isUndefined(el.value) ? el.id : el.value}`.replace(/"/g, '&quot;');
-  //   //       style = el.style ? el.style.replace(/"/g, '&quot;') : '';
-  //   //       attrs += style ? ` style="${style}"` : '';
-  //   //     }
-  //   //     const resultName = name;
-  //   //     input += `<option value="${value}"${attrs}>${resultName}</option>`;
-  //   //     values.push(value);
-  //   //   });
-  //   //   input += '</select>';
-  //   //   this.$input = $(input);
-  //   //   const val = model.getTargetValue();
-  //   //   const valResult = values.indexOf(val) >= 0 ? val : model.get('default');
-  //   // //   !isUndefined(valResult) && this.$input!.val(valResult);
-  //   // }
-  //   // return this.$input!.get(0);
-  // }
 
   getEInputElem() {
     const { einput, $einput } = this;
     return einput || ($einput && $einput.get && $einput.get(0)) || this.getEElInput();
   }
-  getUrlInputElem() {
-    const { urlInput, $urlInput } = this;
-    return urlInput || ($urlInput && $urlInput.get && $urlInput.get(0)) || this.getUrlInput();
-  }
   getHInputElem() {
     const { hinput, $hinput } = this;
     return hinput || ($hinput && $hinput.get && $hinput.get(0)) || this.getHElInput();
+  }
+  getInputElem() {
+    const { input, $input } = this;
+    return input || ($input && $input.get && $input.get(0)) || this.getElInput();
   }
 
   getModelValue() {
@@ -365,11 +335,11 @@ export default class EventView extends View<Event> {
   getEElInput() {
     return this.eventxelInput;
   }
-  getUrlInput() {
-    return this.externalUrl;
-  }
   getHElInput() {
     return this.handlerelInput;
+  }
+  getElInput() {
+    return this.elInput;
   }
 
   /**
@@ -378,8 +348,7 @@ export default class EventView extends View<Event> {
    * */
   renderEventField() {
     const { $el, appendInput, model } = this;
-    let inputs = $el.find('[data-input]');
-    const eel = inputs[0];
+    const eel = $el.find('[eventx-input]')[0];
     let etpl: HTMLElement | string | undefined = model.el;
 
     if (!etpl) {
@@ -393,37 +362,36 @@ export default class EventView extends View<Event> {
       appendInput ? eel.appendChild(etpl!) : eel.insertBefore(etpl!, eel.firstChild);
       this.handlerelInput = etpl as HTMLInputElement;
     }
+    const el = $el.find('[handler-input]')[0];
+    let htpl: HTMLElement | string | undefined = model.el;
 
-    inputs = $el.find('[data-input]');
-    const el = inputs[1];
+    if (!htpl) {
+      htpl = this.getHandlerInputEl();
+    }
+
+    if (isString(htpl)) {
+      el.innerHTML = htpl;
+      this.eventxelInput = el.firstChild as HTMLInputElement;
+    } else {
+      appendInput ? el.appendChild(htpl!) : el.insertBefore(htpl!, el.firstChild);
+      this.eventxelInput = htpl as HTMLInputElement;
+    }
+  }
+  renderHandlerData() {
+    const { $el, appendInput, model } = this;
+    const inputs = $el.find('[data-input]');
+    const el = inputs[0];
     let tpl: HTMLElement | string | undefined = model.el;
 
     if (!tpl) {
-      tpl = this.getHandlerInputEl();
+      tpl = this.getInputEl();
     }
-
     if (isString(tpl)) {
       el.innerHTML = tpl;
-      this.eventxelInput = el.firstChild as HTMLInputElement;
+      this.elInput = el.firstChild as HTMLInputElement;
     } else {
       appendInput ? el.appendChild(tpl!) : el.insertBefore(tpl!, el.firstChild);
-      this.eventxelInput = tpl as HTMLInputElement;
-    }
-
-    inputs = $el.find('[data-input]');
-    const url = inputs[2];
-    let e2tpl: HTMLElement | string | undefined = model.el;
-
-    if (!e2tpl) {
-      e2tpl = this.getUrlInputEl();
-    }
-
-    if (isString(e2tpl)) {
-      url.innerHTML = e2tpl;
-      this.handlerelInput = url.firstChild as HTMLInputElement;
-    } else {
-      appendInput ? url.appendChild(e2tpl!) : url.insertBefore(e2tpl!, url.firstChild);
-      this.handlerelInput = e2tpl as HTMLInputElement;
+      this.elInput = tpl as HTMLInputElement;
     }
   }
 
@@ -446,55 +414,60 @@ export default class EventView extends View<Event> {
     const { type, id } = model.attributes;
     // const hasLabel = this.hasLabel && this.hasLabel();
     const cls = `${pfx}event`;
-    delete this.$urlInput;
     delete this.$hinput;
     delete this.$einput;
-    let tmpl = `<div class="${cls} ${cls}--select">
+    let tmpl = `<div class="${cls}">
       <div class="${ppfx}label-wrp" data-label>
         <div class="gjs-label" title="Event">Event</div>
       </div>
-      <div class="${ppfx}field-wrp ${ppfx}field-wrp--select" data-eventx-input>
+      <div class="${ppfx}field-wrp ${ppfx}field-wrp--select">
         ${
           this.templateInput
             ? isFunction(this.templateInput)
-              ? this.templateInput(this.getClbOpts())
+              ? this.templateInput(this.getClbOpts(), 'eventx')
               : this.templateInput
             : ''
         }
       </div>
     </div>`;
-
-    tmpl += `<div class="${cls} ${cls}--select">
+    tmpl += `<div class="${cls}">
       <div class="${ppfx}label-wrp" data-label>
         <div class="gjs-label" title="Handler">Handler</div>
       </div>
-      <div class="${ppfx}field-wrp ${ppfx}field-wrp--select" data-handler-input>
+      <div class="${ppfx}field-wrp ${ppfx}field-wrp--select">
         ${
           this.templateInput
             ? isFunction(this.templateInput)
-              ? this.templateInput(this.getClbOpts())
+              ? this.templateInput(this.getClbOpts(), 'handler')
               : this.templateInput
             : ''
         }
       </div>
     </div>`;
-
-    tmpl += `<div style="display: none" class=" url ${cls} ${cls}--input">
-    <div class="${ppfx}label-wrp" data-label>
-      <div   class="gjs-label" title="external URl">external URl</div>
-    </div>
-    <div   class=" ${ppfx}field-wrp ${ppfx}field-wrp--text" data-eventx2-input>
-      ${
-        this.templateInputtext
-          ? isFunction(this.templateInputtext)
-            ? this.templateInputtext(this.getClbOpts())
-            : this.templateInputtext
-          : ''
-      }
-    </div>
-  </div>`;
+    if (model.getTargetValue()[1] == 'redirect to url') {
+      tmpl += `<div class="${cls}">
+      <svg width="25" height="20">
+        <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2">
+      </svg>
+      <div class="${ppfx}label-wrp" data-label>
+        <div class="gjs-label" title="URL">URL</div>
+      </div>
+      <div class="${ppfx}field-wrp ${ppfx}field-wrp--select">
+         ${
+           this.templateInput
+             ? isFunction(this.templateInput)
+               ? this.templateInput(this.getClbOpts(), 'data')
+               : this.templateInput
+             : ''
+         }
+      </div>
+      </div>`;
+    }
     $el.empty().append(tmpl);
     this.renderEventField();
+    if (model.getTargetValue()[1] == 'redirect to url') {
+      this.renderHandlerData();
+    }
     this.el.className = `${cls}__wrp ${cls}__wrp-${id}`;
     this.postUpdate();
     this.onRender(this.getClbOpts());
