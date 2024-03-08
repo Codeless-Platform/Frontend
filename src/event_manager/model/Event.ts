@@ -144,30 +144,22 @@ export default class Event extends Model<EventProperties> {
       this.target.addEvent([Allevents.length.toString()]);
     }
 
-    let s = `var ${this.target.getName()} = document.querySelector('#${this.target.getId()}');`;
+    let s = `var ${this.target.getId()} = document.querySelector('#${this.target.getId()}');`;
     let flag = false;
     Allevents.forEach(event => {
       let eventsValue = event.getValue()[0],
         handlresValue = event.getValue()[1];
       if (eventsValue !== 'none') {
+        s += `element.addEventListener('${eventsValue}', function(event) {`;
         if (handlresValue === 'fullscreen') {
           flag = true;
-          s += `
-          element.addEventListener('${eventsValue}', function(event) {
-          element.requestFullscreen();
-        });`;
+          s += 'element.requestFullscreen();});';
         } else if (handlresValue === 'resize') {
           flag = true;
-          s += `
-          element.addEventListener('${eventsValue}', function(event) {
-          element.style.width="200px";
-        });`;
+          s += 'element.style.width="200px";});';
         } else if (handlresValue === 'redirect to url' && event.getUrl() != '') {
           flag = true;
-          s += `
-          element.addEventListener('${eventsValue}', function(event) {
-          window.location.href = '${event.getUrl()}';
-        });`;
+          s += `window.location.href = '${event.getUrl()}';});`;
         } else if (handlresValue === 'none') {
           event.setValue([eventsValue, '']);
         }
