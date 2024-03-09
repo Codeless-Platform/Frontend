@@ -463,7 +463,7 @@ tailwind = (editor, opts = {}) => {
           class: 'fa fa-arrows gjs-no-touch-actions',
           draggable: true,
         },
-        command: 'tld-move',
+        command: 'tlb-move',
       },
 
       {
@@ -480,12 +480,10 @@ tailwind = (editor, opts = {}) => {
       },
       {
         attributes: {
-          class: 'fa fa-gear',
+          class: 'fa fa-toggle-off',
+          title: 'free move',
         },
-        command: (e) => {
-          console.log('Another way to add toolbar');
-          alert('Another way to add toolbar');
-        },
+        command: 'toggle-abs-move',
       },
     ];
 

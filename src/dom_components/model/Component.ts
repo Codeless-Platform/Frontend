@@ -134,7 +134,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
       unstylable: '',
       highlightable: true,
       copyable: true,
-      resizable: false,
+      resizable: true,
       editable: false,
       layerable: true,
       selectable: true,
