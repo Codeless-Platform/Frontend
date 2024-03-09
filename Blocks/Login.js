@@ -1,12 +1,9 @@
-
-
 login = (editor, opts = {}) => {
   const script1 = function () {
     const name_input = document.getElementsByClassName('name')[0];
     const pass_input = document.getElementsByClassName('pass')[0];
     const send_Btn = document.getElementsByClassName('sendBtn')[0];
     const form = document.querySelector('form');
-
 
     if (name_input.value === 'Initial value') {
       name_input.focus();
@@ -19,7 +16,6 @@ login = (editor, opts = {}) => {
         console.log('Your name is:', name_input.value);
         console.log('Your Pass is:', pass_input.value);
 
-
         // Include the JWT token in your request headers
         const requestOptions = {
           method: 'POST',
@@ -27,7 +23,6 @@ login = (editor, opts = {}) => {
             'Content-Type': 'application/json',
           },
           body: `{"identifier": "${name_input.value}", "password": "${pass_input.value}"}`,
-
         };
 
         //const apiLink = 'http://localhost:1337/api/auth/local';
@@ -38,13 +33,11 @@ login = (editor, opts = {}) => {
           .then((response) => response.json())
           .then((data) => {
             console.log('Response from the server:', data);
-            alert("Login Successfully")
-
+            alert('Login Successfully');
           })
           .catch((error) => {
             console.error('Error:', error);
-            alert("Error" , error)
-
+            alert('Error', error);
           });
       }
     });
@@ -66,6 +59,7 @@ login = (editor, opts = {}) => {
       `,
         script: script1, // Pass editor as a parameter using bind
         droppable: false,
+
         traits: [
           'name',
           'placeholder',
