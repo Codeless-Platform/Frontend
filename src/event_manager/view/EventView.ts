@@ -42,7 +42,7 @@ export default class EventView extends View<Event> {
   }
 
   arrowtemplate() {
-    const { ppfx, clsField } = this;
+    const { ppfx } = this;
     return `<div class="${ppfx}sel-arrow">
             <div class="${ppfx}d-s-arrow"></div>
           </div>`;
@@ -110,14 +110,26 @@ export default class EventView extends View<Event> {
    * @private
    */
   onChange(event: Event) {
+    const { type } = this.model.attributes;
     let eel = this.getEInputElem(),
       hel = this.getHInputElem(),
       el = this.getInputElem();
-    if (eel && !isUndefined(eel.value) && hel && !isUndefined(hel.value)) {
-      this.model.set('value', [eel.value, hel.value]);
+    if (type === 'NotCustomized') {
+      if (eel && !isUndefined(eel.value) && hel && !isUndefined(hel.value)) {
+        this.model.set('value', [eel.value, hel.value]);
+        console.log(this.model.getTargetValue());
+      }
+    } else {
+      if (hel && !isUndefined(hel.value)) {
+        this.model.set('value', [
+          this.model.getEventx()?.find(event => event.name === this.model.getLabel())?.value,
+          hel.value,
+        ]);
+      }
     }
     if (el && !isUndefined(el.value)) {
       this.model.set('url', el.value);
+      console.log(this.model.getUrl());
     }
     this.onEvent({
       ...this.getClbOpts(),
