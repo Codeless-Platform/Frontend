@@ -127,7 +127,6 @@
         fromElement: true,
         plugins: [
           "grapesjs-plugin-export",
-          "grapesjs-project-manager",
           "grapesjsClick",
           "gjs-blocks-basic",
           "grapesjs-tailwind",
@@ -277,14 +276,10 @@
         command: "export",
         attributes: { title: "Export to zip" },
       });
-
-      
       //add commands to the button
       editor.Commands.add("export", {
         run: (editor) => editor.runCommand("gjs-export-zip"),
       });
-
-      
 
       function addPagesToSettingsPanel(editor) {
         const panels = editor.Panels;
@@ -332,8 +327,6 @@
 
       // Add the Pages panel to the editor
       addPagesToSettingsPanel(editor);
-
-      
 
       // toggle free move component
       editor.Commands.add("toggle-abs-move", {
