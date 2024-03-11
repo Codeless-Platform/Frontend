@@ -263,6 +263,10 @@
         ],
       },
     });
+
+    //to enable freeMove
+    editor.getModel().set('dmode', 'absolute');
+
     //first create an object from panels
     const panelManager = editor.Panels;
     const pageManager = editor.Pages;
@@ -327,52 +331,6 @@
     // Add the Pages panel to the editor
     addPagesToSettingsPanel(editor);
 
-
-
-
-    // toggle free move component
-    editor.Commands.add('toggle-abs-move', {
-      run: function (editor, sender) {
-        var selectedComponent = editor.getSelected();
-        if (selectedComponent) {
-          if (selectedComponent.get('dmode') === 'translate') {
-            selectedComponent.setDragMode();
-            var prevPosition = selectedComponent.get('_prev-abs');
-            if (prevPosition) {
-              selectedComponent.addStyle({
-                position: prevPosition,
-                transform: ''
-              });
-              selectedComponent.set('_prev-abs', 0);
-            } else {
-              selectedComponent.addStyle({
-                position: '',
-                transform: ''
-              });
-            }
-          }
-          else {
-            selectedComponent.setDragMode('translate');
-            var currentPosition = selectedComponent.getStyle().position;
-            if (currentPosition !== 'absolute') {
-              if (currentPosition) {
-                selectedComponent.set('_prev-abs', currentPosition);
-              }
-
-              if (selectedComponent.get('tagName') === 'a') {
-                selectedComponent.addStyle({
-                  position: 'absolute'
-                });
-                return; // Stop execution here if the selected component is a link
-              }
-
-
-
-            }
-          }
-        }
-      }
-    });
 
 
 

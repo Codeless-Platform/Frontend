@@ -235,6 +235,7 @@ export default class CommandsModule extends Module<CommandsConfig & { pStylePref
    * // As a function
    * commands.add('myCommand2', editor => { ... });
    * */
+
   add<T extends ObjectAny = {}>(id: string, command: CommandFunction | CommandObject<any, T>) {
     let result: CommandObject = isFunction(command) ? { run: command } : command;
 
