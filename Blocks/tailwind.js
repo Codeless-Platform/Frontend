@@ -478,13 +478,13 @@ tailwind = (editor, opts = {}) => {
         },
         command: 'tlb-delete',
       },
-      {
-        attributes: {
-          class: 'fa fa-toggle-off',
-          title: 'free move',
-        },
-        command: 'toggle-abs-move',
-      },
+      // {
+      //   attributes: {
+      //     class: 'fa fa-toggle-off',
+      //     title: 'free move',
+      //   },
+      //   command: 'toggle-abs-move',
+      // },
     ];
 
     if (type.id === 'svg' || type.id === 'svg-in') {
