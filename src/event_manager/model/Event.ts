@@ -95,31 +95,25 @@ export default class Event extends Model<EventProperties> {
       name: '',
       id: '',
       default: '',
-      // eventx: [
-      // { value: 'click', name: 'onclick' },
-      // { value: 'dblclick', name: 'ondoubleclick' },
-      // { value: 'blur', name: 'onblur' },
-      // { value: 'change', name: 'onchange' },
-      // { value: 'focus', name: 'onfocus' },
-      // { value: 'keydown', name: 'onkeydown' },
-      // { value: 'keypress', name: 'onkeypress' },
-      // { value: 'keyup', name: 'onkeyup' },
-      // { value: 'touchstart', name: 'ontouchstart' },
-      // { value: 'touchmove', name: 'ontouchmove' },
-      // { value: 'touchend', name: 'ontouchend' },
-      //   {
-      //     value: 'none',
-      //     name: 'none',
-      //   },
-      // ],
-      // handler: [
-      //   { value: 'fullscreen', name: 'fullscreen' },
-      //   { value: 'resize', name: 'resize' },
-      //   {
-      //     value: 'none',
-      //     name: 'none',
-      //   },
-      // ],
+      eventx: [
+        { value: 'click', name: 'onclick' },
+        { value: 'dblclick', name: 'ondoubleclick' },
+        {
+          value: 'none',
+          name: 'none',
+        },
+      ],
+
+      handler: [
+        { value: 'fullscreen', name: 'fullscreen' },
+        { value: 'resize', name: 'resize' },
+        { value: 'redirect to url', name: 'redirect to url' },
+
+        {
+          value: 'none',
+          name: 'none',
+        },
+      ],
       placeholder: '',
       url: '',
       target: this.target,
@@ -149,7 +143,7 @@ export default class Event extends Model<EventProperties> {
     Allevents.forEach(event => {
       let eventsValue = event.getValue()[0],
         handlresValue = event.getValue()[1];
-      if (eventsValue !== 'none') {
+      if (eventsValue !== 'none' && !isUndefined(eventsValue) && eventsValue !== '') {
         s += `element.addEventListener('${eventsValue}', function(event) {`;
         if (handlresValue === 'fullscreen') {
           flag = true;

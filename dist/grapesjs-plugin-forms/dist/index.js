@@ -276,6 +276,7 @@
                       ],
                     },
                   ],
+                  events: [{ label: 'onclick', type: 'Customized' }, '0'],
                 },
                 init: function () {
                   var e = this.components(),

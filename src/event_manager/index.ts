@@ -4,6 +4,7 @@ import { Module } from '../abstract';
 import defaults, { EventManagerConfig } from './config/config';
 import EventsView from './view/EventsView';
 import EventView from './view/EventView';
+import CustomEventView from './view/CustomEventView';
 import EditorModel from '../editor/model/Editor';
 import Component from '../dom_components/model/Component';
 import Event from './model/Event';
@@ -13,7 +14,8 @@ export const evPfx = `${evAll}:`;
 export const evCustom = `${evPfx}custom`;
 
 const typesDef: { [id: string]: { new (o: any): EventView } } = {
-  text: EventView,
+  NotCustomized: EventView,
+  Customized: CustomEventView,
 };
 
 interface IEventView {

@@ -22,6 +22,7 @@ export default class EventFactory {
   private buildFromString(name: string, em: EditorModel): Event {
     const obj: EventProperties = {
       name: name,
+      type: 'NotCustomized',
       eventx: [
         { value: 'click', name: 'onclick' },
         { value: 'dblclick', name: 'ondoubleclick' },
@@ -41,7 +42,6 @@ export default class EventFactory {
           name: 'none',
         },
       ],
-      // eventx2: [],
 
       changeProp: true,
     };
