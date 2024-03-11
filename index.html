@@ -127,7 +127,6 @@
         fromElement: true,
         plugins: [
           "grapesjs-plugin-export",
-          "grapesjsClick",
           "gjs-blocks-basic",
           "grapesjs-tailwind",
           "grapesjs-plugin-forms",
@@ -152,7 +151,6 @@
         ],
         pluginsOpts: {
           "grapesjs-plugin-export": {},
-          grapesjsClick: {},
           saveFile: {},
           openFile: {},
           "gjs-blocks-basic": {},
@@ -266,6 +264,10 @@
           ],
         },
       });
+
+      //to enable freeMove
+      editor.getModel().set("dmode", "absolute");
+
       //first create an object from panels
       const panelManager = editor.Panels;
       const pageManager = editor.Pages;
@@ -315,6 +317,8 @@
           const pagesList = pages.map((page) => `<li>${page.id}</li>`).join("");
           pagesPanel.set("content", `<ul>${pagesList}</ul>`);
         }
+        console.log(panels);
+
         // Initial update of the Pages panel
         updatePagesList();
 
