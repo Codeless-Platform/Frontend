@@ -117,7 +117,6 @@ export default class EventView extends View<Event> {
     if (type === 'NotCustomized') {
       if (eel && !isUndefined(eel.value) && hel && !isUndefined(hel.value)) {
         this.model.set('value', [eel.value, hel.value]);
-        console.log(this.model.getTargetValue());
       }
     } else {
       if (hel && !isUndefined(hel.value)) {
