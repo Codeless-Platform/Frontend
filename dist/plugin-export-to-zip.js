@@ -7235,6 +7235,7 @@
                     html: function (e) {
                       const all = e.Pages.getAll();
                       const pages = {};
+
                       all.forEach((page) => {
                         pages[(page.get('name') || page.id) + '.html'] =
                           '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<link rel="stylesheet" href="../css/style-' +
