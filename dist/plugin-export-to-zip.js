@@ -7225,10 +7225,9 @@
                       const all = e.Pages.getAll();
                       const js = {};
                       all.forEach((page) => {
-                        js['script-' + (page.get('name') || page.id) + '.js'] =
-                          editor.getJs({
-                            component: page.getMainComponent(),
-                          });
+                        js['script-' + page.id + '.js'] = editor.getJs({
+                          component: page.getMainComponent(),
+                        });
                       });
                       return js;
                     },
