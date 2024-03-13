@@ -7213,7 +7213,7 @@
                       const all = e.Pages.getAll();
                       const css = {};
                       all.forEach((page) => {
-                        css['style-' + page.id + '.css'] =
+                        css['style-' + (page.get('name') || page.id) + '.css'] =
                           editor.CodeManager.getCode(
                             page.getMainComponent(),
                             'css'
@@ -7225,7 +7225,7 @@
                       const all = e.Pages.getAll();
                       const js = {};
                       all.forEach((page) => {
-                        js['script-' + page.id + '.js'] = editor.getJs({
+                        js['script-' +(page.get('name') || page.id) + '.js'] = editor.getJs({
                           component: page.getMainComponent(),
                         });
                         
@@ -7238,11 +7238,11 @@
                       all.forEach((page) => {
                         pages[(page.get('name') || page.id) + '.html'] =
                           '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<link rel="stylesheet" href="../css/style-' +
-                          page.id +
+                          (page.get('name') || page.id) +
                           '.css">\n</head>\n<body>\n' +
                           page.getMainComponent().toHTML() +
                           '\n<script src="../js/script-' +
-                          page.id +
+                          (page.get('name') || page.id) +
                           '.js"></script>\n<script src="https://cdn.tailwindcss.com"></script>\n</body>\n</html>';
                       });
                       return pages;
