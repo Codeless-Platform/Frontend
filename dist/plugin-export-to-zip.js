@@ -7209,19 +7209,43 @@
                   done: function () {},
                   onError: console.error,
                   root: {
-                    css: {
-                      'style.css': function (e) {
-                        return e.getCss();
-                      },
+                    css: function (e) {
+                      const all = e.Pages.getAll();
+                      const css = {};
+                      all.forEach((page) => {
+                        css['style-' + page.id + '.css'] =
+                          editor.CodeManager.getCode(
+                            page.getMainComponent(),
+                            'css'
+                          );
+                      });
+                      return css;
                     },
-                    'index.html': function (e) {
-                      return '<!doctype html>\n        <html lang="en">\n          <head>\n            <meta charset="utf-8">\n            <link rel="stylesheet" href="./css/style.css">\n          </head>\n          <body>'.concat(
-                        e.getHtml(),
-                        '<script src="index.js"></script>\n <script src="https://cdn.tailwindcss.com"></script>\n</body>\n        </html>'
-                      );
+                    js: function (e) {
+                      const all = e.Pages.getAll();
+                      const js = {};
+                      all.forEach((page) => {
+                        js['script-' + page.id + '.js'] = editor.getJs({
+                          component: page.getMainComponent(),
+                        });
+                        
+                      });
+                      return js;
                     },
-                    'index.js': function (e) {
-                      return e.getJs();
+                    html: function (e) {
+                      const all = e.Pages.getAll();
+                      const pages = {};
+                      all.forEach((page) => {
+                        pages[(page.get('name') || page.id) + '.html'] =
+                          '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<link rel="stylesheet" href="../css/style-' +
+                          page.id +
+                          '.css">\n</head>\n<body>\n' +
+                          page.getMainComponent().toHTML() +
+                          '\n<script src="../js/script-' +
+                          page.id +
+                          '.js"></script>\n<script src="https://cdn.tailwindcss.com"></script>\n</body>\n</html>';
+                      });
+                      return pages;
                     },
                   },
                   isBinary: void 0,

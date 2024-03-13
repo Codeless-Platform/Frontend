@@ -31,7 +31,7 @@ export default class TraitSelectView extends TraitView {
       const values: string[] = [];
       let input = '<select >';
 
-      opts.forEach(el => {
+      const processOption = (el: Record<string, any>) => {
         let attrs = '';
         let name, value, style;
 
@@ -44,9 +44,23 @@ export default class TraitSelectView extends TraitView {
           style = el.style ? el.style.replace(/"/g, '&quot;') : '';
           attrs += style ? ` style="${style}"` : '';
         }
+
         const resultName = em.t(`traitManager.traits.options.${propName}.${value}`) || name;
-        input += `<option value="${value}"${attrs}>${resultName}</option>`;
-        values.push(value);
+        return `<option value="${value}"${attrs}>${resultName}</option>`;
+      };
+
+      opts.forEach(el => {
+        if (Array.isArray(el.options)) {
+          input += `<optgroup label="${el.label}" style="color:black; background-color:#DCDCDC;"}>`;
+          el.options.forEach(option => {
+            input += processOption(option);
+            values.push(option.value);
+          });
+          input += '</optgroup>';
+        } else {
+          input += processOption(el);
+          values.push(el.value);
+        }
       });
 
       input += '</select>';
