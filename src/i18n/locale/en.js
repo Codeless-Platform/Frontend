@@ -160,6 +160,11 @@ export default {
       },
     },
   },
+  animationManager: {
+    empty: 'Select an element before using animation Manager',
+    label: 'Component Animations',
+    animations: {},
+  },
   eventManager: {
     empty: 'Select an element before using Event Manager',
     label: 'Component Events',
