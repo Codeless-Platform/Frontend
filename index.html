@@ -125,9 +125,9 @@
       container: "#gjs",
       allowScripts: 1,
       fromElement: true,
-      cssComposer: {}
+      cssComposer: {
+      }
       ,
-
       plugins: [
         "grapesjs-plugin-export",
         "gjs-blocks-basic",
@@ -295,8 +295,6 @@
     editor.Commands.add("export", {
       run: (editor) => editor.runCommand("gjs-export-zip"),
     });
-
-
 
 
   </script>

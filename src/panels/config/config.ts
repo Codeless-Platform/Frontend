@@ -5,6 +5,8 @@ const expt = 'export-template';
 const osm = 'open-sm';
 const otm = 'open-tm';
 const oem = 'open-em';
+const oan = 'open-an';
+
 const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
@@ -98,6 +100,13 @@ const config: PanelsConfig = {
           command: oem,
           togglable: false,
           attributes: { title: 'JavaScript' },
+        },
+        {
+          id: oan,
+          className: 'fa fa-film',
+          command: oan,
+          togglable: false,
+          attributes: { title: 'Animation' },
         },
         {
           id: ola,
