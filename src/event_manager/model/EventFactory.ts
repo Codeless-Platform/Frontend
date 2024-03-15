@@ -36,6 +36,7 @@ export default class EventFactory {
         { value: 'fullscreen', name: 'fullscreen' },
         { value: 'resize', name: 'resize' },
         { value: 'redirect to url', name: 'redirect to url' },
+        { value: 'redirect to page', name: 'redirect to page' },
 
         {
           value: 'none',

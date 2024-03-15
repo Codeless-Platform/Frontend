@@ -50,6 +50,8 @@ export interface EventProperties {
   value?: string[];
   target?: Component;
   url?: string;
+  page?: string;
+
   default?: any;
   placeholder?: string;
   command?: string | ((editor: Editor, event: Event) => any);
@@ -108,6 +110,7 @@ export default class Event extends Model<EventProperties> {
         { value: 'fullscreen', name: 'fullscreen' },
         { value: 'resize', name: 'resize' },
         { value: 'redirect to url', name: 'redirect to url' },
+        { value: 'redirect to page', name: 'redirect to page' },
 
         {
           value: 'none',
@@ -116,6 +119,7 @@ export default class Event extends Model<EventProperties> {
       ],
       placeholder: '',
       url: '',
+      page: '',
       target: this.target,
       changeProp: true,
     };
@@ -154,6 +158,9 @@ export default class Event extends Model<EventProperties> {
         } else if (handlresValue === 'redirect to url' && event.getUrl() != '') {
           flag = true;
           s += `window.location.href = '${event.getUrl()}';});`;
+        } else if (handlresValue === 'redirect to page' && event.getPage() != '') {
+          flag = true;
+          s += `window.location.href = '${event.getPage()}.html';});`;
         } else if (handlresValue === 'none') {
           event.setValue([eventsValue, '']);
         }
@@ -200,6 +207,9 @@ export default class Event extends Model<EventProperties> {
   }
   getUrl() {
     return this.get('url');
+  }
+  getPage() {
+    return this.get('page');
   }
 
   /**
