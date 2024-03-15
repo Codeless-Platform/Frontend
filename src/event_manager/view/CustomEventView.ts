@@ -73,12 +73,35 @@ export default class CustomEventView extends EventView {
       </div>
       </div>`;
     }
+    if (model.getTargetValue()[1] == 'redirect to page') {
+      tmpl += `<div class="${cls}">
+      <svg width="25" height="20">
+        <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2">
+      </svg>
+      <div class="${ppfx}label-wrp">
+        <div class="gjs-label" title="Go to Page">Go to Page</div>
+      </div>
+      <div class="${ppfx}field-wrp ${ppfx}field-wrp--select">
+         ${
+           this.templateInput
+             ? isFunction(this.templateInput)
+               ? this.templateInput(this.getClbOpts(), 'data')
+               : this.templateInput
+             : ''
+         }
+      </div>
+      </div>`;
+    }
     $el.empty().append(tmpl);
     hasLabel && this.renderLabel();
     this.renderField();
     if (model.getTargetValue()[1] == 'redirect to url') {
       this.renderHandlerData();
     }
+    if (model.getTargetValue()[1] == 'redirect to page') {
+      this.renderHandlerData();
+    }
+
     this.el.className = `${cls}__wrp ${cls}__wrp-${id}`;
     this.postUpdate();
     this.onRender(this.getClbOpts());
