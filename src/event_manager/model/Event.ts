@@ -1,10 +1,11 @@
-import { isString, isUndefined } from 'underscore';
+import { all, isEmpty, isString, isUndefined } from 'underscore';
 import { Model, SetOptions } from '../../common';
 import Component from '../../dom_components/model/Component';
 import Editor from '../../editor';
 import EditorModel from '../../editor/model/Editor';
 import EventView from '../view/EventView';
 import { isDef } from '../../utils/mixins';
+import { Events } from 'backbone';
 
 /** @private */
 export interface EventProperties {
@@ -89,7 +90,7 @@ export default class Event extends Model<EventProperties> {
   em: EditorModel;
   view?: EventView;
   el?: HTMLElement;
-  events: any = {};
+  Otherevents: any = {};
   eventCapture!: string[];
 
   defaults() {
@@ -125,22 +126,59 @@ export default class Event extends Model<EventProperties> {
     };
   }
 
-  constructor(prop: EventProperties, em: EditorModel) {
+  constructor(prop: EventProperties, em: EditorModel, target: Component) {
     super(prop);
-    const { target, name } = this.attributes;
+    const { name } = this.attributes;
     !this.get('id') && this.set('id', name);
     if (target) {
       this.setTarget(target);
     }
     this.em = em;
+    let x = target.attributes.events;
+    // @ts-ignore
+    let m = x.at(0)['type'];
+    if (m) {
+      if (m === 'Customized') {
+        //@ts-ignore
+        let neweventx = this.getEventx()?.filter(eventx => eventx.name !== x?.at(0)['label']);
+        this.set('eventx', neweventx);
+      }
+    }
     this.on('change', this.updateScript);
   }
 
-  updateScript() {
-    let Allevents = this.target.getEvents();
-    if (Allevents[Allevents.length - 1] == this && Allevents[Allevents.length - 1].getValue()[0]) {
-      this.target.addEvent([Allevents.length.toString()]);
+  renderEvents() {
+    if (this.target) {
+      let Allevents = this.target.getEvents();
+      let lastEvent = Allevents[Allevents.length - 1];
+
+      if (lastEvent === this && lastEvent.getValue()[0]) {
+        let neweventx = this.getEventx()?.filter(
+          eventx => !Allevents.some(event => event.getValue()[0] === eventx.value)
+        );
+
+        if (neweventx && neweventx.length > 0 && !(neweventx.length === 1 && neweventx[0].value === 'none')) {
+          this.target.addEvent([
+            {
+              name: Allevents.length.toString(),
+              type: 'NotCustomized',
+              eventx: neweventx,
+            },
+          ]);
+        }
+      }
+
+      if (Allevents.length > 1) {
+        let secondLastEvent = Allevents[Allevents.length - 2];
+        if (lastEvent.getValue()[0] === '' && secondLastEvent.getValue()[0] === '') {
+          this.target.removeEvent([(Allevents.length - 1).toString()]);
+        }
+      }
     }
+  }
+  updateScript() {
+    this.renderEvents();
+    let Allevents = this.target.getEvents();
     let elname = this.target.getId();
     let s = `var ${elname} = document.querySelector('#${this.target.getId()}');`;
     let flag = false;
@@ -148,22 +186,26 @@ export default class Event extends Model<EventProperties> {
       let eventsValue = event.getValue()[0],
         handlresValue = event.getValue()[1];
       if (eventsValue !== 'none' && !isUndefined(eventsValue) && eventsValue !== '') {
-        s += `${elname}.addEventListener('${eventsValue}', function(event) {`;
+        let m = `${elname}.addEventListener('${eventsValue}', function(event) {`;
         if (handlresValue === 'fullscreen') {
           flag = true;
-          s += `${elname}.requestFullscreen();});`;
+          m += `${elname}.requestFullscreen();});`;
         } else if (handlresValue === 'resize') {
           flag = true;
-          s += `${elname}.style.width="200px";});`;
+          m += `${elname}.style.width="200px";});`;
         } else if (handlresValue === 'redirect to url' && event.getUrl() != '') {
           flag = true;
-          s += `window.location.href = '${event.getUrl()}';});`;
+          m += `window.location.href = '${event.getUrl()}';});`;
         } else if (handlresValue === 'redirect to page' && event.getPage() != '') {
           flag = true;
-          s += `window.location.href = '${event.getPage()}.html';});`;
+          m += `window.location.href = '${event.getPage()}.html';});`;
         } else if (handlresValue === 'none') {
+          m = '';
           event.setValue([eventsValue, '']);
+        } else if ((handlresValue = '')) {
+          m = '';
         }
+        s += m;
       } else {
         event.setValue(['', handlresValue]);
       }

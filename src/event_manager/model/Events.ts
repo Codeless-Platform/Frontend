@@ -17,7 +17,7 @@ export default class Events extends Collection<Event> {
     this.listenTo(this, 'reset', this.handleReset);
     const tm = this.em?.Events;
     const tmOpts = tm?.getConfig();
-    this.tf = new EventFactory(tmOpts);
+    this.tf = new EventFactory(tmOpts, this.target);
   }
 
   handleReset(coll: EventProperties[], { previousModels = [] }: { previousModels?: Event[] } = {}) {
@@ -50,12 +50,12 @@ export default class Events extends Collection<Event> {
       var events: Event[] = [];
       for (var i = 0, len = models.length; i < len; i++) {
         const event = models[i];
-        events[i] = event instanceof Event ? event : this.tf.build(event, em);
+        events[i] = event instanceof Event ? event : this.tf.build(event, em, target);
         events[i].setTarget(target);
       }
       return super.add(events, opt);
     }
-    const event = models instanceof Event ? models : this.tf.build(models as any, em);
+    const event = models instanceof Event ? models : this.tf.build(models as any, em, target);
     event.setTarget(target);
 
     return super.add(event, opt);
