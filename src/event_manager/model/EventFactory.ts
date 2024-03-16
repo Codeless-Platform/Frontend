@@ -8,18 +8,19 @@ export default class EventFactory {
   target!: Component;
   config: Partial<EventManagerConfig>;
 
-  constructor(config: Partial<EventManagerConfig> = {}) {
+  constructor(config: Partial<EventManagerConfig> = {}, target: Component) {
     this.config = config;
+    this.target = target;
   }
 
   /**
    * Build props object by their name
    */
-  build(prop: string | EventProperties, em: EditorModel): Event {
-    return isString(prop) ? this.buildFromString(prop, em) : new Event(prop, em);
+  build(prop: string | EventProperties, em: EditorModel, target: Component): Event {
+    return isString(prop) ? this.buildFromString(prop, em, target) : new Event(prop, em, target);
   }
 
-  private buildFromString(name: string, em: EditorModel): Event {
+  private buildFromString(name: string, em: EditorModel, target: Component): Event {
     const obj: EventProperties = {
       name: name,
       type: 'NotCustomized',
@@ -54,6 +55,7 @@ export default class EventFactory {
         obj.options = this.config.optionsTarget;
         break;
     }
-    return new Event(obj, em);
+
+    return new Event(obj, em, target);
   }
 }

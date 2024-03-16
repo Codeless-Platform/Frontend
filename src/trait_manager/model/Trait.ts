@@ -107,7 +107,6 @@ export default class Trait extends Model<TraitProperties> {
     !this.get('id') && this.set('id', name);
     if (target) {
       this.setTarget(target);
-      console.log(656);
     }
     this.em = em;
   }
