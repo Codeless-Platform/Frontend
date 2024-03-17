@@ -1,45 +1,89 @@
 login = (editor, opts = {}) => {
+  // const script1 = function () {
+  //   const name_input = document.getElementsByClassName('name')[0];
+  //   const pass_input = document.getElementsByClassName('pass')[0];
+  //   const send_Btn = document.getElementsByClassName('sendBtn')[0];
+  //   const form = document.querySelector('form');
+
+  //   if (name_input.value === 'Initial value') {
+  //     name_input.focus();
+  //   }
+
+  //   send_Btn.addEventListener('click', function (e) {
+  //     if (name_input.value !== '' && pass_input.value !== '') {
+  //       e.preventDefault();
+
+  //       console.log('Your name is:', name_input.value);
+  //       console.log('Your Pass is:', pass_input.value);
+
+  //       // Include the JWT token in your request headers
+  //       const requestOptions = {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: `{"identifier": "${name_input.value}", "password": "${pass_input.value}"}`,
+  //       };
+
+  //       //const apiLink = 'http://localhost:1337/api/auth/local';
+  //       const apiLink = form.getAttribute('API');
+
+  //       // Replace the API endpoint with your actual API endpoint
+  //       fetch(apiLink, requestOptions)
+  //         .then((response) => response.json())
+  //         .then((data) => {
+  //           console.log('Response from the server:', data);
+  //           alert('Login Successfully');
+  //         })
+  //         .catch((error) => {
+  //           console.error('Error:', error);
+  //           alert('Error', error);
+  //         });
+  //     }
+  //   });
+  // };
   const script1 = function () {
-    const name_input = document.getElementsByClassName('name')[0];
-    const pass_input = document.getElementsByClassName('pass')[0];
-    const send_Btn = document.getElementsByClassName('sendBtn')[0];
-    const form = document.querySelector('form');
+    document.querySelector('.submitBtn').style.cursor = 'pointer';
 
-    if (name_input.value === 'Initial value') {
-      name_input.focus();
-    }
+    const loginForm = document.querySelector('form');
 
-    send_Btn.addEventListener('click', function (e) {
-      if (name_input.value !== '' && pass_input.value !== '') {
-        e.preventDefault();
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-        console.log('Your name is:', name_input.value);
-        console.log('Your Pass is:', pass_input.value);
+      const username = document.querySelector('.name').value;
+      const password = document.querySelector('.pass').value;
 
-        // Include the JWT token in your request headers
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: `{"identifier": "${name_input.value}", "password": "${pass_input.value}"}`,
-        };
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          identifier: username,
+          password: password,
+        }),
+      };
 
-        //const apiLink = 'http://localhost:1337/api/auth/local';
-        const apiLink = form.getAttribute('API');
+      const apiLink = 'http://localhost:1337/api/auth/local';
+      const pageName = loginForm.getAttribute('pageName');
 
-        // Replace the API endpoint with your actual API endpoint
-        fetch(apiLink, requestOptions)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('Response from the server:', data);
-            alert('Login Successfully');
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-            alert('Error', error);
-          });
-      }
+      fetch(apiLink, requestOptions)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('User name or password are wrong,try again..');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // console.log("Response from the server:", data);
+          alert('Login Successfully');
+          window.location.href = `${pageName}.html`;
+        })
+        .catch((error) => {
+          document.querySelector('.name').value = '';
+          document.querySelector('.pass').value = '';
+          alert(error);
+        });
     });
   };
   editor.Components.addType('login-with-js', {
@@ -48,27 +92,24 @@ login = (editor, opts = {}) => {
         tagName: 'form',
         components: `
       <label for="name-field">Full Name:</label>
-      <input class="name" type="text"></input>
+      <input class="name" type="text" required></input>
       <br>
       
       <label for="pass-field">Password:</label>
-      <input class="pass" type="password"></input>
+      <input class="pass" type="password" required></input>
       <br>
       
-      <button class="sendBtn">Send </button>
+      <input type="submit" value="Login" class="submitBtn" />
       `,
         script: script1, // Pass editor as a parameter using bind
         droppable: false,
 
         traits: [
-          'name',
-          'placeholder',
           {
-            type: 'text', // If you don't specify the type, the `text` is the default one
-            name: 'API', // Required and available for all traits
-            label: 'API', // The label you will see near the input
-            // label: false, // If you set label to `false`, the label column will be removed
-            placeholder: 'Insert API', // Placeholder to show inside the input
+            type: 'text',
+            name: 'pageName',
+            label: 'Go to Page',
+            placeholder: 'name of page you want to go',
           },
         ],
       },
