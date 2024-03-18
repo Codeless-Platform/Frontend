@@ -4,6 +4,8 @@ import { CommandObject } from './CommandAbstract';
 
 export default {
   open() {
+    let el2 = document.getElementsByClassName('top-panel')[0];
+    el2.classList.remove('top-panel');
     const { container, editor, bm, config } = this;
     const { custom, appendTo } = config;
 
@@ -20,6 +22,11 @@ export default {
     }
 
     if (container) container.style.display = 'block';
+    container.classList.add('top-panel');
+    //@ts-ignore
+    container.style.flex = el2.style.flex;
+    //@ts-ignore
+    el2.style.flex = '';
   },
 
   close() {
@@ -54,5 +61,7 @@ export default {
 
   stop() {
     this.close();
+    let el = document.getElementsByClassName('top-panel')[0];
+    el.classList.add('bl-panel');
   },
 } as CommandObject<{}, { [k: string]: any }>;

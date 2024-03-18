@@ -6,7 +6,6 @@ const osm = 'open-sm';
 const otm = 'open-tm';
 const oem = 'open-em';
 const oan = 'open-an';
-
 const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';

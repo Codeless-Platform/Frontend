@@ -1042,9 +1042,6 @@ export default class Component extends StyleableModel<ComponentProperties> {
     }
     opts.recursive && comps.map(c => c.__postAdd(opts));
   }
-  dothis() {
-    console.log(5);
-  }
 
   __postRemove() {
     const { em } = this;
@@ -1999,7 +1996,6 @@ export default class Component extends StyleableModel<ComponentProperties> {
   updateEvents() {}
 
   updateScript() {
-    console.log(5);
     let s = '';
     if (this.get('click')) {
       s = `
