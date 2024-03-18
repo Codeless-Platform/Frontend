@@ -35,7 +35,7 @@
       href="https://unpkg.com/grapesjs-project-manager@2.0.5/dist/grapesjs-project-manager.min.css"
       rel="stylesheet"
     />
-    <script src="https://unpkg.com/grapesjs-project-manager"></script>
+    <script src="./dist/grapesjs-project-manager/grapejs-project-manager.js"></script>
 
     <style>
       body,
@@ -51,7 +51,13 @@
       <div class="panel">
         <h1 class="welcome">Welcome to</h1>
         <div class="big-title">
-      <img src="imgs\70x70 white.png" alt="Logo" width="90" height="90" class="logo">
+          <img
+            src="imgs\70x70 white.png"
+            alt="Logo"
+            width="90"
+            height="90"
+            class="logo"
+          />
 
           Codeless Platform
         </div>
@@ -105,7 +111,7 @@
           font-size: 3.5rem;
           margin: 15px 0;
           display: flex; /* Add display: flex */
-          align-items: center; 
+          align-items: center;
         }
 
         svg {
@@ -281,19 +287,11 @@
         command: "export",
         attributes: { title: "Export to zip" },
       });
-      panelManager.addButton("views", {
-        id: "open-pages",
-        className: "fa fa-file-o",
-        attributes: {
-          title: "File Manager",
-        },
-        command: "open-pages",
-        togglable: false,
-      });
       //add commands to the button
       editor.Commands.add("export", {
         run: (editor) => editor.runCommand("gjs-export-zip"),
       });
+      editor.runCommand("open-pages");
       pageManager.getAll()[0].setName("index");
     </script>
   </body>
