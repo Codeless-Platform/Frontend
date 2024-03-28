@@ -6,6 +6,7 @@ import EditorModel from '../../editor/model/Editor';
 import EventView from '../view/EventView';
 import { isDef } from '../../utils/mixins';
 import { Events } from 'backbone';
+import EventManager from '..';
 
 /** @private */
 export interface EventProperties {
@@ -38,9 +39,7 @@ export interface EventProperties {
   changeProp?: boolean;
   eventx?: Record<string, any>[];
   eventx2?: Record<string, any>[];
-
   handler?: Record<string, any>[];
-
   attributes?: Record<string, any>;
   valueTrue?: string;
   valueFalse?: string;
@@ -101,22 +100,7 @@ export default class Event extends Model<EventProperties> {
       eventx: [
         { value: 'click', name: 'onclick' },
         { value: 'dblclick', name: 'ondoubleclick' },
-        {
-          value: 'none',
-          name: 'none',
-        },
-      ],
-
-      handler: [
-        { value: 'fullscreen', name: 'fullscreen' },
-        { value: 'resize', name: 'resize' },
-        { value: 'redirect to url', name: 'redirect to url' },
-        { value: 'redirect to page', name: 'redirect to page' },
-
-        {
-          value: 'none',
-          name: 'none',
-        },
+        { value: 'none', name: 'none' },
       ],
       placeholder: '',
       url: '',
@@ -138,20 +122,29 @@ export default class Event extends Model<EventProperties> {
     // @ts-ignore
     let m = x.at(0)['type'];
     if (m) {
-      if (m === 'Customized') {
+      if (m === 'Customized' && this.getType() !== 'Customized') {
         //@ts-ignore
         let neweventx = this.getEventx()?.filter(eventx => eventx.name !== x?.at(0)['label']);
         this.set('eventx', neweventx);
       }
     }
+    this.set('handler', this.getCurrentHandlers());
+    this.listenTo(em, 'change:Events', this.updateHandlers);
     this.on('change', this.updateScript);
+  }
+
+  getCurrentHandlers(): [] {
+    return this.em.get('EventManager').handlers;
+  }
+
+  updateHandlers() {
+    this.set('handler', this.getCurrentHandlers());
   }
 
   renderEvents() {
     if (this.target) {
       let Allevents = this.target.getEvents();
       let lastEvent = Allevents[Allevents.length - 1];
-
       if (lastEvent === this && lastEvent.getValue()[0]) {
         let neweventx = this.getEventx()?.filter(
           eventx => !Allevents.some(event => event.getValue()[0] === eventx.value)
@@ -176,29 +169,42 @@ export default class Event extends Model<EventProperties> {
       }
     }
   }
+
   updateScript() {
     this.renderEvents();
     let Allevents = this.target.getEvents();
     let elname = this.target.getId();
     let s = `var ${elname} = document.querySelector('#${this.target.getId()}');`;
     let flag = false;
+    let Handlers = this.getHandler();
     Allevents.forEach(event => {
       let eventsValue = event.getValue()[0],
         handlresValue = event.getValue()[1];
+      //@ts-ignore
+      let l = Handlers?.filter(handler => handler.value === handlresValue)[0];
+      if (l) {
+        l = l.logic;
+      }
       if (eventsValue !== 'none' && !isUndefined(eventsValue) && eventsValue !== '') {
         let m = `${elname}.addEventListener('${eventsValue}', function(event) {`;
+        if (l) {
+          flag = true;
+          m += l;
+        }
         if (handlresValue === 'fullscreen') {
           flag = true;
           m += `${elname}.requestFullscreen();});`;
         } else if (handlresValue === 'resize') {
           flag = true;
           m += `${elname}.style.width="200px";});`;
-        } else if (handlresValue === 'redirect to url' && event.getUrl() != '') {
+        } else if (handlresValue === 'redirecttourl' && event.getUrl() != '') {
           flag = true;
           m += `window.location.href = '${event.getUrl()}';});`;
-        } else if (handlresValue === 'redirect to page' && event.getPage() != '') {
+        } else if (handlresValue === 'redirecttopage' && event.getPage() != '') {
           flag = true;
           m += `window.location.href = '${event.getPage()}.html';});`;
+        } else if (handlresValue === 'newhandler') {
+          // this.em.Editor.runCommand('blockly-script');
         } else if (handlresValue === 'none') {
           m = '';
           event.setValue([eventsValue, '']);
@@ -208,6 +214,7 @@ export default class Event extends Model<EventProperties> {
         s += m;
       } else {
         event.setValue(['', handlresValue]);
+        // this.em.Commands.add
       }
     });
     if (!flag) s = '';
@@ -432,6 +439,19 @@ export default class Event extends Model<EventProperties> {
     } else {
       target.addAttributes({ [name]: valueToSet }, opts);
     }
+  }
+
+  addHandler(n: any) {
+    let handlers = this.getHandler();
+    handlers = handlers?.filter(handler => handler.value !== 'newhandler');
+    this.set('handler', [
+      //@ts-ignore
+      ...handlers,
+      n,
+      { value: 'newhandler', name: '&#43 New Handler', logic: '' },
+    ]);
+    this.em.get('EventManager').handlers = this.getHandler();
+    this.em.trigger('change:Events');
   }
 
   setValueFromInput(value: any, final = true, opts: SetOptions = {}) {

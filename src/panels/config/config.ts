@@ -10,6 +10,7 @@ const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
 const prv = 'preview';
+const theme = 'change-theme';
 
 interface ButtonProps {
   id?: string;
@@ -45,6 +46,12 @@ const config: PanelsConfig = {
     {
       id: 'options',
       buttons: [
+        {
+          id: 'change-theme',
+          className: 'fa fa-moon-o',
+          command: theme,
+          attributes: { title: 'Change theme' },
+        },
         {
           active: false,
           id: swv,

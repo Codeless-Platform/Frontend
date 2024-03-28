@@ -54,7 +54,7 @@ export default class CustomEventView extends EventView {
         }
       </div>
     </div>`;
-    if (model.getTargetValue()[1] == 'redirect to url') {
+    if (model.getTargetValue()[1] == 'redirecttourl') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
         <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2">
@@ -73,7 +73,7 @@ export default class CustomEventView extends EventView {
       </div>
       </div>`;
     }
-    if (model.getTargetValue()[1] == 'redirect to page') {
+    if (model.getTargetValue()[1] == 'redirecttopage') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
         <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2">
@@ -95,10 +95,10 @@ export default class CustomEventView extends EventView {
     $el.empty().append(tmpl);
     hasLabel && this.renderLabel();
     this.renderField();
-    if (model.getTargetValue()[1] == 'redirect to url') {
+    if (model.getTargetValue()[1] == 'redirecttourl') {
       this.renderHandlerData();
     }
-    if (model.getTargetValue()[1] == 'redirect to page') {
+    if (model.getTargetValue()[1] == 'redirecttopage') {
       this.renderHandlerData();
     }
 

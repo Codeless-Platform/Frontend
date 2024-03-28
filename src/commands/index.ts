@@ -79,6 +79,7 @@ const commandsDef = [
   ['component-delete', 'ComponentDelete'],
   ['component-style-clear', 'ComponentStyleClear'],
   ['component-drag', 'ComponentDrag'],
+  ['change-theme', 'ChangeTheme', 'change-theme'],
 ];
 
 export default class CommandsModule extends Module<CommandsConfig & { pStylePrefix?: string }> {

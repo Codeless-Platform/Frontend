@@ -36,6 +36,7 @@ export default class EventManager extends Module<EventManagerConfig & { pStylePr
   model: Model;
   __ctn?: any;
   EventsView = EventsView;
+  handlers?: Record<string, any>[];
 
   events = {
     all: evAll,
@@ -58,6 +59,14 @@ export default class EventManager extends Module<EventManagerConfig & { pStylePr
     const model = new Model();
     this.model = model;
     this.types = typesDef;
+    this.handlers = [
+      { value: 'fullscreen', name: 'Fullscreen', logic: '', blockly: '' },
+      { value: 'resize', name: 'Resize', logic: '', blockly: '' },
+      { value: 'redirecttourl', name: 'Redirect to url', logic: '', blockly: '' },
+      { value: 'redirecttopage', name: 'Redirect to page', logic: '', blockly: '' },
+      { value: 'none', name: 'none', blockly: '' },
+      { value: 'newhandler', name: '&#43 New Handler', logic: '' },
+    ];
 
     const upAll = debounce(() => this.__upSel(), 0);
     model.listenTo(em, 'component:toggled', upAll);
@@ -67,7 +76,6 @@ export default class EventManager extends Module<EventManagerConfig & { pStylePr
 
     return this;
   }
-
   __upSel() {
     this.select(this.em.getSelected());
   }
@@ -120,6 +128,7 @@ export default class EventManager extends Module<EventManagerConfig & { pStylePr
     const baseView = this.getType('text');
     //@ts-ignore
     this.types[name] = baseView.extend(event);
+    // this.set
   }
 
   /**

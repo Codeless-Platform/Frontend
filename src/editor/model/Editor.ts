@@ -1,4 +1,4 @@
-import { isUndefined, isArray, contains, toArray, keys, bindAll } from 'underscore';
+import { isUndefined, isArray, contains, toArray, keys, bindAll, isEmpty } from 'underscore';
 import Backbone from 'backbone';
 import $ from '../../utils/cash-dom';
 import Extender from '../../utils/extender';
@@ -285,7 +285,6 @@ export default class EditorModel extends Model {
       });
     });
   }
-
   _checkReady() {
     if (this.get('readyLoad') && this.get('readyCanvas') && !this.get('ready')) {
       this.set('ready', true);

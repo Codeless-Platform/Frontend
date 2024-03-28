@@ -36,6 +36,8 @@
       rel="stylesheet"
     />
     <script src="./dist/grapesjs-project-manager/grapejs-project-manager.js"></script>
+    <script src="./dist/grapesjs-blockly/blockly.js"></script>
+    <script src="./dist/grapesjs-blockly/grapesjs-blockly2.js"></script>
 
     <style>
       body,
@@ -137,6 +139,7 @@
         fromElement: true,
         cssComposer: {},
         plugins: [
+          "grapesjs-blockly",
           "grapesjs-plugin-export",
           "gjs-blocks-basic",
           "grapesjs-project-manager",
@@ -275,7 +278,7 @@
       });
 
       //to enable freeMove
-      editor.getModel().set("dmode", "absolute");
+      // editor.getModel().set("dmode", "absolute");
 
       //first create an object from panels
       const panelManager = editor.Panels;

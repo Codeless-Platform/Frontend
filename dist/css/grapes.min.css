@@ -1491,8 +1491,29 @@ span.CodeMirror-selectedtext {
   pointer-events: none;
 }
 
+.button-like {
+  /* Base styling */
+  display: inline-block;
+  /* border: 1px solid #ccc; */
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px;
+  width: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0,0.5);
+  /* Text styling */
+  font-family: sans-serif;
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none; /* Remove any default link styling */
+}
+
+.button-like:hover {
+  background-color: gray;
+}
+
 .gjs-traits-label,
 .gjs-events-label,
+.gjs-pages-label,
 .gjs-animations-label {
   border-bottom: 1px solid var(--gjs-main-dark-color);
   font-weight: lighter;
@@ -1726,6 +1747,8 @@ span.CodeMirror-selectedtext {
   left: 0;
 }
 
+.change-theme {
+}
 .gjs-cv-canvas {
   box-sizing: border-box;
   width: calc(100% - var(--gjs-left-width));
@@ -3606,6 +3629,17 @@ span.CodeMirror-selectedtext {
 .gjs-mdl-content {
   padding: 10px 15px;
   clear: both;
+}
+.gjs-inject-logic {
+  display: flex;
+  flex-direction: column;
+}
+#blockly-cont {
+  height: 80%;
+}
+
+#code-viewer {
+  height: 20%;
 }
 
 .gjs-mdl-header {
