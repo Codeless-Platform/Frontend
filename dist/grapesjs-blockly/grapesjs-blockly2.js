@@ -1557,6 +1557,17 @@
                         return t.updateWorkspace();
                       });
                   var o = e.blockly || h;
+                  if (e.name !== '&#43 New Handler') {
+                    document.getElementById('x').value = e.name;
+                    document.getElementById('x').disabled = true;
+                    document.getElementsByClassName('inl')[0].innerHTML =
+                      'Handler Name';
+                  } else {
+                    document.getElementById('x').value = '';
+                    document.getElementById('x').disabled = false;
+                    document.getElementsByClassName('inl')[0].innerHTML =
+                      'Set Handler Name';
+                  }
                   Blockly.Xml.domToWorkspace(
                     Blockly.utils.xml.textToDom(o),
                     b.workspace
@@ -1566,6 +1577,7 @@
                   var e = document.createElement('div');
                   e.id = 'Handler-name';
                   var inputLabel = document.createElement('label');
+                  inputLabel.classList.add('inl');
                   var input = document.createElement('input');
                   input.id = 'x';
                   input.required = true;

@@ -34,8 +34,11 @@ export default class EventsView extends DomainViews {
     handlercont.style.cssText = 'text-align: left;padding: 0 0 15px 10px;border-bottom: 1px solid;';
     let x = document.createElement('div');
     x.classList.add('x');
-    let y = document.createElement('p');
+    let y = document.createElement('div');
     let h = this.em.get('EventManager').handlers;
+    //@ts-ignores
+    h = h.filter(ih => ih.blockly !== '');
+    console.log(h);
     y.innerText = 'Handlers ';
     x.appendChild(y);
     let m = document.createElement('div');
@@ -49,7 +52,7 @@ export default class EventsView extends DomainViews {
       svg.setAttribute('width', '25');
       svg.setAttribute('height', '35');
       const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-      polyline.setAttribute('points', '0,0 0,35 20,35');
+      polyline.setAttribute('points', '0,0 0,34 20,34');
       polyline.setAttribute('fill', 'none');
       polyline.setAttribute('stroke', 'gray');
       polyline.setAttribute('stroke-width', '2');
@@ -62,6 +65,9 @@ export default class EventsView extends DomainViews {
       n.appendChild(txt);
       n.classList.add(oh.value);
       m.appendChild(n);
+      let res = document.createElement('div');
+      res.classList.add('resizer');
+      m.appendChild(res);
     });
 
     x.append(m);

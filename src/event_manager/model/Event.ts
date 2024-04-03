@@ -204,7 +204,7 @@ export default class Event extends Model<EventProperties> {
           flag = true;
           m += `window.location.href = '${event.getPage()}.html';});`;
         } else if (handlresValue === 'newhandler') {
-          // this.em.Editor.runCommand('blockly-script');
+          this.em.Editor.runCommand('blockly-script');
         } else if (handlresValue === 'none') {
           m = '';
           event.setValue([eventsValue, '']);
@@ -214,7 +214,6 @@ export default class Event extends Model<EventProperties> {
         s += m;
       } else {
         event.setValue(['', handlresValue]);
-        // this.em.Commands.add
       }
     });
     if (!flag) s = '';
@@ -444,6 +443,7 @@ export default class Event extends Model<EventProperties> {
   addHandler(n: any) {
     let handlers = this.getHandler();
     handlers = handlers?.filter(handler => handler.value !== 'newhandler');
+    handlers = handlers?.filter(handler => handler.value !== n.value);
     this.set('handler', [
       //@ts-ignore
       ...handlers,
