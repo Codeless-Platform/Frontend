@@ -27,22 +27,7 @@ export default class EventFactory {
       eventx: [
         { value: 'click', name: 'onclick' },
         { value: 'dblclick', name: 'ondoubleclick' },
-        {
-          value: 'none',
-          name: 'none',
-        },
-      ],
-
-      handler: [
-        { value: 'fullscreen', name: 'fullscreen' },
-        { value: 'resize', name: 'resize' },
-        { value: 'redirect to url', name: 'redirect to url' },
-        { value: 'redirect to page', name: 'redirect to page' },
-
-        {
-          value: 'none',
-          name: 'none',
-        },
+        { value: 'none', name: 'none' },
       ],
 
       changeProp: true,

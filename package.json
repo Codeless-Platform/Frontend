@@ -38,11 +38,13 @@
     "bootstrap": "^5.3.3",
     "codemirror": "^5.63.0",
     "codemirror-formatting": "^1.0.0",
+    "grapesjs": "^0.19.5",
     "grapesjs-blockly": "^1.0.2",
     "grapesjs-custom-code": "^1.0.2",
     "grapesjs-navbar": "^1.0.2",
     "grapesjs-plugin-forms": "^2.0.6",
     "grapesjs-project-manager": "^2.0.6",
+    "grapesjs-react": "^4.0.2",
     "promise-polyfill": "^8.1.3",
     "underscore": "^1.13.1"
   },
