@@ -52,10 +52,11 @@ export default class EventsView extends DomainViews {
       svg.setAttribute('width', '25');
       svg.setAttribute('height', '35');
       const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-      polyline.setAttribute('points', '0,0 0,34 20,34');
+      polyline.setAttribute('points', '1,0 1,34 20,34');
       polyline.setAttribute('fill', 'none');
       polyline.setAttribute('stroke', 'gray');
       polyline.setAttribute('stroke-width', '2');
+      polyline.setAttribute('stroke-linecap', 'round');
       svg.appendChild(polyline);
       n.appendChild(svg);
       let txt = document.createElement('div');
@@ -65,9 +66,6 @@ export default class EventsView extends DomainViews {
       n.appendChild(txt);
       n.classList.add(oh.value);
       m.appendChild(n);
-      let res = document.createElement('div');
-      res.classList.add('resizer');
-      m.appendChild(res);
     });
 
     x.append(m);
@@ -79,6 +77,7 @@ export default class EventsView extends DomainViews {
     for (let item of listItems) {
       item.addEventListener('click', function () {
         let h = th.em.Events.handlers?.filter(handler => handler.value === item.classList[1])[0];
+        console.log(h);
         th.em.Editor.runCommand('blockly-script', h);
       });
     }

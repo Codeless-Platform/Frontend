@@ -1507,11 +1507,6 @@
                     a = e.some(function (e) {
                       return e.command === p;
                     });
-                  a ||
-                    (e.unshift(
-                      f({ command: p, label: u }, t.toolbarBtnBlockly)
-                    ),
-                    this.set('toolbar', e));
                 },
               },
             });
@@ -1578,26 +1573,24 @@
                   e.id = 'Handler-name';
                   var inputLabel = document.createElement('label');
                   inputLabel.classList.add('inl');
+                  inputLabel.style.marginRight = '10px';
                   var input = document.createElement('input');
                   input.id = 'x';
-                  input.required = true;
+                  input.autocomplete = 'off';
                   inputLabel.textContent = 'Set Handler Name:';
-                  var x = document.createElement('div');
-                  x.classList.add('gjs-label-wrp');
-                  x.appendChild(inputLabel);
-                  var z = document.createElement('div');
-                  z.classList.add('gjs-field-wrp');
-                  z.classList.add('gjs-field-wrp--text');
                   var y = document.createElement('div');
                   y.classList.add('gjs-field');
                   y.classList.add('gjs-field-text');
+                  y.style.height = 'fit-content';
+                  y.style.borderRadius = '10px';
                   inputLabel.htmlFor = input.id;
                   var div = document.createElement('div');
                   div.style.display = 'flex';
                   y.appendChild(input);
-                  z.appendChild(y);
-                  div.appendChild(x);
-                  div.appendChild(z);
+                  div.appendChild(inputLabel);
+                  div.appendChild(y);
+                  div.style.height = '35px';
+                  div.style.alignItems = 'center';
                   return e.appendChild(div), e;
                 },
                 getPostContent: function () {
