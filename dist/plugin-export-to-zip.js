@@ -7240,11 +7240,11 @@
                         pages[(page.get('name') || page.id) + '.html'] =
                           '<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n<link rel="stylesheet" href="../css/style-' +
                           (page.get('name') || page.id) +
-                          '.css">\n</head>\n<body>\n' +
+                          '.css"/>\n</head>\n<body>  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />\n<link  rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>\n<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>\n<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>\n<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>\n' +
                           page.getMainComponent().toHTML() +
                           '\n<script src="../js/script-' +
                           (page.get('name') || page.id) +
-                          '.js"></script>\n<script src="https://cdn.tailwindcss.com"></script>\n</body>\n</html>';
+                          '.js"></script>\n</body>\n</html>';
                       });
                       return pages;
                     },

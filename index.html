@@ -1,298 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Codeless Platform</title>
-    <link rel="stylesheet" href="dist/css/grapes.min.css" />
-    <link rel="icon" href="imgs\70x70 white.png" type="image/x-icon" />
-    <script src="grapes.min.js"></script>
-    <script src="./dist/grapesjs-script-editor.min.js"></script>
-    <script src="./dist/grapesjs-tailwind.min.js"></script>
-    <script src="./dist/grapesjs-plugin-forms/dist/index.js"></script>
-    <script src="./dist/grapesjs-parser-postcss/dist/index.js"></script>
-    <script src="./dist/plugin-export-to-zip.js"></script>
-    <script src="./dist/plugin-basic-blocks.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-    <script src="./Blocks/Login.js"></script>
-    <script src="./Blocks/Company1.js"></script>
-    <script src="./Blocks/Company2.js"></script>
-    <script src="./Blocks/Company3.js"></script>
-    <script src="./Blocks/Company4.js"></script>
-    <script src="./Blocks/Portofolio.js"></script>
-    <script src="./Blocks/Company5.js"></script>
-    <script src="./Blocks/signup.js"></script>
-    <script src="./Blocks/carousel.js"></script>
-    <script src="./Blocks/tailwind.js"></script>
-    <script src="./plugins/saveFile.js"></script>
-    <script src="./plugins/openFile.js"></script>
-    <script src="./plugins/clearPage.js"></script>
-    <script src="./plugins/undo_redo.js"></script>
-    <link
-      href="https://unpkg.com/grapesjs-project-manager@2.0.5/dist/grapesjs-project-manager.min.css"
-      rel="stylesheet"
-    />
-    <script src="./dist/grapesjs-project-manager/grapejs-project-manager.js"></script>
-    <script src="./dist/grapesjs-blockly/blockly.js"></script>
-    <!-- <script src="./dist/grapesjs-blockly/grapejs-blockly.js"></script> -->
-    <script src="./dist/grapesjs-blockly/grapesjs-blockly2.js"></script>
 
+<head>
+  <meta charset="utf-8" />
+  <title>Codeless Platform</title>
+  <link rel="stylesheet" href="dist/css/grapes.min.css" />
+  <link rel="icon" href="imgs\70x70 white.png" type="image/x-icon" />
+  <script src="grapes.min.js"></script>
+  <script src="./dist/grapesjs-script-editor.min.js"></script>
+  <!-- <script src="./dist/grapesjs-tailwind.min.js"></script> -->
+  <script src="./dist/grapesjs-plugin-forms/dist/index.js"></script>
+  <script src="./dist/grapesjs-parser-postcss/dist/index.js"></script>
+  <script src="./dist/plugin-export-to-zip.js"></script>
+  <script src="./dist/plugin-basic-blocks.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <script src="./Blocks/Login.js"></script>
+  <script src="./Blocks/Company1.js"></script>
+  <script src="./Blocks/Company2.js"></script>
+  <script src="./Blocks/Company3.js"></script>
+  <script src="./Blocks/Company4.js"></script>
+  <script src="./Blocks/Portofolio.js"></script>
+  <script src="./Blocks/Company5.js"></script>
+  <script src="./Blocks/signup.js"></script>
+  <script src="./Blocks/carousel.js"></script>
+  <!-- <script src="./Blocks/tailwind.js"></script> -->
+  <script src="./plugins/saveFile.js"></script>
+  <script src="./plugins/openFile.js"></script>
+  <script src="./plugins/clearPage.js"></script>
+  <script src="./plugins/undo_redo.js"></script>
+  <link href="https://unpkg.com/grapesjs-project-manager@2.0.5/dist/grapesjs-project-manager.min.css"
+    rel="stylesheet" />
+  <script src="./dist/grapesjs-project-manager/grapejs-project-manager.js"></script>
+  <script src="./dist/grapesjs-blockly/blockly.js"></script>
+  <!-- <script src="./dist/grapesjs-blockly/grapejs-blockly.js"></script> -->
+  <script src="./dist/grapesjs-blockly/grapesjs-blockly2.js"></script>
+  <script src="./dist/grapesjs-templates.js"></script>
+  <script src="./dist/grapesjs-pages-manager.js"></script>
+
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="gjs" style="height: 0px">
+    <div class="panel">
+      <h1 class="welcome">Welcome to</h1>
+      <div class="big-title">
+        <img src="imgs\70x70 white.png" alt="Logo" width="90" height="90" class="logo" />
+
+        Codeless Platform
+      </div>
+      <div class="description">
+        Codeless empowers users to build websites or applications without
+        needing in-depth coding knowledge. It utilizes a drag-and-drop
+        interface, allowing users to visually design the front-end of their
+        websites or apps by placing elements like buttons, text boxes, images,
+        and forms onto a canvas, in addition to the ability for users to
+        export the generated code, users gain access to the HTML and CSS that
+        comprise their website's structure and styling.
+      </div>
+    </div>
     <style>
-      body,
-      html {
-        height: 100%;
-        margin: 0;
+      .panel {
+        width: 90%;
+        max-width: 700px;
+        border-radius: 3px;
+        padding: 30px 20px;
+        margin: 150px auto 0px;
+        background-color: #444;
+        box-shadow: 0px 3px 10px 0px rgba(231, 25, 25, 0);
+        color: rgba(255, 255, 255, 0.823);
+        font: caption;
+        font-weight: 100;
+      }
+
+      .welcome {
+        text-align: center;
+        font-weight: 100;
+        margin: 0px;
+      }
+
+      .logo {
+        width: 90px;
+        height: 90px;
+        margin-right: 30px;
+        margin-left: 50px;
+      }
+
+      .logo path {
+        pointer-events: none;
+        fill: none;
+        stroke-linecap: round;
+        stroke-width: 7;
+        stroke: #fff;
+      }
+
+      .big-title {
+        text-align: center;
+        font-size: 3.5rem;
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      svg {
+        display: inline;
+        vertical-align: center;
+        fill: white;
+      }
+
+      .description {
+        text-align: justify;
+        font-size: 1rem;
+        line-height: 1.5rem;
       }
     </style>
-  </head>
+  </div>
 
-  <body>
-    <div id="gjs" style="height: 0px">
-      <div class="panel">
-        <h1 class="welcome">Welcome to</h1>
-        <div class="big-title">
-          <img
-            src="imgs\70x70 white.png"
-            alt="Logo"
-            width="90"
-            height="90"
-            class="logo"
-          />
-
-          Codeless Platform
-        </div>
-        <div class="description">
-          Codeless empowers users to build websites or applications without
-          needing in-depth coding knowledge. It utilizes a drag-and-drop
-          interface, allowing users to visually design the front-end of their
-          websites or apps by placing elements like buttons, text boxes, images,
-          and forms onto a canvas, in addition to the ability for users to
-          export the generated code, users gain access to the HTML and CSS that
-          comprise their website's structure and styling.
-        </div>
-      </div>
-      <style>
-        .panel {
-          width: 90%;
-          max-width: 700px;
-          border-radius: 3px;
-          padding: 30px 20px;
-          margin: 150px auto 0px;
-          background-color: #444;
-          box-shadow: 0px 3px 10px 0px rgba(231, 25, 25, 0);
-          color: rgba(255, 255, 255, 0.823);
-          font: caption;
-          font-weight: 100;
-        }
-
-        .welcome {
-          text-align: center;
-          font-weight: 100;
-          margin: 0px;
-        }
-
-        .logo {
-          width: 90px;
-          height: 90px;
-          margin-right: 30px;
-          margin-left: 50px;
-        }
-
-        .logo path {
-          pointer-events: none;
-          fill: none;
-          stroke-linecap: round;
-          stroke-width: 7;
-          stroke: #fff;
-        }
-
-        .big-title {
-          text-align: center;
-          font-size: 3.5rem;
-          margin: 15px 0;
-          display: flex;
-          align-items: center;
-        }
-
-        svg {
-          display: inline;
-          vertical-align: center;
-          fill: white;
-        }
-
-        .description {
-          text-align: justify;
-          font-size: 1rem;
-          line-height: 1.5rem;
-        }
-      </style>
-    </div>
-
-    <script type="text/javascript">
-      var editor = grapesjs.init({
-        showOffsets: 1,
-        noticeOnUnload: 0,
-        container: "#gjs",
-        allowScripts: 1,
-        fromElement: true,
-        cssComposer: {},
-        plugins: [
-          "grapesjs-blockly",
-          "grapesjs-plugin-export",
-          "gjs-blocks-basic",
-          "grapesjs-project-manager",
-          "grapesjs-tailwind",
-          "grapesjs-plugin-forms",
-          "grapesjs-script-editor",
-          "grapesjs-parser-postcss",
-          "login",
-          "company1",
-          "company2",
-          "company3",
-          "company4",
-          "company5",
-          "portofolio",
-          "signup",
-          "carousel",
-          "tailwind",
-          "clearPage",
-          "undo_redo",
-          "saveFile",
-          "openFile",
+  <script type="text/javascript">
+    var editor = grapesjs.init({
+      showOffsets: 1,
+      noticeOnUnload: 0,
+      container: "#gjs",
+      allowScripts: 1,
+      fromElement: true,
+      cssComposer: {},
+      assetManager: {
+        assets: [
+          'http://placehold.it/350x250/78c5d6/fff/image1.jpg',
+          // Pass an object with your properties
+          {
+            type: 'image',
+            src: './finance_assets/images/slide_02.jpg',
+            height: 350,
+            width: 250,
+            name: 'displayName'
+          },
+          {
+            // As the 'image' is the base type of assets, omitting it will
+            // be set as `image` by default
+            src: 'http://placehold.it/350x250/79c267/fff/image3.jpg',
+            height: 350,
+            width: 250,
+            name: 'displayName'
+          },
         ],
-        pluginsOpts: {
-          "grapesjs-plugin-export": {},
-          saveFile: {},
-          openFile: {},
-          "gjs-blocks-basic": {},
-          "grapesjs-tailwind": {},
-          "grapesjs-plugin-forms": {},
-          "grapesjs-script-editor": {},
-          "grapesjs-parser-postcss": {},
-          login: {},
-          company1: {},
-          company2: {},
-          company3: {},
-          company4: {},
-          company5: {},
-          portofolio: {},
-          signup: {},
-          carousel: {},
-          tailwind: {},
-          clearPage: {},
-          undo_redo: {},
-          "grapesjs-project-manager": {},
+      }
+      ,
+      plugins: [
+        "grapesjs-blockly",
+        "grapesjs-plugin-export",
+        "gjs-blocks-basic",
+        "grapesjs-project-manager",
+        // "grapesjs-tailwind",
+        "grapesjs-plugin-forms",
+        "grapesjs-script-editor",
+        "grapesjs-parser-postcss",
+        "login",
+        "company1",
+        "company2",
+        "company3",
+        "company4",
+        "company5",
+        "portofolio",
+        "signup",
+        "carousel",
+        // "tailwind",
+        "clearPage",
+        "undo_redo",
+        "saveFile",
+        "openFile",
+        "grapesjs-templates",
+        "grapesjs-pages-manager",
+      ],
+      pluginsOpts: {
+        "grapesjs-plugin-export": {},
+        saveFile: {},
+        openFile: {},
+        "gjs-blocks-basic": {},
+        // "grapesjs-tailwind": {},
+        "grapesjs-plugin-forms": {},
+        "grapesjs-script-editor": {},
+        "grapesjs-parser-postcss": {},
+        login: {},
+        company1: {},
+        company2: {},
+        company3: {},
+        company4: {},
+        company5: {},
+        portofolio: {},
+        signup: {},
+        carousel: {},
+        // tailwind: {},
+        clearPage: {},
+        undo_redo: {},
+        "grapesjs-project-manager": {},
+        'grapesjs-templates': {
+          appendTo: '',
+          templatesType: 'remote', // local or remote
+          templatesUrl: './dist/templates/remote_templates.json', // if "templatesType" === "remote"
         },
-        canvas: {
-          styles: [
-            "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css",
-            "https://cdn.tailwindcss.com",
-          ],
-          scripts: [
-            "https://code.jquery.com/jquery-3.3.1.slim.min.js",
-            "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js",
-            "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js",
-          ],
-        },
-        height: "100%",
-        fromElement: true,
-        storageManager: { autoload: 0 },
-        styleManager: {
-          sectors: [
-            {
-              name: "General",
-              open: false,
-              buildProps: [
-                "float",
-                "display",
-                "position",
-                "top",
-                "right",
-                "left",
-                "bottom",
-              ],
-            },
-            {
-              name: "Flex",
-              open: false,
-              buildProps: [
-                "flex-direction",
-                "flex-wrap",
-                "justify-content",
-                "align-items",
-                "align-content",
-                "order",
-                "flex-basis",
-                "flex-grow",
-                "flex-shrink",
-                "align-self",
-              ],
-            },
-            {
-              name: "Dimension",
-              open: false,
-              buildProps: [
-                "width",
-                "height",
-                "max-width",
-                "min-height",
-                "margin",
-                "padding",
-              ],
-            },
-            {
-              name: "Typography",
-              open: false,
-              buildProps: [
-                "font-family",
-                "font-size",
-                "font-weight",
-                "letter-spacing",
-                "color",
-                "line-height",
-                "text-shadow",
-              ],
-            },
-            {
-              name: "Decorations",
-              open: false,
-              buildProps: [
-                "border-radius-c",
-                "background-color",
-                "border-radius",
-                "border",
-                "box-shadow",
-                "background",
-              ],
-            },
-            {
-              name: "Extra",
-              open: false,
-              buildProps: ["transition", "perspective", "transform"],
-            },
-          ],
-        },
-      });
+        'grapesjs-pages-manager': {},
 
-      //to enable freeMove
-      editor.getModel().set("dmode", "absolute");
+      },
+      canvas: {
+        styles: [
+          "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css",
+          "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        ],
+        scripts: [
+          "https://code.jquery.com/jquery-3.3.1.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js",
+          "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        ],
+      },
+      height: "100%",
+      fromElement: true,
+      storageManager: {
+        autoload: 0,
+      },
+      styleManager: {
+        sectors: [
+          {
+            name: "General",
+            open: false,
+            buildProps: [
+              "float",
+              "display",
+              "position",
+              "top",
+              "right",
+              "left",
+              "bottom",
+            ],
+          },
+          {
+            name: "Flex",
+            open: false,
+            buildProps: [
+              "flex-direction",
+              "flex-wrap",
+              "justify-content",
+              "align-items",
+              "align-content",
+              "order",
+              "flex-basis",
+              "flex-grow",
+              "flex-shrink",
+              "align-self",
+            ],
+          },
+          {
+            name: "Dimension",
+            open: false,
+            buildProps: [
+              "width",
+              "height",
+              "max-width",
+              "min-height",
+              "margin",
+              "padding",
+            ],
+          },
+          {
+            name: "Typography",
+            open: false,
+            buildProps: [
+              "font-family",
+              "font-size",
+              "font-weight",
+              "letter-spacing",
+              "color",
+              "line-height",
+              "text-shadow",
+            ],
+          },
+          {
+            name: "Decorations",
+            open: false,
+            buildProps: [
+              "border-radius-c",
+              "background-color",
+              "border-radius",
+              "border",
+              "box-shadow",
+              "background",
+            ],
+          },
+          {
+            name: "Extra",
+            open: false,
+            buildProps: ["transition", "perspective", "transform"],
+          },
+        ],
+      },
+    });
 
-      //first create an object from panels
-      const panelManager = editor.Panels;
-      //add export to zip button to options panel
-      const export_btn = panelManager.addButton("options", {
-        id: "export_to_zip",
-        className: "fa fa-download",
-        command: "gjs-export-zip",
-        attributes: { title: "Export to zip" },
-      });
+    //to enable freeMove
+    editor.getModel().set("dmode", "translate");
 
-      const pageManager = editor.Pages;
-      editor.runCommand("open-pages");
-      pageManager.getAll()[0].setName("index");
-    </script>
-  </body>
+    //first create an object from panels
+    const panelManager = editor.Panels;
+    //add export to zip button to options panel
+    const export_btn = panelManager.addButton("options", {
+      id: "export_to_zip",
+      className: "fa fa-download",
+      command: "gjs-export-zip",
+      attributes: { title: "Export to zip" },
+    });
+
+    const pageManager = editor.Pages;
+    editor.runCommand("open-pages");
+    pageManager.getAll()[0].setName("index");
+
+
+
+  </script>
+</body>
+
 </html>

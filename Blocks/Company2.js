@@ -453,8 +453,11 @@ padding-top: 40px;
   });
   editor.BlockManager.add('Company2', {
     label: 'Company2 Block',
-    media: '<img src="imgs/icons8-company-50.png" width = 50 alt="Company1 Logo">',
+    media:
+      '<img src="imgs/icons8-company-50.png" width = 50 alt="Company1 Logo">',
     category: 'Landing Pages',
-    content: { type: 'company2_landing_page' },
+    content: {
+      type: 'company2_landing_page',
+    },
   });
 };
