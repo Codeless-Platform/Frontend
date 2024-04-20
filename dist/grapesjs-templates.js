@@ -20247,6 +20247,7 @@
                                   'HTML'
                                 ),
                                 l = this.buildEditor('css', 'hopscotch', 'CSS');
+
                               (this.htmlEditor = s.el), (this.cssEditor = l.el);
                               var c = (0, r['default'])(
                                 '<div class="'.concat(a, 'export-dl"></div>')
