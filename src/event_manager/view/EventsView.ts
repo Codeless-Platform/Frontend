@@ -36,6 +36,7 @@ export default class EventsView extends DomainViews {
     x.classList.add('x');
     let y = document.createElement('div');
     let h = this.em.get('EventManager').handlers;
+    console.log(h);
     //@ts-ignores
     h = h.filter(ih => ih.blockly !== '');
     console.log(h);
@@ -47,7 +48,7 @@ export default class EventsView extends DomainViews {
     h.forEach(oh => {
       let n = document.createElement('div');
       n.style.height = '35px';
-      n.style.cursor = 'pointer';
+
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.setAttribute('width', '25');
       svg.setAttribute('height', '35');
@@ -62,16 +63,27 @@ export default class EventsView extends DomainViews {
       let txt = document.createElement('div');
       txt.classList.add('button-like');
       txt.classList.add(oh.value);
+      txt.style.cursor = 'pointer';
       txt.innerHTML = oh.name;
       n.appendChild(txt);
       n.classList.add(oh.value);
+      if (oh.value !== 'newhandler') {
+        let trash = document.createElement('div');
+        trash.classList.add('fa');
+        trash.classList.add('fa-trash');
+        trash.classList.add(oh.value);
+        trash.style.marginLeft = '5px';
+        trash.style.fontSize = 'larger';
+        trash.style.cursor = 'pointer';
+        n.appendChild(trash);
+      }
       m.appendChild(n);
     });
 
     x.append(m);
     handlercont.innerHTML = x.innerHTML;
     this.el.insertBefore(handlercont, this.el.firstChild);
-    let listItems = this.$el.find('.HandlerContainer div');
+    let listItems = this.$el.find('.button-like');
     const th = this;
     //@ts-ignore
     for (let item of listItems) {
@@ -79,6 +91,15 @@ export default class EventsView extends DomainViews {
         let h = th.em.Events.handlers?.filter(handler => handler.value === item.classList[1])[0];
         console.log(h);
         th.em.Editor.runCommand('blockly-script', h);
+      });
+    }
+    listItems = this.$el.find('.fa-trash');
+    //@ts-ignore
+    for (let item of listItems) {
+      item.addEventListener('click', function () {
+        let h = item.classList[2];
+        let ev = th.em.getSelected()?.get('events')?.models[0];
+        if (ev) ev.deleteHandler(h);
       });
     }
   }

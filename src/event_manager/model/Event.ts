@@ -454,6 +454,19 @@ export default class Event extends Model<EventProperties> {
     this.em.trigger('change:Events');
   }
 
+  deleteHandler(n: string) {
+    let handlers = this.getHandler();
+    handlers = handlers?.filter(handler => handler.value !== 'newhandler');
+    handlers = handlers?.filter(handler => handler.value !== n);
+    this.set('handler', [
+      //@ts-ignore
+      ...handlers,
+      { value: 'newhandler', name: '&#43 New Handler', logic: '' },
+    ]);
+    this.em.get('EventManager').handlers = this.getHandler();
+    this.em.trigger('change:Events');
+  }
+
   setValueFromInput(value: any, final = true, opts: SetOptions = {}) {
     const toSet = { value };
     this.set(toSet, { ...opts, avoidStore: 1 });
