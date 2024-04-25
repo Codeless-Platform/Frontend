@@ -46,7 +46,6 @@ export default class EventsView extends DomainViews {
     h.forEach((oh: Record<string, any>) => {
       let n = document.createElement('div');
       n.style.height = '35px';
-
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.setAttribute('width', '25');
       svg.setAttribute('height', '35');
@@ -77,7 +76,6 @@ export default class EventsView extends DomainViews {
       }
       m.appendChild(n);
     });
-
     x.append(m);
     handlercont.innerHTML = x.innerHTML;
     this.el.insertBefore(handlercont, this.el.firstChild);
@@ -87,7 +85,6 @@ export default class EventsView extends DomainViews {
     for (let item of listItems) {
       item.addEventListener('click', function () {
         let h = th.em.Events.handlers?.filter(handler => handler.value === item.classList[1])[0];
-
         th.em.Editor.runCommand('blockly-script', h);
       });
     }
