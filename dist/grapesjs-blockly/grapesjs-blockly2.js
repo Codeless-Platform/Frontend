@@ -1516,7 +1516,7 @@
             f(
               {
                 keyBlocklyXml: 'blockly-xml',
-                run: function (e, t, options) {
+                run: function (e, t) {
                   var n =
                     arguments.length > 2 && void 0 !== arguments[2]
                       ? arguments[2]
@@ -1525,7 +1525,7 @@
                     (this.options = n),
                     (this.target = n.target || e.getSelected());
                   var a = this.target;
-                  a && this.showCustomCode(options);
+                  a && this.showCustomCode(this.options);
                   let { m } = this;
                   return m;
                 },
@@ -1537,7 +1537,6 @@
                     n = this.editor,
                     i = this.options.title || l;
                   _ || (_ = this.getContent());
-
                   a
                     .open({ title: i, content: _ })
                     .getModel()
@@ -1554,14 +1553,6 @@
                   var o = e.blockly || h;
                   if (e.name !== '&#43 New Handler') {
                     document.getElementById('x').value = e.name;
-                    document.getElementById('x').disabled = true;
-                    document.getElementsByClassName('inl')[0].innerHTML =
-                      'Handler Name';
-                  } else {
-                    document.getElementById('x').value = '';
-                    document.getElementById('x').disabled = false;
-                    document.getElementsByClassName('inl')[0].innerHTML =
-                      'Set Handler Name';
                   }
                   Blockly.Xml.domToWorkspace(
                     Blockly.utils.xml.textToDom(o),
@@ -1577,7 +1568,7 @@
                   var input = document.createElement('input');
                   input.id = 'x';
                   input.autocomplete = 'off';
-                  inputLabel.textContent = 'Set Handler Name:';
+                  inputLabel.textContent = 'Handler Name:';
                   var y = document.createElement('div');
                   y.classList.add('gjs-field');
                   y.classList.add('gjs-field-text');
@@ -1654,10 +1645,24 @@
                   );
                 },
                 handleSave: function () {
+                  let status;
+                  if (this.options.name !== '&#43 New Handler') {
+                    status = 'NotNew';
+                  } else {
+                    status = 'New';
+                  }
                   let m = document.getElementById('x').value;
                   var n = this.getCodeViewer().getContent();
+                  let handlerscount = this.em.Events.handlers.length;
+                  let hid;
+                  if (status === 'New') {
+                    hid = handlerscount + 1;
+                  } else {
+                    hid = this.options.handlerId;
+                  }
                   if (m) {
                     let h = {
+                      handlerId: hid,
                       name: m,
                       value: m,
                       logic: n,

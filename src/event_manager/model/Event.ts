@@ -442,27 +442,36 @@ export default class Event extends Model<EventProperties> {
 
   addHandler(n: any) {
     let handlers = this.getHandler();
-    handlers = handlers?.filter(handler => handler.value !== 'newhandler');
-    handlers = handlers?.filter(handler => handler.value !== n.value);
-    this.set('handler', [
-      //@ts-ignore
-      ...handlers,
-      n,
-      { value: 'newhandler', name: '&#43 New Handler', logic: '' },
-    ]);
-    this.em.get('EventManager').handlers = this.getHandler();
-    this.em.trigger('change:Events');
+
+    if (handlers) {
+      const existingHandlerIndex = handlers.findIndex(
+        handler => handler.value !== 'newhandler' && handler.handlerId === n.handlerId
+      );
+
+      if (existingHandlerIndex !== -1) {
+        handlers[existingHandlerIndex] = n;
+      } else {
+        handlers.unshift(n);
+      }
+      const newHandlerIndex = handlers.findIndex(handler => handler.value === 'newhandler');
+      if (newHandlerIndex === -1) {
+        handlers.push({ value: 'newhandler', name: '&#43 New Handler', logic: '' });
+      }
+
+      this.set('handler', handlers);
+
+      this.em.get('EventManager').handlers = handlers;
+      this.em.trigger('change:Events');
+    }
   }
 
   deleteHandler(n: string) {
     let handlers = this.getHandler();
     handlers = handlers?.filter(handler => handler.value !== 'newhandler');
     handlers = handlers?.filter(handler => handler.value !== n);
-    this.set('handler', [
-      //@ts-ignore
-      ...handlers,
-      { value: 'newhandler', name: '&#43 New Handler', logic: '' },
-    ]);
+    if (handlers) {
+      this.set('handler', [...handlers, { value: 'newhandler', name: '&#43 New Handler', logic: '' }]);
+    }
     this.em.get('EventManager').handlers = this.getHandler();
     this.em.trigger('change:Events');
   }
