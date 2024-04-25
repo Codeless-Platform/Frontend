@@ -33413,7 +33413,7 @@ ${b} to its parent, because: ${a}`);
   var module$build$src$core$toolbox$toolbox = {};
   module$build$src$core$toolbox$toolbox.Toolbox =
     Toolbox$$module$build$src$core$toolbox$toolbox;
-  var VERSION$$module$build$src$core$blockly = '10.4.3',
+  var VERSION$$module$build$src$core$blockly = '11.0.0-beta.5',
     ALIGN_LEFT$$module$build$src$core$blockly =
       $.Align$$module$build$src$core$inputs$align.LEFT,
     ALIGN_CENTRE$$module$build$src$core$blockly =

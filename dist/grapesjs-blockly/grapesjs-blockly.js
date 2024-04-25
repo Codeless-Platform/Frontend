@@ -669,15 +669,15 @@
     function (e, t) {
       e.exports = function (e) {
         return (
-          (e.JavaScript.bi_comment = function (e) {
+          (e.JavaScript.forBlock['bi_comment'] = function (e) {
             return '';
           }),
-          (e.JavaScript.bi_assignment = function (t) {
+          (e.JavaScript.forBlock['bi_assignment'] = function (t) {
             var n = e.JavaScript.valueToCode(t, 'A', e.JavaScript.ORDER_ATOMIC),
               a = e.JavaScript.valueToCode(t, 'B', e.JavaScript.ORDER_ATOMIC);
             return n + ' ' + t.getFieldValue('OP') + ' ' + a + '\n';
           }),
-          (e.JavaScript.bi_assignment_return = function (t) {
+          (e.JavaScript.forBlock['bi_assignment_return'] = function (t) {
             var n = e.JavaScript.valueToCode(t, 'A', e.JavaScript.ORDER_ATOMIC),
               a = e.JavaScript.valueToCode(t, 'B', e.JavaScript.ORDER_ATOMIC);
             return [
@@ -685,7 +685,7 @@
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_math_arithmetic = function (t) {
+          (e.JavaScript.forBlock['bi_math_arithmetic'] = function (t) {
             var n = {
                 ADD: [' + ', e.JavaScript.ORDER_ADDITION],
                 MINUS: [' - ', e.JavaScript.ORDER_SUBTRACTION],
@@ -705,7 +705,7 @@
                   e.JavaScript.ORDER_FUNCTION_CALL,
                 ];
           }),
-          (e.JavaScript.bi_logic_compare = function (t) {
+          (e.JavaScript.forBlock['bi_logic_compare'] = function (t) {
             var n = {
                 EQ: '==',
                 NEQ: '!=',
@@ -727,7 +727,7 @@
               a,
             ];
           }),
-          (e.JavaScript.bi_logic_operation = function (t) {
+          (e.JavaScript.forBlock['bi_logic_operation'] = function (t) {
             var n = 'AND' === t.getFieldValue('OP') ? '&&' : '||',
               a =
                 '&&' === n
@@ -741,7 +741,7 @@
             } else (i = 'false'), (l = 'false');
             return [i + ' ' + n + ' ' + l, a];
           }),
-          (e.JavaScript.bi_try_catch = function (t) {
+          (e.JavaScript.forBlock['bi_try_catch'] = function (t) {
             var n = e.JavaScript.statementToCode(t, 'try'),
               a = e.JavaScript.statementToCode(t, 'catch'),
               i = e.JavaScript.statementToCode(t, 'finally');
@@ -757,18 +757,18 @@
               '}\n'
             );
           }),
-          (e.JavaScript.bi_catch = function (t) {
+          (e.JavaScript.forBlock['bi_catch'] = function (t) {
             var n = e.JavaScript.statementToCode(t, 'catch');
             return 'catch(' + t.getFieldValue('parameter') + '){\n' + n + '}\n';
           }),
-          (e.JavaScript.bi_throw = function (t) {
+          (e.JavaScript.forBlock['bi_throw']= function (t) {
             return (
               'throw ' +
               e.JavaScript.valueToCode(t, 'throw', e.JavaScript.ORDER_ATOMIC) +
               '\n'
             );
           }),
-          (e.JavaScript.bi_yield = function (t) {
+          (e.JavaScript.forBlock['bi_yield'] = function (t) {
             var n = e.JavaScript.valueToCode(
                 t,
                 'yield',
@@ -781,7 +781,7 @@
               (a += n + '\n')
             );
           }),
-          (e.JavaScript.bi_yield_return = function (t) {
+          (e.JavaScript.forBlock['bi_yield_return'] = function (t) {
             var n = e.JavaScript.valueToCode(
                 t,
                 'yield',
@@ -794,10 +794,10 @@
               [(a += n), e.JavaScript.ORDER_ATOMIC]
             );
           }),
-          (e.JavaScript.bi_export = function (t) {
+          (e.JavaScript.forBlock['bi_export'] = function (t) {
             return 'export ' + e.JavaScript.statementToCode(t, 'export');
           }),
-          (e.JavaScript.bi_import = function (t) {
+          (e.JavaScript.forBlock['bi_import'] = function (t) {
             for (
               var n = new Array(t.itemCount_ - 1), a = 1;
               a < t.itemCount_;
@@ -820,19 +820,19 @@
               (l += ' from ' + i + '\n')
             );
           }),
-          (e.JavaScript.bi_import_as = function (t) {
+          (e.JavaScript.forBlock['bi_import_as'] = function (t) {
             return [
               t.getFieldValue('input') + ' as ' + t.getFieldValue('as'),
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_code_part = function (t) {
+          (e.JavaScript.forBlock['bi_code_part'] = function (t) {
             return [t.getFieldValue('code'), e.JavaScript.ORDER_ATOMIC];
           }),
-          (e.JavaScript.bi_code_line = function (e) {
+          (e.JavaScript.forBlock['bi_code_line'] = function (e) {
             return e.getFieldValue('code') + '\n';
           }),
-          (e.JavaScript.bi_access_field = function (t) {
+          (e.JavaScript.forBlock['bi_access_field'] = function (t) {
             return (
               e.JavaScript.variableDB_.getName(
                 t.getFieldValue('variable'),
@@ -845,7 +845,7 @@
               '\n'
             );
           }),
-          (e.JavaScript.bi_set_to = function (t) {
+          (e.JavaScript.forBlock['bi_set_to'] = function (t) {
             return (
               t.getFieldValue('code') +
               ' = ' +
@@ -853,7 +853,7 @@
               '\n'
             );
           }),
-          (e.JavaScript.bi_for = function (t) {
+          (e.JavaScript.forBlock['bi_for'] = function (t) {
             e.Generator.prototype.STATEMENT_PREFIX = ', ';
             var n = e.JavaScript.statementToCode(t, 'init');
             e.Generator.prototype.STATEMENT_PREFIX = null;
@@ -884,7 +884,7 @@
               '}\n'
             );
           }),
-          (e.JavaScript.bi_for_in = function (t) {
+          (e.JavaScript.forBlock['bi_for_in'] = function (t) {
             return (
               'for(let ' +
               t.getFieldValue('var') +
@@ -895,7 +895,7 @@
               '}\n'
             );
           }),
-          (e.JavaScript.bi_switch = function (t) {
+          (e.JavaScript.forBlock['bi_switch'] = function (t) {
             for (
               var n = e.JavaScript.valueToCode(
                   t,
@@ -918,7 +918,7 @@
               'switch(' + n + '){\n' + i.join('\n') + '\ndefault: ' + a + '}\n'
             );
           }),
-          (e.JavaScript.bi_case = function (t) {
+          (e.JavaScript.forBlock['bi_case'] = function (t) {
             return [
               'case ' +
                 e.JavaScript.valueToCode(t, 'case', e.JavaScript.ORDER_ATOMIC) +
@@ -927,13 +927,13 @@
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_continue = function (e) {
+          (e.JavaScript.forBlock['bi_continue'] = function (e) {
             return '\ncontinue\n';
           }),
-          (e.JavaScript.bi_break = function (e) {
+          (e.JavaScript.forBlock['bi_break'] = function (e) {
             return '\nbreak\n';
           }),
-          (e.JavaScript.bi_s1 = function (t) {
+          (e.JavaScript.forBlock['bi_s1'] = function (t) {
             for (
               var n = e.JavaScript.valueToCode(
                   t,
@@ -952,7 +952,7 @@
               'for(' + a.join(', ') + '){' + l + '}\n'
             );
           }),
-          (e.JavaScript.bi_call_statement = function (t) {
+          (e.JavaScript.forBlock['bi_call_statement'] = function (t) {
             for (
               var n = t.getFieldValue('NAME'),
                 a = e.JavaScript.valueToCode(
@@ -977,7 +977,7 @@
               n + '(' + i.join(', ') + ')' + o + '\n'
             );
           }),
-          (e.JavaScript.bi_call = function (t) {
+          (e.JavaScript.forBlock['bi_call'] = function (t) {
             for (
               var n = t.getFieldValue('NAME'),
                 a = e.JavaScript.valueToCode(
@@ -1002,7 +1002,7 @@
               [n + '(' + i.join(', ') + ')' + o, e.JavaScript.ORDER_ATOMIC]
             );
           }),
-          (e.JavaScript.bi_direct_call_editable = function (t) {
+          (e.JavaScript.forBlock['bi_direct_call_editable'] = function (t) {
             for (
               var n = e.JavaScript.valueToCode(
                   t,
@@ -1031,7 +1031,9 @@
               '(' + n + ')(' + i.join(', ') + ')' + o + '\n'
             );
           }),
-          (e.JavaScript.bi_direct_call_editable_return = function (t) {
+          (e.JavaScript.forBlock['bi_direct_call_editable_return'] = function (
+            t
+          ) {
             for (
               var n = e.JavaScript.valueToCode(
                   t,
@@ -1063,7 +1065,7 @@
               ]
             );
           }),
-          (e.JavaScript.bi_call_editable = function (t) {
+          (e.JavaScript.forBlock['bi_call_editable'] = function (t) {
             for (
               var n = t.getFieldValue('NAME'),
                 a = e.JavaScript.valueToCode(
@@ -1088,7 +1090,7 @@
               n + '(' + i.join(', ') + ')' + o + '\n'
             );
           }),
-          (e.JavaScript.bi_call_editable_return = function (t) {
+          (e.JavaScript.forBlock['bi_call_editable_return'] = function (t) {
             for (
               var n = t.getFieldValue('NAME'),
                 a = e.JavaScript.valueToCode(
@@ -1113,7 +1115,7 @@
               [n + '(' + i.join(', ') + ')' + o, e.JavaScript.ORDER_ATOMIC]
             );
           }),
-          (e.JavaScript.bi_function_return = function (t) {
+          (e.JavaScript.forBlock['bi_function_return'] = function (t) {
             var n =
               t.getFieldValue('function_type') + t.getFieldValue('name') + '(';
             return [
@@ -1125,7 +1127,7 @@
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_function = function (t) {
+          (e.JavaScript.forBlock['bi_function'] = function (t) {
             var n = t.getFieldValue('name'),
               a = t.getFieldValue('function_type') + n + '(';
             return (a +=
@@ -1134,14 +1136,14 @@
               e.JavaScript.statementToCode(t, 'chain') +
               '}\n');
           }),
-          (e.JavaScript.bi_return = function (t) {
+          (e.JavaScript.forBlock['bi_return'] = function (t) {
             return (
               'return ' +
               e.JavaScript.valueToCode(t, 'ret', e.JavaScript.ORDER_ATOMIC) +
               '\n'
             );
           }),
-          (e.JavaScript.bi_maps_set = function (t) {
+          (e.JavaScript.forBlock['bi_maps_set'] = function (t) {
             var n = 'set ' + t.getFieldValue('name') + '(';
             return [
               (n +=
@@ -1152,24 +1154,24 @@
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_maps_get = function (t) {
+          (e.JavaScript.forBlock['bi_maps_get'] = function (t) {
             var n = 'get ' + t.getFieldValue('name') + '(';
             return [
               (n += '){\n' + e.JavaScript.statementToCode(t, 'chain') + '}\n'),
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_var = function (t) {
+          (e.JavaScript.forBlock['bi_var']= function (t) {
             var n = t.getFieldValue('var_type'),
               a = t.getFieldValue('var'),
               i = e.JavaScript.valueToCode(t, 'val', e.JavaScript.ORDER_ATOMIC),
               l = n + ' ' + a;
             return (l += '' === i ? '\n' : ' = ' + i + '\n');
           }),
-          (e.JavaScript.bi_var_name = function (t) {
+          (e.JavaScript.forBlock['bi_var_name'] = function (t) {
             return [t.getFieldValue('NAME'), e.JavaScript.ORDER_ATOMIC];
           }),
-          (e.JavaScript.bi_new = function (t) {
+          (e.JavaScript.forBlock['bi_new'] = function (t) {
             return [
               'new ' +
                 e.JavaScript.valueToCode(
@@ -1180,7 +1182,7 @@
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_anonymous_class = function (t) {
+          (e.JavaScript.forBlock['bi_anonymous_class'] = function (t) {
             var n = t.getFieldValue('NAME'),
               a = t.getFieldValue('extends'),
               i = 'class ' + n;
@@ -1192,7 +1194,7 @@
               ]
             );
           }),
-          (e.JavaScript.bi_class = function (t) {
+          (e.JavaScript.forBlock['bi_class'] = function (t) {
             var n = t.getFieldValue('NAME'),
               a = t.getFieldValue('extends'),
               i = 'class ' + n;
@@ -1201,16 +1203,16 @@
               (i += '{\n' + e.JavaScript.statementToCode(t, 'chain') + '}\n')
             );
           }),
-          (e.JavaScript.bi_static = function (t) {
+          (e.JavaScript.forBlock['bi_static'] = function (t) {
             return 'static ' + e.JavaScript.statementToCode(t, 'static');
           }),
-          (e.JavaScript.bi_get = function (t) {
+          (e.JavaScript.forBlock['bi_get'] = function (t) {
             return 'get ' + e.JavaScript.statementToCode(t, 'get');
           }),
-          (e.JavaScript.bi_set = function (t) {
+          (e.JavaScript.forBlock['bi_set'] = function (t) {
             return 'set ' + e.JavaScript.statementToCode(t, 'set');
           }),
-          (e.JavaScript.bi_field = function (t) {
+          (e.JavaScript.forBlock['bi_field'] = function (t) {
             var n = e.JavaScript.valueToCode(
                 t,
                 'chain',
@@ -1223,7 +1225,7 @@
               a + i + '\n'
             );
           }),
-          (e.JavaScript.bi_field_return = function (t) {
+          (e.JavaScript.forBlock['bi_field_return'] = function (t) {
             var n = e.JavaScript.valueToCode(
                 t,
                 'chain',
@@ -1236,7 +1238,7 @@
               [a + i, e.JavaScript.ORDER_ATOMIC]
             );
           }),
-          (e.JavaScript.bi_string_return = function (t) {
+          (e.JavaScript.forBlock['bi_string_return'] = function (t) {
             var n = e.JavaScript.valueToCode(
                 t,
                 'chain',
@@ -1249,7 +1251,7 @@
               ['"' + a + '"' + i, e.JavaScript.ORDER_ATOMIC]
             );
           }),
-          (e.JavaScript.bi_index = function (t) {
+          (e.JavaScript.forBlock['bi_index'] = function (t) {
             var n = e.JavaScript.valueToCode(
                 t,
                 'chain',
@@ -1266,19 +1268,19 @@
               ['[' + a + ']' + i, e.JavaScript.ORDER_ATOMIC]
             );
           }),
-          (e.JavaScript.bi_adaptor = function (t) {
+          (e.JavaScript.forBlock['bi_adaptor'] = function (t) {
             return [
               e.JavaScript.statementToCode(t, 'chain').trim(),
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_statement = function (t) {
+          (e.JavaScript.forBlock['bi_statement'] = function (t) {
             return [
               e.JavaScript.statementToCode(t, 'chain').trim(),
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.bi_unary = function (t) {
+          (e.JavaScript.forBlock['bi_unary'] = function (t) {
             var n,
               a = e.JavaScript.valueToCode(
                 t,
@@ -1291,7 +1293,7 @@
               i + a + '\n'
             );
           }),
-          (e.JavaScript.bi_unary_return = function (t) {
+          (e.JavaScript.forBlock['bi_unary_return'] = function (t) {
             var n,
               a = e.JavaScript.valueToCode(
                 t,
@@ -1304,7 +1306,7 @@
               [i + a, e.JavaScript.ORDER_ATOMIC]
             );
           }),
-          (e.JavaScript.bi_unary_postfix = function (t) {
+          (e.JavaScript.forBlock['bi_unary_postfix'] = function (t) {
             var n,
               a = e.JavaScript.valueToCode(
                 t,
@@ -1317,7 +1319,7 @@
               a + i + '\n'
             );
           }),
-          (e.JavaScript.bi_unary_postfix_return = function (t) {
+          (e.JavaScript.forBlock['bi_unary_postfix_return'] = function (t) {
             var n,
               a = e.JavaScript.valueToCode(
                 t,
@@ -1330,7 +1332,7 @@
               [a + i, e.JavaScript.ORDER_ATOMIC]
             );
           }),
-          (e.JavaScript.bi_spread = function (t) {
+          (e.JavaScript.forBlock['bi_spread'] = function (t) {
             return [
               '...' +
                 e.JavaScript.valueToCode(
@@ -1338,6 +1340,18 @@
                   'arg_array',
                   e.JavaScript.ORDER_ATOMIC
                 ),
+              e.JavaScript.ORDER_ATOMIC,
+            ];
+          }),
+          (e.JavaScript.forBlock['bi_parenthesis'] = function (t) {
+            return [
+              '(' +
+                e.JavaScript.valueToCode(
+                  t,
+                  'arg_array',
+                  e.JavaScript.ORDER_ATOMIC
+                ) +
+                ')',
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
@@ -1417,7 +1431,7 @@
           u()(this, e);
           var a =
             n.toolbox ||
-            '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">\n        <category name="Logic" colour="%{BKY_LOGIC_HUE}">\n            <category name="If">\n                <block type="controls_if"></block>\n                <block type="controls_if">\n                    <mutation else="1"></mutation>\n                </block>\n                <block type="controls_if">\n                    <mutation elseif="1" else="1"></mutation>\n                </block>\n            </category>\n            <category name="Boolean" colour="%{BKY_LOGIC_HUE}">\n                <block type="logic_compare"></block>\n                <block type="logic_operation"></block>\n                <block type="logic_negate"></block>\n                <block type="logic_boolean"></block>\n                <block type="logic_null"></block>\n                <block type="logic_ternary"></block>\n            </category>\n        </category>\n        <category name="Loops" colour="%{BKY_LOOPS_HUE}">\n            <block type="controls_repeat_ext">\n                <value name="TIMES">\n                <block type="math_number">\n                    <field name="NUM">10</field>\n                </block>\n                </value>\n            </block>\n            <block type="controls_whileUntil"></block>\n            <block type="bi_for"></block>\n            <block type="controls_for">\n                <field name="VAR">i</field>\n                <value name="FROM">\n                <block type="math_number">\n                    <field name="NUM">1</field>\n                </block>\n                </value>\n                <value name="TO">\n                <block type="math_number">\n                    <field name="NUM">10</field>\n                </block>\n                </value>\n                <value name="BY">\n                <block type="math_number">\n                    <field name="NUM">1</field>\n                </block>\n                </value>\n            </block>\n            <block type="controls_forEach"></block>\n            <block type="controls_flow_statements"></block>\n        </category>\n        <category name="Math" colour="%{BKY_MATH_HUE}">\n            <block type="math_number">\n                <field name="NUM">123</field>\n            </block>\n            <block type="bi_parenthesis"></block>\n            <block type="bi_unary"></block>\n            <block type="bi_unary_return"></block>\n            <block type="bi_unary_postfix"></block>\n            <block type="bi_unary_postfix_return"></block>\n            <block type="math_arithmetic"></block>\n            <block type="math_single"></block>\n            <block type="math_trig"></block>\n            <block type="math_constant"></block>\n            <block type="math_number_property"></block>\n            <block type="math_round"></block>\n            <block type="math_on_list"></block>\n            <block type="math_modulo"></block>\n            <block type="math_constrain">\n                <value name="LOW">\n                <block type="math_number">\n                    <field name="NUM">1</field>\n                </block>\n                </value>\n                <value name="HIGH">\n                <block type="math_number">\n                    <field name="NUM">100</field>\n                </block>\n                </value>\n            </block>\n            <block type="math_random_int">\n                <value name="FROM">\n                <block type="math_number">\n                    <field name="NUM">1</field>\n                </block>\n                </value>\n                <value name="TO">\n                <block type="math_number">\n                    <field name="NUM">100</field>\n                </block>\n                </value>\n            </block>\n            <block type="math_random_float"></block>\n            <block type="math_atan2"></block>\n        </category>\n        <category name="Lists" colour="%{BKY_LISTS_HUE}">\n            <block type="lists_create_empty"></block>\n            <block type="lists_create_with"></block>\n            <block type="lists_repeat">\n                <value name="NUM">\n                <block type="math_number">\n                    <field name="NUM">5</field>\n                </block>\n                </value>\n            </block>\n            <block type="lists_length"></block>\n            <block type="lists_isEmpty"></block>\n            <block type="lists_indexOf"></block>\n            <block type="lists_getIndex"></block>\n            <block type="lists_setIndex"></block>\n        </category>\n        <sep></sep>\n        <category name="Text" colour="%{BKY_TEXTS_HUE}">\n            <block type="text"></block>\n            <block type="text_join"></block>\n            <block type="text_append">\n                <value name="TEXT">\n                <shadow type="text"></shadow>\n                </value>\n            </block>\n            <block type="text_length">\n                <value name="VALUE">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_isEmpty">\n                <value name="VALUE">\n                <shadow type="text">\n                    <field name="TEXT"></field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_indexOf">\n                <value name="VALUE">\n                <block type="variables_get">\n                    <field name="VAR">{textVariable}</field>\n                </block>\n                </value>\n                <value name="FIND">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_charAt">\n                <value name="VALUE">\n                <block type="variables_get">\n                    <field name="VAR">{textVariable}</field>\n                </block>\n                </value>\n            </block>\n            <block type="text_getSubstring">\n                <value name="STRING">\n                <block type="variables_get">\n                    <field name="VAR">{textVariable}</field>\n                </block>\n                </value>\n            </block>\n            <block type="text_changeCase">\n                <value name="TEXT">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_trim">\n                <value name="TEXT">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_print">\n                <value name="TEXT">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_prompt_ext">\n                <value name="TEXT">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n        </category>\n        <category name="Variables" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">\n        </category>\n        <category name="Functions" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">\n        </category>\n        <category id="catColour" name="Color" colour="20">\n            <block type="colour_picker"></block>\n            <block type="colour_random"></block>\n            <block type="colour_rgb">\n                <value name="RED">\n                    <shadow type="math_number">\n                        <field name="NUM">100</field>\n                    </shadow>\n                </value>\n                <value name="GREEN">\n                    <shadow type="math_number">\n                        <field name="NUM">50</field>\n                    </shadow>\n                </value>\n                <value name="BLUE">\n                    <shadow type="math_number">\n                        <field name="NUM">0</field>\n                    </shadow>\n                </value>\n            </block>\n            <block type="colour_blend">\n                <value name="COLOUR1">\n                    <shadow type="colour_picker">\n                        <field name="COLOUR">#ff0000</field>\n                    </shadow>\n                </value>\n                <value name="COLOUR2">\n                    <shadow type="colour_picker">\n                        <field name="COLOUR">#3333ff</field>\n                    </shadow>\n                </value>\n                <value name="RATIO">\n                    <shadow type="math_number">\n                        <field name="NUM">0.5</field>\n                    </shadow>\n                </value>\n            </block>\n        </category>\n        <sep></sep>\n        <category name="Modern" colour="230">\n            <block type="bi_var"></block>\n            <block type="bi_var_name"></block>\n            <block type="bi_assignment"></block>      \n            <block type="bi_assignment_return"></block>      \n            <block type="bi_field"></block>\n            <block type="bi_field_return"></block>\n            <block type="bi_return"></block>\n            <block type="bi_spread"></block>\n        </category>\n        <category name="Advanced js" colour="90">\n            <block type="bi_new"></block>\n            <block type="bi_anonymous_class"></block>\n            <block type="bi_class"></block>\n            <block type="bi_static"></block>      \n            <block type="bi_get"></block>\n            <block type="bi_set"></block>\n            <block type="bi_try_catch"></block>      \n            <block type="bi_catch"></block>\n            <block type="bi_comment"></block>\n        </category>\n        '.concat(
+            '<xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">\n        <category name="Logic" colour="%{BKY_LOGIC_HUE}">\n            <category name="If">\n                <block type="controls_if"></block>\n                <block type="controls_if">\n                    <mutation else="1"></mutation>\n                </block>\n                <block type="controls_if">\n                    <mutation elseif="1" else="1"></mutation>\n                </block>\n            </category>\n            <category name="Boolean" colour="%{BKY_LOGIC_HUE}">\n                <block type="logic_compare"></block>\n                <block type="logic_operation"></block>\n                <block type="logic_negate"></block>\n                <block type="logic_boolean"></block>\n                <block type="logic_null"></block>\n                <block type="logic_ternary"></block>\n            </category>\n        </category>\n        <category name="Loops" colour="%{BKY_LOOPS_HUE}">\n            <block type="controls_repeat_ext">\n                <value name="TIMES">\n                <block type="math_number">\n                    <field name="NUM">10</field>\n                </block>\n                </value>\n            </block>\n            <block type="controls_whileUntil"></block>\n            <block type="bi_for"></block>\n            <block type="controls_for">\n                <field name="VAR">i</field>\n                <value name="FROM">\n                <block type="math_number">\n                    <field name="NUM">1</field>\n                </block>\n                </value>\n                <value name="TO">\n                <block type="math_number">\n                    <field name="NUM">10</field>\n                </block>\n                </value>\n                <value name="BY">\n                <block type="math_number">\n                    <field name="NUM">1</field>\n                </block>\n                </value>\n            </block>\n            <block type="controls_forEach"></block>\n            <block type="controls_flow_statements"></block>\n        </category>\n        <category name="Math" colour="%{BKY_MATH_HUE}">\n            <block type="math_number">\n                <field name="NUM">123</field>\n            </block>\n                 <block type="bi_unary"></block>\n            <block type="bi_unary_return"></block>\n            <block type="bi_unary_postfix"></block>\n            <block type="bi_unary_postfix_return"></block>\n            <block type="math_arithmetic"></block>\n            <block type="math_single"></block>\n            <block type="math_trig"></block>\n            <block type="math_constant"></block>\n            <block type="math_number_property"></block>\n            <block type="math_round"></block>\n            <block type="math_on_list"></block>\n            <block type="math_modulo"></block>\n            <block type="math_constrain">\n                <value name="LOW">\n                <block type="math_number">\n                    <field name="NUM">1</field>\n                </block>\n                </value>\n                <value name="HIGH">\n                <block type="math_number">\n                    <field name="NUM">100</field>\n                </block>\n                </value>\n            </block>\n            <block type="math_random_int">\n                <value name="FROM">\n                <block type="math_number">\n                    <field name="NUM">1</field>\n                </block>\n                </value>\n                <value name="TO">\n                <block type="math_number">\n                    <field name="NUM">100</field>\n                </block>\n                </value>\n            </block>\n            <block type="math_random_float"></block>\n            <block type="math_atan2"></block>\n        </category>\n        <category name="Lists" colour="%{BKY_LISTS_HUE}">\n            <block type="lists_create_empty"></block>\n            <block type="lists_create_with"></block>\n            <block type="lists_repeat">\n                <value name="NUM">\n                <block type="math_number">\n                    <field name="NUM">5</field>\n                </block>\n                </value>\n            </block>\n            <block type="lists_length"></block>\n            <block type="lists_isEmpty"></block>\n            <block type="lists_indexOf"></block>\n            <block type="lists_getIndex"></block>\n            <block type="lists_setIndex"></block>\n        </category>\n        <sep></sep>\n        <category name="Text" colour="%{BKY_TEXTS_HUE}">\n            <block type="text"></block>\n            <block type="text_join"></block>\n            <block type="text_append">\n                <value name="TEXT">\n                <shadow type="text"></shadow>\n                </value>\n            </block>\n            <block type="text_length">\n                <value name="VALUE">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_isEmpty">\n                <value name="VALUE">\n                <shadow type="text">\n                    <field name="TEXT"></field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_indexOf">\n                <value name="VALUE">\n                <block type="variables_get">\n                    <field name="VAR">{textVariable}</field>\n                </block>\n                </value>\n                <value name="FIND">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_charAt">\n                <value name="VALUE">\n                <block type="variables_get">\n                    <field name="VAR">{textVariable}</field>\n                </block>\n                </value>\n            </block>\n            <block type="text_getSubstring">\n                <value name="STRING">\n                <block type="variables_get">\n                    <field name="VAR">{textVariable}</field>\n                </block>\n                </value>\n            </block>\n            <block type="text_changeCase">\n                <value name="TEXT">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_trim">\n                <value name="TEXT">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_print">\n                <value name="TEXT">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n            <block type="text_prompt_ext">\n                <value name="TEXT">\n                <shadow type="text">\n                    <field name="TEXT">abc</field>\n                </shadow>\n                </value>\n            </block>\n        </category>\n        <category name="Variables" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">\n        </category>\n        <category name="Functions" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">\n        </category>\n        <category id="catColour" name="Color" colour="20">\n            <block type="colour_picker"></block>\n            <block type="colour_random"></block>\n            <block type="colour_rgb">\n                <value name="RED">\n                    <shadow type="math_number">\n                        <field name="NUM">100</field>\n                    </shadow>\n                </value>\n                <value name="GREEN">\n                    <shadow type="math_number">\n                        <field name="NUM">50</field>\n                    </shadow>\n                </value>\n                <value name="BLUE">\n                    <shadow type="math_number">\n                        <field name="NUM">0</field>\n                    </shadow>\n                </value>\n            </block>\n            <block type="colour_blend">\n                <value name="COLOUR1">\n                    <shadow type="colour_picker">\n                        <field name="COLOUR">#ff0000</field>\n                    </shadow>\n                </value>\n                <value name="COLOUR2">\n                    <shadow type="colour_picker">\n                        <field name="COLOUR">#3333ff</field>\n                    </shadow>\n                </value>\n                <value name="RATIO">\n                    <shadow type="math_number">\n                        <field name="NUM">0.5</field>\n                    </shadow>\n                </value>\n            </block>\n        </category>\n        <sep></sep>\n        <category name="Modern" colour="230">\n            <block type="bi_var"></block>\n            <block type="bi_var_name"></block>\n            <block type="bi_assignment"></block>      \n            <block type="bi_assignment_return"></block>      \n            <block type="bi_field"></block>\n            <block type="bi_field_return"></block>\n            <block type="bi_return"></block>\n            <block type="bi_spread"></block>\n        </category>\n        <category name="Advanced js" colour="90">\n            <block type="bi_new"></block>\n            <block type="bi_anonymous_class"></block>\n            <block type="bi_class"></block>\n            <block type="bi_static"></block>      \n            <block type="bi_get"></block>\n            <block type="bi_set"></block>\n            <block type="bi_try_catch"></block>      \n            <block type="bi_catch"></block>\n            <block type="bi_comment"></block>\n        </category>\n        '.concat(
               n.toolboxPush,
               '\n        <category name="Library" expanded="true">\n            <category name="Randomize">\n                <block type="procedures_defnoreturn">\n                <mutation>\n                    <arg name="list"></arg>\n                </mutation>\n                <field name="NAME">randomize</field>\n                <statement name="STACK">\n                    <block type="controls_for" inline="true">\n                    <field name="VAR">x</field>\n                    <value name="FROM">\n                        <block type="math_number">\n                        <field name="NUM">1</field>\n                        </block>\n                    </value>\n                    <value name="TO">\n                        <block type="lists_length" inline="false">\n                        <value name="VALUE">\n                            <block type="variables_get">\n                            <field name="VAR">list</field>\n                            </block>\n                        </value>\n                        </block>\n                    </value>\n                    <value name="BY">\n                        <block type="math_number">\n                        <field name="NUM">1</field>\n                        </block>\n                    </value>\n                    <statement name="DO">\n                        <block type="variables_set" inline="false">\n                        <field name="VAR">y</field>\n                        <value name="VALUE">\n                            <block type="math_random_int" inline="true">\n                            <value name="FROM">\n                                <block type="math_number">\n                                <field name="NUM">1</field>\n                                </block>\n                            </value>\n                            <value name="TO">\n                                <block type="lists_length" inline="false">\n                                <value name="VALUE">\n                                    <block type="variables_get">\n                                    <field name="VAR">list</field>\n                                    </block>\n                                </value>\n                                </block>\n                            </value>\n                            </block>\n                        </value>\n                        <next>\n                            <block type="variables_set" inline="false">\n                            <field name="VAR">temp</field>\n                            <value name="VALUE">\n                                <block type="lists_getIndex" inline="true">\n                                <mutation statement="false" at="true"></mutation>\n                                <field name="MODE">GET</field>\n                                <field name="WHERE">FROM_START</field>\n                                <value name="AT">\n                                    <block type="variables_get">\n                                    <field name="VAR">y</field>\n                                    </block>\n                                </value>\n                                <value name="VALUE">\n                                    <block type="variables_get">\n                                    <field name="VAR">list</field>\n                                    </block>\n                                </value>\n                                </block>\n                            </value>\n                            <next>\n                                <block type="lists_setIndex" inline="false">\n                                <value name="AT">\n                                    <block type="variables_get">\n                                    <field name="VAR">y</field>\n                                    </block>\n                                </value>\n                                <value name="LIST">\n                                    <block type="variables_get">\n                                    <field name="VAR">list</field>\n                                    </block>\n                                </value>\n                                <value name="TO">\n                                    <block type="lists_getIndex" inline="true">\n                                    <mutation statement="false" at="true"></mutation>\n                                    <field name="MODE">GET</field>\n                                    <field name="WHERE">FROM_START</field>\n                                    <value name="AT">\n                                        <block type="variables_get">\n                                        <field name="VAR">x</field>\n                                        </block>\n                                    </value>\n                                    <value name="VALUE">\n                                        <block type="variables_get">\n                                        <field name="VAR">list</field>\n                                        </block>\n                                    </value>\n                                    </block>\n                                </value>\n                                <next>\n                                    <block type="lists_setIndex" inline="false">\n                                    <value name="AT">\n                                        <block type="variables_get">\n                                        <field name="VAR">x</field>\n                                        </block>\n                                    </value>\n                                    <value name="LIST">\n                                        <block type="variables_get">\n                                        <field name="VAR">list</field>\n                                        </block>\n                                    </value>\n                                    <value name="TO">\n                                        <block type="variables_get">\n                                        <field name="VAR">temp</field>\n                                        </block>\n                                    </value>\n                                    </block>\n                                </next>\n                                </block>\n                            </next>\n                            </block>\n                        </next>\n                        </block>\n                    </statement>\n                    </block>\n                </statement>\n                </block>\n            </category>\n            <category name="Jabberwocky">\n                <block type="text_print">\n                <value name="TEXT">\n                    <block type="text">\n                    <field name="TEXT">\'Twas brillig, and the slithy toves</field>\n                    </block>\n                </value>\n                <next>\n                    <block type="text_print">\n                    <value name="TEXT">\n                        <block type="text">\n                        <field name="TEXT">  Did gyre and gimble in the wabe:</field>\n                        </block>\n                    </value>\n                    <next>\n                        <block type="text_print">\n                        <value name="TEXT">\n                            <block type="text">\n                            <field name="TEXT">All mimsy were the borogroves,</field>\n                            </block>\n                        </value>\n                        <next>\n                            <block type="text_print">\n                            <value name="TEXT">\n                                <block type="text">\n                                <field name="TEXT">  And the mome raths outgrabe.</field>\n                                </block>\n                            </value>\n                            </block>\n                        </next>\n                        </block>\n                    </next>\n                    </block>\n                </next>\n                </block>\n                <block type="text_print">\n                <value name="TEXT">\n                    <block type="text">\n                    <field name="TEXT">"Beware the Jabberwock, my son!</field>\n                    </block>\n                </value>\n                <next>\n                    <block type="text_print">\n                    <value name="TEXT">\n                        <block type="text">\n                        <field name="TEXT">  The jaws that bite, the claws that catch!</field>\n                        </block>\n                    </value>\n                    <next>\n                        <block type="text_print">\n                        <value name="TEXT">\n                            <block type="text">\n                            <field name="TEXT">Beware the Jubjub bird, and shun</field>\n                            </block>\n                        </value>\n                        <next>\n                            <block type="text_print">\n                            <value name="TEXT">\n                                <block type="text">\n                                <field name="TEXT">  The frumious Bandersnatch!"</field>\n                                </block>\n                            </value>\n                            </block>\n                        </next>\n                        </block>\n                    </next>\n                    </block>\n                </next>\n                </block>\n            </category>\n        </category>\n        </xml>'
             );
@@ -1602,8 +1616,14 @@
                     t = document.createElement('div'),
                     n = document.createElement('div');
                   (n.id = 'blockly-cont'),
-                    (n.innerHTML =
-                      '<div id="blockly" style="width:100%;height:400px;color:grey"></div>');
+                    (n.innerHTML = `<div id="blockly" style="width:100%;height:400px;color:grey"></div>
+                     <div class="modal" id="messageModal"> 
+                     <div class ="fa fa-circle-exclamation"></div>
+                      <div class="modal-content">
+                        <p id ="messageText"></p>
+                        <button id="okButton">OK</button>
+                      </div>
+                     </div>`);
                   var a = e.getConfig('stylePrefix');
                   return (
                     (t.className = ''.concat(a, 'inject-logic')),
@@ -1661,27 +1681,53 @@
                     hid = this.options.handlerId;
                   }
                   if (m) {
-                    let h = {
-                      handlerId: hid,
-                      name: m,
-                      value: m,
-                      logic: n,
-                      blockly: '',
-                    };
-                    var e = this.editor,
-                      t = this.target,
-                      a = Blockly.Xml.workspaceToDom(b.workspace);
-                    h.blockly = Blockly.Xml.domToText(a);
-                    t.set('blockly-xml', Blockly.Xml.domToText(a)),
-                      (document.getElementById('x').value = ''),
-                      e.Modal.close();
-                    this.fcs(this.target, h);
+                    if (/\s/.test(m)) {
+                      this.showErrorMessage('Please enter Valid Name');
+                    } else {
+                      let h = {
+                        handlerId: hid,
+                        name: m,
+                        value: m,
+                        logic: n,
+                        blockly: '',
+                      };
+                      var e = this.editor,
+                        t = this.target,
+                        a = Blockly.Xml.workspaceToDom(b.workspace);
+                      h.blockly = Blockly.Xml.domToText(a);
+                      t.set('blockly-xml', Blockly.Xml.domToText(a)),
+                        (document.getElementById('x').value = ''),
+                        e.Modal.close();
+                      this.fcs(this.target, h);
+                    }
                   } else {
-                    alert('Please enter Name');
+                    this.showErrorMessage('Please enter Name');
                   }
                 },
                 fcs: function (uu, h) {
                   uu.get('events').models[0].addHandler(h);
+                },
+                showErrorMessage: function (m) {
+                  var messageModal = document.getElementById('messageModal');
+                  var messageText = document.getElementById('messageText');
+
+                  // Set the message text
+                  messageText.textContent = m;
+
+                  // Display the modal
+                  messageModal.style.display = 'block';
+
+                  // Apply fade-in animation
+
+                  // When the user clicks on OK button, hide the modal with fade-out animation
+                  var okButton = document.getElementById('okButton');
+                  okButton.onclick = function () {
+                    messageModal.classList.add('fadeOut');
+                    setTimeout(function () {
+                      messageModal.style.display = 'none';
+                      messageModal.classList.remove('fadeOut');
+                    }, 500); // 500ms is the duration of the fade-out animation
+                  };
                 },
                 getCodeViewer: function () {
                   var e = this.editor;
@@ -1710,7 +1756,7 @@
                 },
                 updateWorkspace: function (e) {
                   var t = Blockly.JavaScript.workspaceToCode(
-                    Blockly.mainWorkspace
+                    Blockly.getMainWorkspace()
                   );
                   try {
                     this.getCodeViewer().setContent(t);
