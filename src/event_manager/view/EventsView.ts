@@ -36,16 +36,14 @@ export default class EventsView extends DomainViews {
     x.classList.add('x');
     let y = document.createElement('div');
     let h = this.em.get('EventManager').handlers;
-    console.log(h);
-    //@ts-ignores
-    h = h.filter(ih => ih.blockly !== '');
-    console.log(h);
+
+    h = h.filter((ih: Record<string, any>) => ih.blockly !== '');
+
     y.innerText = 'Handlers ';
     x.appendChild(y);
     let m = document.createElement('div');
     m.classList.add('HandlerContainer');
-    //@ts-ignore
-    h.forEach(oh => {
+    h.forEach((oh: Record<string, any>) => {
       let n = document.createElement('div');
       n.style.height = '35px';
 
@@ -89,7 +87,7 @@ export default class EventsView extends DomainViews {
     for (let item of listItems) {
       item.addEventListener('click', function () {
         let h = th.em.Events.handlers?.filter(handler => handler.value === item.classList[1])[0];
-        console.log(h);
+
         th.em.Editor.runCommand('blockly-script', h);
       });
     }
