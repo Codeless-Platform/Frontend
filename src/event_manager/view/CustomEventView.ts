@@ -39,9 +39,10 @@ export default class CustomEventView extends EventView {
   }
   render() {
     const { $el, pfx, ppfx, model } = this;
-    const { type, id } = model.attributes;
+    const { id } = model.attributes;
     const hasLabel = this.hasLabel && this.hasLabel();
     const cls = `${pfx}event`;
+    delete this.$hinput;
     let tmpl = `<div class="${cls}">
       ${hasLabel ? `<div class="${ppfx}label-wrp" data-label></div>` : ''}
       <div class="${ppfx}field-wrp ${ppfx}field-wrp--select">

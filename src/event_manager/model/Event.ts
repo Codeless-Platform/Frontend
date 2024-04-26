@@ -130,6 +130,7 @@ export default class Event extends Model<EventProperties> {
     }
     this.set('handler', this.getCurrentHandlers());
     this.listenTo(em, 'change:Events', this.updateHandlers);
+    this.listenTo(em, 'change:Events', this.updateScript);
     this.on('change', this.updateScript);
   }
 
@@ -180,7 +181,6 @@ export default class Event extends Model<EventProperties> {
     Allevents.forEach(event => {
       let eventsValue = event.getValue()[0],
         handlresValue = event.getValue()[1];
-      //@ts-ignore
       let l = Handlers?.filter(handler => handler.value === handlresValue)[0];
       if (l) {
         l = l.logic;
@@ -190,6 +190,7 @@ export default class Event extends Model<EventProperties> {
         if (l) {
           flag = true;
           m += l;
+          m += '});';
         }
         if (handlresValue === 'fullscreen') {
           flag = true;
