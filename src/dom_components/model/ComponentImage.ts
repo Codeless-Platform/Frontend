@@ -14,7 +14,7 @@ export default class ComponentImage extends Component {
       type: 'image',
       tagName: 'img',
       void: true,
-      droppable: 0,
+      droppable: 1,
       editable: 1,
       highlightable: 0,
       resizable: { ratioDefault: 1 },
