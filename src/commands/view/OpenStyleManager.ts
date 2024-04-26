@@ -85,14 +85,14 @@ export default {
         function resize(e) {
           const newHeight = e.clientY;
           const panelHeight = ((window.innerHeight - newHeight) / window.innerHeight) * 100;
-
-          if (panelHeight < 25) {
+          if (panelHeight < 25 || panelHeight > 100) {
             return;
           }
           //@ts-ignore
           document.querySelector('.bottom-panel').style.flex = '0 0 ' + panelHeight + '%';
           //@ts-ignore
-          document.querySelector('.top-panel').style.flex = '0 0 '.concat(100 - panelHeight) + '%';
+          em.Panels.getPanel('views-container')?.get('appendContent')[0].style.flex =
+            '0 0 '.concat((100 - panelHeight).toString()) + '%';
         }
       });
     } else {
