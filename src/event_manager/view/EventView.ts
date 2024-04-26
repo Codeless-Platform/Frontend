@@ -77,7 +77,8 @@ export default class EventView extends View<Event> {
     model.view = this;
     this.listenTo(model, 'change:label', this.render);
     this.listenTo(model, 'change:placeholder', this.rerender);
-    this.listenTo(model, 'change:handler', this.rerender);
+    this.listenTo(this.em, 'change:Events', this.rerender);
+
     this.events = {};
     eventCapture.forEach(event => (this.events[event] = 'onChange'));
     this.delegateEvents();
@@ -381,7 +382,6 @@ export default class EventView extends View<Event> {
     }
     const el = $el.find('[handler-input]')[0];
     let htpl: HTMLElement | string | undefined = model.el;
-
     if (!htpl) {
       htpl = this.getHandlerInputEl();
     }

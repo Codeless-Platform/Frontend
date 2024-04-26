@@ -761,7 +761,7 @@
             var n = e.JavaScript.statementToCode(t, 'catch');
             return 'catch(' + t.getFieldValue('parameter') + '){\n' + n + '}\n';
           }),
-          (e.JavaScript.forBlock['bi_throw']= function (t) {
+          (e.JavaScript.forBlock['bi_throw'] = function (t) {
             return (
               'throw ' +
               e.JavaScript.valueToCode(t, 'throw', e.JavaScript.ORDER_ATOMIC) +
@@ -1161,7 +1161,7 @@
               e.JavaScript.ORDER_ATOMIC,
             ];
           }),
-          (e.JavaScript.forBlock['bi_var']= function (t) {
+          (e.JavaScript.forBlock['bi_var'] = function (t) {
             var n = t.getFieldValue('var_type'),
               a = t.getFieldValue('var'),
               i = e.JavaScript.valueToCode(t, 'val', e.JavaScript.ORDER_ATOMIC),
@@ -1169,7 +1169,7 @@
             return (l += '' === i ? '\n' : ' = ' + i + '\n');
           }),
           (e.JavaScript.forBlock['bi_var_name'] = function (t) {
-            return [t.getFieldValue('NAME'), e.JavaScript.ORDER_ATOMIC];
+            return [t.getFieldValue('NAME') + ';\n', e.JavaScript.ORDER_ATOMIC];
           }),
           (e.JavaScript.forBlock['bi_new'] = function (t) {
             return [
@@ -1567,6 +1567,8 @@
                   var o = e.blockly || h;
                   if (e.name !== '&#43 New Handler') {
                     document.getElementById('x').value = e.name;
+                  } else {
+                    document.getElementById('x').value = '';
                   }
                   Blockly.Xml.domToWorkspace(
                     Blockly.utils.xml.textToDom(o),
@@ -1665,43 +1667,44 @@
                   );
                 },
                 handleSave: function () {
-                  let status;
-                  if (this.options.name !== '&#43 New Handler') {
-                    status = 'NotNew';
-                  } else {
-                    status = 'New';
-                  }
+                  let status =
+                    this.options.name !== '&#43 New Handler' ? 'NotNew' : 'New';
                   let m = document.getElementById('x').value;
-                  var n = this.getCodeViewer().getContent();
-                  let handlerscount = this.em.Events.handlers.length;
-                  let hid;
-                  if (status === 'New') {
-                    hid = handlerscount + 1;
-                  } else {
-                    hid = this.options.handlerId;
+                  let n = this.getCodeViewer().getContent();
+                  let handlersCount = this.em.Events.handlers.length;
+                  const handlerNames = this.em.Events.handlers.map(
+                    (handler) => handler.name
+                  );
+                  let hid =
+                    status === 'New'
+                      ? handlersCount + 1
+                      : this.options.handlerId;
+
+                  if (!m) {
+                    m = `New Handler ${handlersCount - 5}`;
                   }
-                  if (m) {
-                    if (/\s/.test(m)) {
-                      this.showErrorMessage('Please enter Valid Name');
-                    } else {
-                      let h = {
-                        handlerId: hid,
-                        name: m,
-                        value: m,
-                        logic: n,
-                        blockly: '',
-                      };
-                      var e = this.editor,
-                        t = this.target,
-                        a = Blockly.Xml.workspaceToDom(b.workspace);
-                      h.blockly = Blockly.Xml.domToText(a);
-                      t.set('blockly-xml', Blockly.Xml.domToText(a)),
-                        (document.getElementById('x').value = ''),
-                        e.Modal.close();
-                      this.fcs(this.target, h);
-                    }
+
+                  if (
+                    (status === 'New' && !handlerNames.includes(m)) ||
+                    status === 'NotNew'
+                  ) {
+                    let h = {
+                      handlerId: hid,
+                      name: m,
+                      value: m.replace(/\s/g, ''),
+                      logic: n,
+                      blockly: '',
+                    };
+                    let e = this.editor,
+                      t = this.target,
+                      a = Blockly.Xml.workspaceToDom(b.workspace);
+                    h.blockly = Blockly.Xml.domToText(a);
+                    t.set('blockly-xml', Blockly.Xml.domToText(a));
+                    document.getElementById('x').value = '';
+                    e.Modal.close();
+                    this.fcs(this.target, h);
                   } else {
-                    this.showErrorMessage('Please enter Name');
+                    this.showErrorMessage('This Handler name already exists');
                   }
                 },
                 fcs: function (uu, h) {
@@ -1710,23 +1713,17 @@
                 showErrorMessage: function (m) {
                   var messageModal = document.getElementById('messageModal');
                   var messageText = document.getElementById('messageText');
-
-                  // Set the message text
                   messageText.textContent = m;
 
-                  // Display the modal
                   messageModal.style.display = 'block';
 
-                  // Apply fade-in animation
-
-                  // When the user clicks on OK button, hide the modal with fade-out animation
                   var okButton = document.getElementById('okButton');
                   okButton.onclick = function () {
                     messageModal.classList.add('fadeOut');
                     setTimeout(function () {
                       messageModal.style.display = 'none';
                       messageModal.classList.remove('fadeOut');
-                    }, 500); // 500ms is the duration of the fade-out animation
+                    }, 500);
                   };
                 },
                 getCodeViewer: function () {
