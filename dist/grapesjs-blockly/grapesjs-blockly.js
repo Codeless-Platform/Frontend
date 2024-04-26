@@ -1505,6 +1505,7 @@
           h = t.starter,
           b = null,
           _ = null,
+          xy = null,
           T = function (e, t) {
             t instanceof HTMLElement
               ? e.appendChild(t)
@@ -1544,6 +1545,7 @@
                   return m;
                 },
                 stop: function (e) {
+                  document.removeEventListener('keypress', xy);
                   b.workspace.clear(), a.close();
                 },
                 showCustomCode: function (e) {
@@ -1551,6 +1553,7 @@
                     n = this.editor,
                     i = this.options.title || l;
                   _ || (_ = this.getContent());
+                  xy || (xy = t.handleKeyPress.bind(t));
                   a
                     .open({ title: i, content: _ })
                     .getModel()
@@ -1574,6 +1577,7 @@
                     Blockly.utils.xml.textToDom(o),
                     b.workspace
                   );
+                  document.addEventListener('keypress', xy);
                 },
                 getPreContent: function () {
                   var e = document.createElement('div');
@@ -1652,6 +1656,7 @@
                     (i.onclick = function () {
                       return e.handleSave();
                     });
+
                   var o = document.createElement('div');
                   return (
                     (o.id = 'logic-toolbar'),
@@ -1665,6 +1670,11 @@
                     a.appendChild(i),
                     a
                   );
+                },
+                handleKeyPress: function (e) {
+                  if (e.key === 'Enter') {
+                    this.handleSave();
+                  }
                 },
                 handleSave: function () {
                   let status =
@@ -1697,11 +1707,13 @@
                     };
                     let e = this.editor,
                       t = this.target,
-                      a = Blockly.Xml.workspaceToDom(b.workspace);
+                      a = Blockly.Xml.workspaceToDom(b.workspace),
+                      o = this;
                     h.blockly = Blockly.Xml.domToText(a);
                     t.set('blockly-xml', Blockly.Xml.domToText(a));
                     document.getElementById('x').value = '';
                     e.Modal.close();
+                    document.removeEventListener('keypress', xy);
                     this.fcs(this.target, h);
                   } else {
                     this.showErrorMessage('This Handler name already exists');
