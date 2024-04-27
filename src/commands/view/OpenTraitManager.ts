@@ -15,9 +15,7 @@ export default {
     if (confTm.appendTo) return;
 
     if (!this.$cn) {
-      let el2 = document.getElementsByClassName('top-panel')[0];
-      el2.classList.remove('top-panel');
-      this.$cn = $('<div class="top-panel"></div>');
+      this.$cn = $('<div class="top-panel tm-panel"></div>');
       this.$cn2 = $('<div></div>');
       this.$cn.append(this.$cn2);
       this.$header = $('<div>').append(`<div class="${confTm.stylePrefix}header">${em.t('traitManager.empty')}</div>`);
@@ -42,23 +40,8 @@ export default {
       panelC?.set('appendContent', this.$cn.get(0)).trigger('change:appendContent');
 
       this.target = editor.getModel();
-      let el = document.getElementsByClassName('top-panel')[0];
-      //@ts-ignore
-      el.style.flex = el2.style.flex;
-      //@ts-ignore
-      el2.style.flex = '';
       this.listenTo(this.target, 'component:toggled', this.toggleTm);
-    } else {
-      let el = document.getElementsByClassName('tm-panel')[0];
-      let el2 = document.getElementsByClassName('top-panel')[0];
-      //@ts-ignore
-      el.style.flex = el2.style.flex;
-      //@ts-ignore
-      el2.style.flex = '';
-      el.classList.add('top-panel');
-      el2.classList.remove('top-panel');
     }
-
     this.toggleTm();
   },
 
@@ -82,7 +65,5 @@ export default {
   stop() {
     this.$cn2 && this.$cn2.hide();
     this.$header && this.$header.hide();
-    let el2 = document.getElementsByClassName('top-panel')[0];
-    el2.classList.add('tm-panel');
   },
 } as CommandObject<{}, { [k: string]: any }>;
