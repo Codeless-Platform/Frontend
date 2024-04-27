@@ -6,9 +6,9 @@ export default {
     this.sender = sender;
     function adjustScroll() {
       //@ts-ignore
-      topPanel.style.overflowY = topPanel.scrollHeight > topPanel.clientHeight ? 'auto' : 'hidden';
+      // topPanel.style.overflowY = topPanel.scrollHeight > topPanel.clientHeight ? 'auto' : 'hidden';
       //@ts-ignore
-      bottomPanel.style.overflowY = bottomPanel.scrollHeight > bottomPanel.clientHeight ? 'auto' : 'hidden';
+      // bottomPanel.style.overflowY = bottomPanel.scrollHeight > bottomPanel.clientHeight ? 'auto' : 'hidden';
     }
     if (!this.$cnt) {
       const config = editor.getConfig();

@@ -2187,7 +2187,8 @@ span.CodeMirror-selectedtext {
 }
 
 .resizer {
-  height: 3px;
+  color: rgba(0, 0, 0, 0);
+  height: 1%;
   cursor: n-resize;
 }
 
