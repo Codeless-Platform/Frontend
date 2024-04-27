@@ -95,6 +95,7 @@ export default {
         }
       });
     }
+    if (this.$cnt) this.$cnt.get(0).style.order = 1;
 
     this.toggleSm();
   },
@@ -117,6 +118,7 @@ export default {
   },
 
   stop() {
+    if (this.$cnt) this.$cnt.get(0).style.order = '';
     this.$cntInner?.hide();
     this.$header?.hide();
   },

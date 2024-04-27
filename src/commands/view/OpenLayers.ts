@@ -1,3 +1,4 @@
+import Layer from '../../style_manager/model/Layer';
 import { CommandObject } from './CommandAbstract';
 
 export default {
@@ -25,11 +26,13 @@ export default {
       layers.classList.add('layers-panel');
       this.layers = layers;
     }
+    if (this.layers) this.layers.style.order = '1';
     this.layers.style.display = 'block';
   },
 
   stop() {
     const { layers } = this;
+    if (this.layers) this.layers.style.order = '';
     layers && (layers.style.display = 'none');
   },
 } as CommandObject<{}, { [k: string]: any }>;

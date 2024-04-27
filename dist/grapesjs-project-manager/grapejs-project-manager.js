@@ -2500,7 +2500,7 @@
                   '<div style="display: '
                     .concat(
                       this.state.isShowing ? 'flex' : 'none',
-                      ';" class="pages-wrp bottom-panel">\n                <div class="resizer"></div> <div class="pages">\n                    '
+                      '; flex: 0 0 25%" class="pages-wrp bottom-panel">\n                <div class="resizer"></div> <div class="pages">\n                    '
                     )
                     .concat(
                       this.renderPagesList(),

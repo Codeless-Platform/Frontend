@@ -2162,26 +2162,30 @@ span.CodeMirror-selectedtext {
   box-shadow: 0 0 5px var(--gjs-main-dark-color);
   display: flex;
   flex-direction: column-reverse;
+  /* justify-content:c ; */
   justify-content: space-between;
 }
+
 .top-panel {
-  display: block;
+  /* display: block; */
   overflow-y: auto;
-  position: absolute;
+  /* position: absolute; */
   top: 40px;
   width: 100%;
-  z-index: 0;
+  z-index: -5;
 }
 
 .bottom-panel {
   flex: 0 0 25%;
   overflow-y: auto;
   border-top: 1px solid #ddd;
-  z-index: 1;
+  z-index: 2;
 }
+
 .bl-panel {
   position: static;
 }
+
 .resizer {
   height: 3px;
   cursor: n-resize;
@@ -4042,4 +4046,65 @@ span.CodeMirror-selectedtext {
 
 .cm-s-hopscotch span.cm-error {
   color: #fff;
+}
+
+/* CSS styles for the message box */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  text-align: center;
+  opacity: 0;
+  color: black;
+  border-radius: 10px;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+button {
+  padding: 10px 20px;
+  background-color: var(--gjs-main-color);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: black;
+}
+
+.fadeOut {
+  animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
