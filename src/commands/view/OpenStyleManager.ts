@@ -14,7 +14,7 @@ export default {
       const config = editor.getConfig();
       const { Panels, DeviceManager, SelectorManager, StyleManager } = editor;
       const trgEvCnt = 'change:appendContent';
-      const $cnt = $('<div class="top-panel"></div>');
+      const $cnt = $('<div class="top-panel sm-panel"></div>');
       const $cntInner = $('<div></div>');
       const $cntSlm = $('<div></div>');
       const $cntSm = $('<div></div>');
@@ -43,7 +43,7 @@ export default {
       this.sm = StyleManager;
       const smConfig = StyleManager.getConfig();
       const pfx = smConfig.stylePrefix;
-      this.$header = $(`<div class="${pfx}header">${editor.t('styleManager.empty')}</div>`);
+      this.$header = $('<div>').append(`<div class="${pfx}header">${editor.t('styleManager.empty')}</div>`);
       $cnt.append(this.$header);
 
       if (smConfig.custom) {
@@ -63,7 +63,8 @@ export default {
       const em = editor.getModel();
       this.listenTo(em, StyleManager.events.target, this.toggleSm);
 
-      const topPanel = document.querySelector('.top-panel');
+      //@ts-ignore
+      const topPanel = em.Panels.getPanel('views-container')?.get('appendContent')[0];
       const bottomPanel = document.querySelector('.bottom-panel');
       const resizer = document.querySelector('.resizer');
 
@@ -77,6 +78,7 @@ export default {
         event.preventDefault();
         window.addEventListener('mousemove', resize, false);
         window.addEventListener('mouseup', stopResize, false);
+
         function stopResize() {
           window.removeEventListener('mousemove', resize, false);
           window.removeEventListener('mouseup', stopResize, false);
@@ -90,20 +92,8 @@ export default {
           }
           //@ts-ignore
           document.querySelector('.bottom-panel').style.flex = '0 0 ' + panelHeight + '%';
-          //@ts-ignore
-          em.Panels.getPanel('views-container')?.get('appendContent')[0].style.flex =
-            '0 0 '.concat((100 - panelHeight).toString()) + '%';
         }
       });
-    } else {
-      let el = document.getElementsByClassName('sm-panel')[0];
-      let el2 = document.getElementsByClassName('top-panel')[0];
-      //@ts-ignore
-      el.style.flex = el2.style.flex;
-      //@ts-ignore
-      el2.style.flex = '';
-      el2.classList.remove('top-panel');
-      el.classList.add('top-panel');
     }
 
     this.toggleSm();
@@ -129,7 +119,5 @@ export default {
   stop() {
     this.$cntInner?.hide();
     this.$header?.hide();
-    let el2 = document.getElementsByClassName('top-panel')[0];
-    el2.classList.add('sm-panel');
   },
 } as CommandObject<{}, { [k: string]: any }>;

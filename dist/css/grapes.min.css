@@ -1492,9 +1492,7 @@ span.CodeMirror-selectedtext {
 }
 
 .button-like {
-  /* Base styling */
   display: inline-block;
-  /* border: 1px solid #ccc; */
   border-radius: 4px;
   cursor: pointer;
   padding: 5px;
@@ -1502,7 +1500,7 @@ span.CodeMirror-selectedtext {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   /* Text styling */
   font-family: sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   text-align: left;
   text-decoration: none; /* Remove any default link styling */
 }
@@ -2167,14 +2165,22 @@ span.CodeMirror-selectedtext {
   justify-content: space-between;
 }
 .top-panel {
-  flex: 0 0 75%;
+  display: block;
   overflow-y: auto;
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  z-index: 0;
 }
 
 .bottom-panel {
   flex: 0 0 25%;
   overflow-y: auto;
   border-top: 1px solid #ddd;
+  z-index: 1;
+}
+.bl-panel {
+  position: static;
 }
 .resizer {
   height: 3px;
