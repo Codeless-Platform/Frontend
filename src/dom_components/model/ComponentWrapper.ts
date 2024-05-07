@@ -1,4 +1,5 @@
 import Component from './Component';
+import { ComponentOptions } from './types';
 
 export default class ComponentWrapper extends Component {
   get defaults() {
@@ -10,7 +11,17 @@ export default class ComponentWrapper extends Component {
       copyable: false,
       draggable: false,
       components: [],
-      traits: [],
+      apilink: '',
+      json: {},
+      traits: [
+        {
+          type: 'text',
+          name: 'apilink',
+          label: 'API',
+          placeholder: 'api for this page',
+          changeProp: true,
+        },
+      ],
       stylable: [
         'background',
         'background-color',
@@ -21,6 +32,19 @@ export default class ComponentWrapper extends Component {
         'background-size',
       ],
     };
+  }
+  initialize(props: any, opts: any) {
+    this.on('change:apilink', this.fetchApi);
+    super.initialize(props, opts);
+  }
+
+  fetchApi() {
+    fetch(this.get('apilink'))
+      .then(response => response.json())
+      .then(json => {
+        this.set('json', json);
+        console.log(json);
+      });
   }
 
   __postAdd() {

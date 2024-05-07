@@ -1,6 +1,7 @@
 import { forEach } from 'underscore';
 import { toLowerCase } from '../../utils/mixins';
 import ComponentText from './ComponentText';
+import { Options } from 'blockly';
 
 const type = 'link';
 
@@ -11,7 +12,35 @@ export default class ComponentLink extends ComponentText {
       ...super.defaults,
       type,
       tagName: 'a',
-      traits: ['title', 'href', 'target'],
+      traits: [
+        {
+          type: 'text',
+          name: 'title',
+          label: '',
+          placeholder: '',
+          changeProp: false,
+          options: [],
+        },
+        {
+          type: 'text',
+          name: 'href',
+          label: '',
+          placeholder: '',
+          changeProp: false,
+          options: [],
+        },
+        {
+          type: 'select',
+          name: 'target',
+          label: '',
+          placeholder: '',
+          changeProp: false,
+          options: [
+            { value: 'false', name: 'This window' },
+            { value: '_blank', name: 'New window' },
+          ],
+        },
+      ],
     };
   }
 

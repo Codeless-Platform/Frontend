@@ -698,7 +698,7 @@
                               e instanceof HTMLTextAreaElement &&
                                 (t.innerHTML = e.value),
                                 e instanceof HTMLInputElement &&
-                                  t.setAttribute('value', e.value);
+                                  t.setAttribute('value', '');
                             }
                             function i() {
                               t instanceof SVGElement &&
@@ -2413,9 +2413,10 @@
             },
             {
               key: 'addPage',
-              value: function () {
+              value: function (m) {
                 var e = this.pm,
                   t = this.state.nameText;
+                m.find('input').get(0).value = '';
                 t && (e.add({ name: t, component: '' }), this.update());
               },
             },
@@ -2516,7 +2517,7 @@
                     )
                 );
                 return (
-                  r.find('.add-page').on('click', this.addPage),
+                  r.find('.add-page').on('click', () => this.addPage(r)),
                   r.find('input').on('change', this.handleNameInput),
                   (this.$el = r),
                   r

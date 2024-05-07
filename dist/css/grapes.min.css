@@ -2156,7 +2156,7 @@ span.CodeMirror-selectedtext {
 
 .gjs-pn-views-container {
   height: 100%;
-  padding: 50px 0 0;
+  padding: 40px 0 0;
   right: 0;
   width: var(--gjs-left-width);
   box-shadow: 0 0 5px var(--gjs-main-dark-color);
@@ -2173,6 +2173,7 @@ span.CodeMirror-selectedtext {
   top: 40px;
   width: 100%;
   z-index: -5;
+  order: 1;
 }
 
 .bottom-panel {

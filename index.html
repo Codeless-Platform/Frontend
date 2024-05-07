@@ -41,6 +41,9 @@
     <script src="./dist/grapesjs-blockly/grapesjs-blockly.js"></script>
     <script src="./dist/grapesjs-templates.js"></script>
     <script src="./dist/grapesjs-pages-manager.js"></script>
+    <script src="./dist/grapesjs-blocks-table.min.js"></script>
+    <script src="./Blocks/Table.js"></script>
+    <!-- <script src="https://unpkg.com/grapesjs-table"></script> -->
 
     <style>
       body,
@@ -145,6 +148,7 @@
           "grapesjs-plugin-export",
           "gjs-blocks-basic",
           "grapesjs-project-manager",
+          "table",
           "grapesjs-tailwind",
           "grapesjs-plugin-forms",
           "grapesjs-script-editor",
@@ -167,6 +171,7 @@
         ],
         pluginsOpts: {
           "grapesjs-plugin-export": {},
+          table: { containerId: "#gjs" },
           saveFile: {},
           openFile: {},
           "gjs-blocks-basic": {},
@@ -182,7 +187,6 @@
           login_signup: {},
           login_signup2: {},
           carousel: {},
-          // tailwind: {},
           clearPage: {},
           undo_redo: {},
           "grapesjs-project-manager": {},
@@ -293,6 +297,7 @@
 
       //first create an object from panels
       const panelManager = editor.Panels;
+
       //add export to zip button to options panel
       const export_btn = panelManager.addButton("options", {
         id: "export_to_zip",
