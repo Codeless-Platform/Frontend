@@ -42,7 +42,7 @@ export default {
       this.target = editor.getModel();
       this.listenTo(this.target, 'component:toggled', this.toggleTm);
     }
-    if (this.$cn) this.$cn.get(0).style.order = '';
+    if (this.$cn) this.$cn.get(0).style.display = 'block';
     this.toggleTm();
   },
 
@@ -64,7 +64,7 @@ export default {
   },
 
   stop() {
-    if (this.$cn) this.$cn.get(0).style.order = '';
+    if (this.$cn) this.$cn.get(0).style.display = 'none';
     this.$cn2 && this.$cn2.hide();
     this.$header && this.$header.hide();
   },

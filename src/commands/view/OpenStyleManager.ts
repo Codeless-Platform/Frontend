@@ -95,7 +95,7 @@ export default {
         }
       });
     }
-    if (this.$cnt) this.$cnt.get(0).style.order = 1;
+    if (this.$cnt) this.$cnt.get(0).style.display = 'block';
 
     this.toggleSm();
   },
@@ -118,7 +118,7 @@ export default {
   },
 
   stop() {
-    if (this.$cnt) this.$cnt.get(0).style.order = '';
+    if (this.$cnt) this.$cnt.get(0).style.display = 'none';
     this.$cntInner?.hide();
     this.$header?.hide();
   },

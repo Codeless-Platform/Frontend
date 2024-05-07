@@ -26,13 +26,13 @@ export default {
       layers.classList.add('layers-panel');
       this.layers = layers;
     }
-    if (this.layers) this.layers.style.order = '1';
+    if (this.layers) this.layers.style.display = 'block';
     this.layers.style.display = 'block';
   },
 
   stop() {
     const { layers } = this;
-    if (this.layers) this.layers.style.order = '';
+    if (this.layers) this.layers.style.display = 'none';
     layers && (layers.style.display = 'none');
   },
 } as CommandObject<{}, { [k: string]: any }>;
