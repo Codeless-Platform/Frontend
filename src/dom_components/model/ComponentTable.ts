@@ -28,6 +28,7 @@ export default class ComponentTable extends Component {
     super.initialize(props, opts);
     const components = this.get('components')!;
     !components.length && components.add({ type: 'tbody' });
+    this.on('change:dbinput', this.setData);
     this.em.getWrapper()
       ? this.startListeningtoApi()
       : this.listenTo(this.em, 'wrapperRendered', this.startListeningtoApi);
@@ -67,6 +68,12 @@ export default class ComponentTable extends Component {
       //@ts-ignore
       this.set('traits', newtrait);
     }
+  }
+  setData() {
+    /*Method to set Columns and Rows of the table*/
+    //@ts-ignore
+    this.view?.getChildrenContainer().innerHTML = '<div>Hi</div>';
+    console.log(this.view?.getChildrenContainer());
   }
 
   static isComponent(el: HTMLElement) {
