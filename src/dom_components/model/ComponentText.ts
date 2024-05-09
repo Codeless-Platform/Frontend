@@ -37,18 +37,12 @@ export default class ComponentText extends Component {
   retrieve_json(obj: Record<string, any>[]): Record<string, string>[] {
     return [];
   }
-  /**
-   * {0 : {name: "muhamed", address: {1, 2, 3}}}
-   * {name: 0-name, value:muhamed}
-   * {name: 0-address-suite, value:  1}
-   */
 
   setOptionsFromApi() {
     let options: Record<string, string>[] = [];
     let obj: Record<string, any> = this.em.getWrapper()?.get('json');
     pushOptions(obj);
 
-    //@ts-ignore
     function pushOptions(obj: Record<string, any>, prefix = '') {
       for (let key in obj) {
         if (typeof obj[key] === 'object' && obj[key] !== null) {

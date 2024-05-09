@@ -6,14 +6,14 @@ table = (editor, opts = {}) => {
         tagName: 'table',
         components: `
         <tbody>
-        <tr>
-          <td>Insert Your text here</td>
-          <td>Insert Your text here</td>
-        </tr>
-        <tr>
-          <td>Insert Your text here</td>
-          <td>Insert Your text here</td>
-        </tr>
+          <tr>
+            <td><div>Insert Your text here</div></td>
+            <td><div>Insert Your text here</div></td>
+          </tr>
+          <tr>
+            <td><div>Insert Your text here</div></td>
+            <td><div>Insert Your text here</div></td>
+          </tr>
         </tbody>
       `,
       },

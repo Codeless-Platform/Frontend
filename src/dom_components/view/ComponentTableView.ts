@@ -8,6 +8,5 @@ export default class ComponentTableView extends ComponentView {
   }
   onRender(opts: { editor: Editor; model: Component; el: HTMLElement }): void {
     this.em.trigger('xx');
-    console.log(this);
   }
 }
