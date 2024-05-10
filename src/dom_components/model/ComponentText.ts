@@ -24,7 +24,7 @@ export default class ComponentText extends Component {
 
   startListeningtoApi() {
     if (this.em.getWrapper()?.get('json')) {
-      this.setOptionsFromApi();
+      this.on('Rendered', this.setOptionsFromApi);
     }
     this.listenTo(this.em.getWrapper(), 'change:json', this.setOptionsFromApi);
   }
@@ -59,7 +59,7 @@ export default class ComponentText extends Component {
       },
     ];
 
-    if (options.length > 0) {
+    if (options.length > 0 && this.em) {
       this.addTrait(newtrait);
     }
   }
