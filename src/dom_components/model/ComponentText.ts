@@ -9,28 +9,23 @@ export default class ComponentText extends Component {
       type: 'text',
       droppable: false,
       editable: true,
-      traits: [
-        {
-          type: 'select',
-          name: 'dbinput',
-          label: 'Content',
-          placeholder: 'api for this page',
-          changeProp: true,
-          options: [{}],
-        },
-      ],
     };
   }
 
   initialize(props: any, opts: any) {
     this.em = opts.em;
     this.on('change:dbinput', this.setData);
-    this.listenTo(this.em, 'wrapperRendered', this.startListeningtoApi);
+    this.em.getWrapper()
+      ? this.startListeningtoApi()
+      : this.listenTo(this.em, 'wrapperRendered', this.startListeningtoApi);
     super.initialize(props, opts);
     this.__checkInnerChilds();
   }
 
   startListeningtoApi() {
+    if (this.em.getWrapper()?.get('json')) {
+      this.setOptionsFromApi();
+    }
     this.listenTo(this.em.getWrapper(), 'change:json', this.setOptionsFromApi);
   }
 
@@ -65,8 +60,7 @@ export default class ComponentText extends Component {
     ];
 
     if (options.length > 0) {
-      //@ts-ignore
-      this.set('traits', newtrait);
+      this.addTrait(newtrait);
     }
   }
 
