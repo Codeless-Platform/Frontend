@@ -12,35 +12,7 @@ export default class ComponentLink extends ComponentText {
       ...super.defaults,
       type,
       tagName: 'a',
-      traits: [
-        {
-          type: 'text',
-          name: 'title',
-          label: '',
-          placeholder: '',
-          changeProp: false,
-          options: [],
-        },
-        {
-          type: 'text',
-          name: 'href',
-          label: '',
-          placeholder: '',
-          changeProp: false,
-          options: [],
-        },
-        {
-          type: 'select',
-          name: 'target',
-          label: '',
-          placeholder: '',
-          changeProp: false,
-          options: [
-            { value: 'false', name: 'This window' },
-            { value: '_blank', name: 'New window' },
-          ],
-        },
-      ],
+      traits: ['title', 'href', 'target'],
     };
   }
 
