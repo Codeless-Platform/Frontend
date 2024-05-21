@@ -18,7 +18,7 @@ export default class JsGenerator extends Model {
 
   mapModel(model: Component) {
     let code = '';
-    const script = model.get('script-export') || model.get('script');
+    const script = model.get('script-export') + model.get('script');
     const type = model.get('type')!;
     const comps = model.get('components')!;
     const id = model.getId();
@@ -88,12 +88,13 @@ export default class JsGenerator extends Model {
           }`;
       } else {
         // Deprecated
-        const ids = '#' + mapType.ids.join(', #');
-        code += `
-          var items = document.querySelectorAll('${ids}');
-          for (var i = 0, len = items.length; i < len; i++) {
-            (function(){\n${mapType.code}\n}.bind(items[i]))();
-          }`;
+        // const ids = '#' + mapType.ids.join(', #');
+        // code += `
+        //   var items = document.querySelectorAll('${ids}');
+        //   for (var i = 0, len = items.length; i < len; i++) {
+        //     (function(){\n${mapType.code}\n}.bind(items[i]))();
+        //   }`;
+        code += mapType.code;
       }
     }
 

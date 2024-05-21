@@ -11,16 +11,7 @@ export default class ComponentTable extends Component {
       type,
       tagName: type,
       droppable: ['tbody', 'thead', 'tfoot'],
-      traits: [
-        {
-          type: 'select',
-          name: 'dbinput',
-          label: 'Content',
-          placeholder: 'api for this page',
-          changeProp: true,
-          options: [{}],
-        },
-      ],
+      traits: [],
     };
   }
 
@@ -35,21 +26,20 @@ export default class ComponentTable extends Component {
   }
 
   startListeningtoApi() {
+    if (this.em.getWrapper()?.get('json')) {
+      this.setOptionsFromApi();
+    }
     this.listenTo(this.em.getWrapper(), 'change:json', this.setOptionsFromApi);
   }
 
   setOptionsFromApi() {
-    let options: Record<string, string>[] = [];
-    let obj: Record<string, any> = this.em.getWrapper()?.get('json');
-    pushOptions(obj);
+    let options: { name: string; value: string }[] = [];
+    let apiLink: string | undefined = this.em.getWrapper()?.get('apilink');
 
-    function pushOptions(obj: Record<string, any>, prefix = '') {
-      for (let key in obj) {
-        if (typeof obj[key] === 'object' && obj[key] !== null) {
-          pushOptions(obj[key], `${prefix}${key}-`);
-        } else {
-          options.push({ name: `${prefix}${key}`, value: obj[key] });
-        }
+    if (apiLink) {
+      const lastSegment = apiLink.split('/').filter(Boolean).pop();
+      if (lastSegment) {
+        options.push({ name: lastSegment, value: lastSegment });
       }
     }
 
@@ -65,15 +55,69 @@ export default class ComponentTable extends Component {
     ];
 
     if (options.length > 0) {
-      //@ts-ignore
-      this.set('traits', newtrait);
+      this.addTrait(newtrait);
     }
   }
   setData() {
-    /*Method to set Columns and Rows of the table*/
-    //@ts-ignore
-    this.view?.getChildrenContainer().innerHTML = '<div>Hi</div>';
-    console.log(this.view?.getChildrenContainer());
+    const components = this.components().models;
+
+    while (components.length > 0) {
+      let comp = components[0];
+      comp && comp.remove();
+    }
+
+    const script = `async function fetchData() {
+      const res = await fetch('${this.em.getWrapper()?.get('apilink')}');
+      const userData = await res.json();
+      createTable(userData);
+    }
+    function createTable(userData) {
+      const table = document.getElementById('${this.getId()}');
+      while (table.firstChild) {
+        table.removeChild(table.firstChild);
+      }
+      const headers = Object.keys(userData[0]);
+      const headerRow = document.createElement('tr');
+      headers.forEach((headerText) => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+
+      // Create table rows
+      userData.forEach((user) => {
+        const row = document.createElement('tr');
+        headers.forEach((header) => {
+          const cell = createTableCell(user[header]);
+          row.appendChild(cell);
+        });
+        table.appendChild(row);
+      });
+    }
+
+    function createTableCell(value) {
+      const cell = document.createElement('td');
+      if (typeof value === 'object') {
+        const innerTable = document.createElement('table');
+        Object.entries(value).forEach(([key, innerValue]) => {
+          const innerRow = document.createElement('tr');
+          const innerKeyCell = document.createElement('td');
+          innerKeyCell.textContent = key;
+          const innerValueCell = createTableCell(innerValue); // Recursive call
+          innerRow.appendChild(innerKeyCell);
+          innerRow.appendChild(innerValueCell);
+          innerTable.appendChild(innerRow);
+        });
+        cell.appendChild(innerTable);
+      } else {
+        cell.textContent = value;
+      }
+      return cell;
+    }
+
+    fetchData();`;
+    this.set('script-export', script);
   }
 
   static isComponent(el: HTMLElement) {

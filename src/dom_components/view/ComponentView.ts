@@ -66,7 +66,7 @@ Component> {
     this.listenTo(model, 'change:attributes', this.renderAttributes);
     this.listenTo(model, 'change:highlightable', this.updateHighlight);
     this.listenTo(model, 'change:status change:locked', this.updateStatus);
-    this.listenTo(model, 'change:script rerender', this.reset);
+    this.listenTo(model, 'change:script change:script-export rerender', this.reset);
     this.listenTo(model, 'change:content', this.updateContent);
     this.listenTo(model, 'change', this.handleChange);
     this.listenTo(model, 'active', this.onActive);
@@ -379,8 +379,9 @@ Component> {
    * @private
    */
   updateScript() {
+    console.log(2);
     const { model, em } = this;
-    if (!model.get('script')) return;
+    if (!model.get('script') && !model.get('script-export')) return;
     em?.Canvas.getCanvasView().updateScript(this);
   }
 

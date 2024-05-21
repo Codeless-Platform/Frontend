@@ -9,6 +9,7 @@ import ComponentText from '../model/ComponentText';
 import { getComponentIds } from '../model/Components';
 import { ComponentDefinition } from '../model/types';
 import ComponentView from './ComponentView';
+import Editor from '../../editor';
 
 export default class ComponentTextView extends ComponentView {
   rte?: RichTextEditorModule;
@@ -219,6 +220,10 @@ export default class ComponentTextView extends ComponentView {
 
     // Update toolbars
     em && em.trigger(ev, this.model);
+  }
+
+  onRender(opts: { editor: Editor; model: Component; el: HTMLElement }): void {
+    this.model.trigger('Rendered');
   }
 
   /**

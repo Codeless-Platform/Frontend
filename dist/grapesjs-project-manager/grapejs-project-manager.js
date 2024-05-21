@@ -3924,17 +3924,20 @@
                           t.next = 21;
                           break;
                         }
-                        return (t.next = 6), r.loadAll();
+                        return (t.next = 6), r && r.loadAll();
                       case 6:
-                        if (((o = t.sent), !(i = o[0]) || !n.loadFirst)) {
-                          t.next = 19;
-                          break;
+                        o = t.sent;
+                        if (o) {
+                          if (!(i = o[0]) || !n.loadFirst) {
+                            t.next = 19;
+                            break;
+                          }
                         }
                         return (
-                          r.setId(i.id),
-                          r.setName(i.name),
-                          r.setThumbnail(i.thumbnail),
-                          r.setIsTemplate(i.template),
+                          r && r.setId(i.id),
+                          r && r.setName(i.name),
+                          r && r.setThumbnail(i.thumbnail),
+                          r && r.setIsTemplate(i.template),
                           (t.next = 15),
                           e.load()
                         );

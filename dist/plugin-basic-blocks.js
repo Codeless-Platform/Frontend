@@ -183,25 +183,6 @@
                     ),
                 })
               ),
-              w('table') &&
-                t.add(
-                  'table',
-                  e(e({}, M), {
-                    label: a.labeltable,
-                    media:
-                      '<svg viewBox="0 0 24 24">\n        <path fill="currentColor" d="M2 20h20V4H2v16Zm-1 0V4a1 1 0 0 1 1-1h20a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1Z"/>\n      </svg>',
-                    content: '<div '
-                      .concat(L, '>\n        <div ')
-                      .concat(H, '></div>\n      </div>\n      ')
-                      .concat(
-                        r
-                          ? '<style>\n          '
-                              .concat(m, '\n          ')
-                              .concat(p, '\n        </style>')
-                          : ''
-                      ),
-                  })
-                ),
               w('column2') &&
                 t.add(
                   'column2',
@@ -345,7 +326,6 @@
                   'column1',
                   'column2',
                   'column3',
-                  'table',
                   'column3-7',
                   'text',
                   'link',
@@ -360,7 +340,6 @@
                 labelColumn1: '1 Column',
                 labelColumn2: '2 Columns',
                 labelColumn3: '3 Columns',
-                labeltable: 'Table',
                 labelColumn37: '2 Columns 3/7',
                 labelText: 'Text',
                 labelLink: 'Link',
