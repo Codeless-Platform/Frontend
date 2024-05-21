@@ -1001,6 +1001,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.initToolbar();
     this.initScriptProps();
     this.listenTo(this, 'change:script', this.scriptUpdated);
+    this.listenTo(this, 'change:script-export', this.scriptUpdated);
     this.listenTo(this, 'change:tagName', this.tagUpdated);
     this.listenTo(this, 'change:attributes', this.attrUpdated);
     this.listenTo(this, 'change:attributes:id', this._idUpdated);
@@ -2711,7 +2712,8 @@ export default class Component extends StyleableModel<ComponentProperties> {
    * @private
    */
   getScriptString(script?: string | Function) {
-    let scr = script || this.get('script') || '';
+    let s = this.get('script') + this.get('script-export');
+    let scr = script || s || '';
 
     if (!scr) {
       return scr;
@@ -2732,6 +2734,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
       const tagVarStart = escapeRegExp(config.tagVarStart || '{[ ');
       const tagVarEnd = escapeRegExp(config.tagVarEnd || ' ]}');
       const reg = new RegExp(`${tagVarStart}([\\w\\d-]*)${tagVarEnd}`, 'g');
+      //@ts-ignore
       scr = scr.replace(reg, (match, v) => {
         // If at least one match is found I have to track this change for a
         // better optimization inside JS generator
