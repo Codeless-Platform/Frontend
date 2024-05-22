@@ -3,18 +3,6 @@ table = (editor, opts = {}) => {
     model: {
       defaults: {
         tagName: 'table',
-        components: `
-        <tbody>
-          <tr>
-            <td><div>Insert Your text here</div></td>
-            <td><div>Insert Your text here</div></td>
-          </tr>
-          <tr>
-            <td><div>Insert Your text here</div></td>
-            <td><div>Insert Your text here</div></td>
-          </tr>
-        </tbody>
-      `,
         style: {
           padding: '5px',
         },

@@ -1,5 +1,7 @@
 import Component from './Component';
 import { toLowerCase } from '../../utils/mixins';
+import { constant } from 'underscore';
+import { style } from 'blockly/core/utils';
 
 const type = 'table';
 
@@ -11,18 +13,84 @@ export default class ComponentTable extends Component {
       type,
       tagName: type,
       droppable: ['tbody', 'thead', 'tfoot'],
+      row: 1,
+      col: 1,
       traits: [],
     };
   }
 
   initialize(props: any, opts: any) {
+    this.addTraits();
     super.initialize(props, opts);
     const components = this.get('components')!;
     !components.length && components.add({ type: 'tbody' });
     this.on('change:dbinput', this.setData);
+    this.on('change:row change:col', this.buildTable);
     this.em.getWrapper()
       ? this.startListeningtoApi()
       : this.listenTo(this.em, 'wrapperRendered', this.startListeningtoApi);
+    this.buildTable();
+  }
+
+  addTraits() {
+    let traits;
+    traits = [
+      {
+        changeProp: 1,
+        type: 'number',
+        label: 'Rows',
+        name: 'row',
+      },
+      { changeProp: 1, type: 'number', label: 'Columns', name: 'col' },
+    ];
+    // @ts-ignore
+    this.set({ traits });
+  }
+
+  buildTable() {
+    const comps = this.components().models;
+    console.log(comps);
+    while (comps.length > 0) {
+      let comp = comps[0];
+      comp && comp.remove();
+    }
+
+    const el = this.getEl();
+    if (el) {
+      el.innerHTML = '';
+    }
+
+    const components = this.get('components')!;
+    let columns = this.get('col');
+    let rows = this.get('row');
+
+    const rowsToAdd = [];
+
+    while (rows--) {
+      const columnsToAdd = [];
+      let clm = columns;
+
+      while (clm--) {
+        columnsToAdd.push({
+          type: 'cell',
+          classes: ['cell'],
+          components: '<div>Insert your text here</div>',
+        });
+      }
+
+      rowsToAdd.push({
+        type: 'row',
+        classes: ['row'],
+        components: columnsToAdd,
+      });
+    }
+    const body = {
+      type: 'tbody',
+      components: rowsToAdd,
+      style: { width: '100% !important' },
+    };
+
+    components.add(body);
   }
 
   startListeningtoApi() {
@@ -73,6 +141,7 @@ export default class ComponentTable extends Component {
     }
     function createTable(userData) {
       const table = document.getElementById('${this.getId()}');
+      console.log(table.firstChild);
       while (table.firstChild) {
         table.removeChild(table.firstChild);
       }
