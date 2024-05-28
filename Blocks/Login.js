@@ -1,96 +1,96 @@
 login = (editor, opts = {}) => {
-    // const script1 = function () {
-    //   const name_input = document.getElementsByClassName('name')[0];
-    //   const pass_input = document.getElementsByClassName('pass')[0];
-    //   const send_Btn = document.getElementsByClassName('sendBtn')[0];
-    //   const form = document.querySelector('form');
+  // const script1 = function () {
+  //   const name_input = document.getElementsByClassName('name')[0];
+  //   const pass_input = document.getElementsByClassName('pass')[0];
+  //   const send_Btn = document.getElementsByClassName('sendBtn')[0];
+  //   const form = document.querySelector('form');
 
-    //   if (name_input.value === 'Initial value') {
-    //     name_input.focus();
-    //   }
+  //   if (name_input.value === 'Initial value') {
+  //     name_input.focus();
+  //   }
 
-    //   send_Btn.addEventListener('click', function (e) {
-    //     if (name_input.value !== '' && pass_input.value !== '') {
-    //       e.preventDefault();
+  //   send_Btn.addEventListener('click', function (e) {
+  //     if (name_input.value !== '' && pass_input.value !== '') {
+  //       e.preventDefault();
 
-    //       console.log('Your name is:', name_input.value);
-    //       console.log('Your Pass is:', pass_input.value);
+  //       console.log('Your name is:', name_input.value);
+  //       console.log('Your Pass is:', pass_input.value);
 
-    //       // Include the JWT token in your request headers
-    //       const requestOptions = {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: `{"identifier": "${name_input.value}", "password": "${pass_input.value}"}`,
-    //       };
+  //       // Include the JWT token in your request headers
+  //       const requestOptions = {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: `{"identifier": "${name_input.value}", "password": "${pass_input.value}"}`,
+  //       };
 
-    //       //const apiLink = 'http://localhost:1337/api/auth/local';
-    //       const apiLink = form.getAttribute('API');
+  //       //const apiLink = 'http://localhost:1337/api/auth/local';
+  //       const apiLink = form.getAttribute('API');
 
-    //       // Replace the API endpoint with your actual API endpoint
-    //       fetch(apiLink, requestOptions)
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //           console.log('Response from the server:', data);
-    //           alert('Login Successfully');
-    //         })
-    //         .catch((error) => {
-    //           console.error('Error:', error);
-    //           alert('Error', error);
-    //         });
-    //     }
-    //   });
-    // };
-    const script1 = function() {
-        document.querySelector('.submitBtn').style.cursor = 'pointer';
+  //       // Replace the API endpoint with your actual API endpoint
+  //       fetch(apiLink, requestOptions)
+  //         .then((response) => response.json())
+  //         .then((data) => {
+  //           console.log('Response from the server:', data);
+  //           alert('Login Successfully');
+  //         })
+  //         .catch((error) => {
+  //           console.error('Error:', error);
+  //           alert('Error', error);
+  //         });
+  //     }
+  //   });
+  // };
+  const script1 = function () {
+    document.querySelector('.submitBtn').style.cursor = 'pointer';
 
-        const loginForm = document.querySelector('form');
+    const loginForm = document.querySelector('form');
 
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-            const email = document.querySelector('.email').value;
-            const password = document.querySelector('.pass').value;
+      const email = document.querySelector('.email').value;
+      const password = document.querySelector('.pass').value;
 
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    identifier: email,
-                    password: password,
-                }),
-            };
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          identifier: email,
+          password: password,
+        }),
+      };
 
-            const apiLink = 'http://localhost:1337/api/auth/local';
-            const pageName = loginForm.getAttribute('pageName');
+      const apiLink = 'http://localhost:1337/api/auth/local';
+      const pageName = loginForm.getAttribute('pageName');
 
-            fetch(apiLink, requestOptions)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('User name or password are wrong,try again..');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    // console.log("Response from the server:", data);
-                    alert('Login Successfully');
-                    window.location.href = `${pageName}.html`;
-                })
-                .catch((error) => {
-                    document.querySelector('.email').value = '';
-                    document.querySelector('.pass').value = '';
-                    alert(error);
-                });
+      fetch(apiLink, requestOptions)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('User name or password are wrong,try again..');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // console.log("Response from the server:", data);
+          alert('Login Successfully');
+          window.location.href = `${pageName}.html`;
+        })
+        .catch((error) => {
+          document.querySelector('.email').value = '';
+          document.querySelector('.pass').value = '';
+          alert(error);
         });
-    };
-    editor.Components.addType('login-with-js', {
-        model: {
-            defaults: {
-                tagName: 'form',
-                components: `
+    });
+  };
+  editor.Components.addType('login-with-js', {
+    model: {
+      defaults: {
+        tagName: 'form',
+        components: `
       <label for="email-field">Email:</label>
       <input class="email" type="email" required></input>
       <br>
@@ -189,23 +189,25 @@ login = (editor, opts = {}) => {
       }
             </style>
       `,
-                script: script1, // Pass editor as a parameter using bind
-                droppable: false,
+        script: script1, // Pass editor as a parameter using bind
+        droppable: false,
 
-                traits: [{
-                    type: 'text',
-                    name: 'pageName',
-                    label: 'Go to Page',
-                    placeholder: 'name of page you want to go',
-                }, ],
-            },
-        },
-    });
+        traits: [
+          {
+            type: 'text',
+            name: 'pageName',
+            label: 'Go to Page',
+            placeholder: 'name of page you want to go',
+          },
+        ],
+      },
+    },
+  });
 
-    editor.BlockManager.add('Login', {
-        label: 'LoginTemp1',
-        media: `<img src="../imgs/login.png" height="50px" width="50px" />`,
-        category: 'Auth Pages',
-        content: { type: 'login-with-js' },
-    });
+  editor.BlockManager.add('Login', {
+    label: 'LoginTemp1',
+    media: '<img src="../imgs/login.png" height="50px" width="50px" />',
+    category: 'Auth Pages',
+    content: { type: 'login-with-js' },
+  });
 };

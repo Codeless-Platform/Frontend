@@ -49,7 +49,6 @@ export default class ComponentTable extends Component {
 
   buildTable() {
     const comps = this.components().models;
-    console.log(comps);
     while (comps.length > 0) {
       let comp = comps[0];
       comp && comp.remove();
@@ -141,7 +140,6 @@ export default class ComponentTable extends Component {
     }
     function createTable(userData) {
       const table = document.getElementById('${this.getId()}');
-      console.log(table.firstChild);
       while (table.firstChild) {
         table.removeChild(table.firstChild);
       }

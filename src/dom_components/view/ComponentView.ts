@@ -379,7 +379,6 @@ Component> {
    * @private
    */
   updateScript() {
-    console.log(2);
     const { model, em } = this;
     if (!model.get('script') && !model.get('script-export')) return;
     em?.Canvas.getCanvasView().updateScript(this);
