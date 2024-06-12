@@ -491,7 +491,7 @@ span.CodeMirror-selectedtext {
 }
 
 .cm-s-hopscotch.CodeMirror {
-  background: #322931;
+  background: var(--gjs-codeMirror-color);
   color: #d5d3d5;
 }
 
@@ -500,7 +500,7 @@ span.CodeMirror-selectedtext {
 }
 
 .cm-s-hopscotch .CodeMirror-gutters {
-  background: #322931;
+  background: var(--gjs-codeMirror-color);
   border-right: 0px;
 }
 
@@ -1412,6 +1412,7 @@ span.CodeMirror-selectedtext {
   --gjs-tertiary-color: #804f7b;
   --gjs-quaternary-color: #d278c9;
   --gjs-font-color: #ddd;
+  --gjs-codeMirror-color: #322931;
   --gjs-font-color-active: #f8f8f8;
   --gjs-main-dark-color: rgba(0, 0, 0, 0.2);
   --gjs-secondary-dark-color: rgba(0, 0, 0, 0.1);
@@ -1497,7 +1498,7 @@ span.CodeMirror-selectedtext {
   cursor: pointer;
   padding: 5px;
   width: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0,0.5);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   /* Text styling */
   font-family: sans-serif;
   font-size: 12px;
@@ -3615,7 +3616,7 @@ span.CodeMirror-selectedtext {
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.05);
   animation: gjs-slide-down 0.215s;
   margin: auto;
-  max-width: 850px;
+  max-width: 1000px;
   width: 90%;
   border-radius: 3px;
   font-weight: lighter;
@@ -3843,7 +3844,13 @@ span.CodeMirror-selectedtext {
 }
 
 .gjs-cm-editor#gjs-cm-htmlmixed {
-  /* border-right: 1px solid var(--gjs-main-dark-color); */
+  border: 1px solid var(--gjs-main-dark-color);
+}
+.gjs-cm-editor#gjs-cm-css {
+  border: 1px solid var(--gjs-main-dark-color);
+}
+.gjs-cm-editor#gjs-cm-javascript {
+  border: 1px solid var(--gjs-main-dark-color);
 }
 
 .gjs-cm-editor#gjs-cm-htmlmixed #gjs-cm-title {
@@ -4086,16 +4093,18 @@ span.CodeMirror-selectedtext {
   }
 }
 
-button {
-  padding: 10px 20px;
-  background-color: var(--gjs-main-color);
+button,
+.gjs-btn-prim {
+  background-color: var(--gjs-main-dark-color) !important;
   color: #fff;
-  border: none;
+  border: 2px solid transparent !important;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: black;
+button:hover,
+.gjs-btn-prim:hover {
+  border-color: var(--gjs-main-dark-color) !important;
+  background-color: transparent !important;
 }
 
 .fadeOut {
