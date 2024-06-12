@@ -1,10 +1,10 @@
 /* eslint-disable quotes */
 carousel = (editor, opts = {}) => {
-    editor.Components.addType('carousel', {
-        model: {
-            defaults: {
-                tageName: 'div',
-                components: `
+  editor.Components.addType('carousel', {
+    model: {
+      defaults: {
+        tageName: 'div',
+        components: `
                 <div class="slideshow-container">
                 <div class="mySlides ">
                     <div class="numbertext">1 / 4</div>
@@ -152,7 +152,7 @@ carousel = (editor, opts = {}) => {
     
       `,
 
-                script: `        let slideIndex = 1;
+        script: `        let slideIndex = 1;
                 showSlides(slideIndex);
         
                 function plusSlides(n) {
@@ -190,15 +190,15 @@ carousel = (editor, opts = {}) => {
                     dots[slideIndex - 1].className += " active";
 
                 }`,
-            },
-        },
-    });
-    editor.BlockManager.add('carousel', {
-        label: 'carousel',
-        media: `<img src="./imgs/carousel.png" width=50  />`,
-        category: 'Custom',
-        content: {
-            type: 'carousel',
-        },
-    });
+      },
+    },
+  });
+  editor.BlockManager.add('carousel', {
+    label: 'Carousel',
+    media: `<img src="./imgs/carousel.svg" width=100%  />`,
+    category: 'Custom',
+    content: {
+      type: 'carousel',
+    },
+  });
 };
