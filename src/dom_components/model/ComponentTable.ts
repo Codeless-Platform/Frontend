@@ -86,7 +86,6 @@ export default class ComponentTable extends Component {
     const body = {
       type: 'tbody',
       components: rowsToAdd,
-      style: { width: '100% !important' },
     };
 
     components.add(body);

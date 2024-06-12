@@ -7,7 +7,8 @@
     <link rel="icon" href="imgs\70x70 white.png" type="image/x-icon" />
     <script src="grapes.min.js"></script>
     <script src="./dist/grapesjs-script-editor.min.js"></script>
-    <script src="./dist/grapesjs-tailwind.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="./dist/grapesjs-tailwind.min.js"></script> -->
     <script src="./dist/grapesjs-plugin-forms/dist/index.js"></script>
     <script src="./dist/grapesjs-parser-postcss/dist/index.js"></script>
     <script src="./dist/plugin-export-to-zip.js"></script>
@@ -27,7 +28,7 @@
     <script src="./Blocks/Company2.js"></script>
     <script src="./Blocks/Company4.js"></script>
     <script src="./Blocks/carousel.js"></script>
-    <!-- <script src="./Blocks/tailwind.js"></script> -->
+    <script src="./Blocks/tailwind.js"></script>
     <script src="./plugins/saveFile.js"></script>
     <script src="./plugins/openFile.js"></script>
     <script src="./plugins/clearPage.js"></script>
@@ -41,9 +42,8 @@
     <script src="./dist/grapesjs-blockly/grapesjs-blockly.js"></script>
     <script src="./dist/grapesjs-templates.js"></script>
     <script src="./dist/grapesjs-pages-manager.js"></script>
+    <!-- <script src="./Blocks/Table.js"></script> -->
     <script src="./dist/grapesjs-blocks-table.min.js"></script>
-    <script src="./Blocks/Table.js"></script>
-    <!-- <script src="https://unpkg.com/grapesjs-table"></script> -->
 
     <style>
       body,
@@ -142,13 +142,15 @@
         container: "#gjs",
         allowScripts: 1,
         fromElement: true,
+        theme: "light",
         cssComposer: {},
         plugins: [
           "grapesjs-blockly",
           "grapesjs-plugin-export",
           "gjs-blocks-basic",
+          "grapesjs-blocks-table",
           "grapesjs-project-manager",
-          "table",
+          // "table",
           "grapesjs-tailwind",
           "grapesjs-plugin-forms",
           "grapesjs-script-editor",
@@ -161,7 +163,7 @@
           "login_signup",
           "login_signup2",
           "carousel",
-          // "tailwind",
+          "tailwind",
           "clearPage",
           "undo_redo",
           "saveFile",

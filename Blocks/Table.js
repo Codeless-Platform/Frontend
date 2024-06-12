@@ -1,14 +1,4 @@
 table = (editor, opts = {}) => {
-  editor.Components.addType('table', {
-    model: {
-      defaults: {
-        tagName: 'table',
-        style: {
-          padding: '5px',
-        },
-      },
-    },
-  });
   editor.BlockManager.add('Table', {
     label: 'Table',
     media: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
