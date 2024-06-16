@@ -2713,7 +2713,9 @@ export default class Component extends StyleableModel<ComponentProperties> {
    */
   getScriptString(script?: string | Function) {
     let s = this.get('script') + this.get('script-export');
-    let scr = script || s || '';
+    let scr;
+    if (!isUndefined(script)) scr = script;
+    else scr = s || '';
 
     if (!scr) {
       return scr;

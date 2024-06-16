@@ -574,7 +574,7 @@ export default class CanvasView extends ModuleView<Canvas> {
     // In editor, I make use of setTimeout as during the append process of elements
     // those will not be available immediately, therefore 'item' variable
     const script = document.createElement('script');
-    const scriptFn = model.getScriptString();
+    const scriptFn = model.getScriptString(model.get('script'));
     const scriptFnStr = model.get('script-props') ? scriptFn : `function(){\n${scriptFn}\n;}`;
     const scriptProps = JSON.stringify(model.__getScriptProps());
     script.innerHTML = `
