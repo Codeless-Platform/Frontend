@@ -103,7 +103,6 @@ export default class Trait extends Model<TraitProperties> {
   constructor(prop: TraitProperties, em: EditorModel) {
     super(prop);
     const { target, name } = this.attributes;
-    // console.log(this.attributes);
     !this.get('id') && this.set('id', name);
     if (target) {
       this.setTarget(target);
@@ -312,8 +311,21 @@ export default class Trait extends Model<TraitProperties> {
         valueToSet = valueFalse;
       }
     }
+    if (this.getType() === 'api' && this.get('changeProp')) {
+      const { name, link } = value;
+      const existingApiIndex = target.attributes.apis.findIndex((api: Record<any, any>) => api.link === link);
 
-    if (this.get('changeProp')) {
+      if (existingApiIndex !== -1) {
+        target.attributes.apis[existingApiIndex].name = name;
+        target.attributes.apis[existingApiIndex].link = link;
+        target.set('apiUpdated', target.attributes.apis.length - 1);
+        target.trigger('change:apis');
+      } else {
+        target.attributes.apis.push({ name: name, link: link, json: '' });
+        target.set('apiUpdated', target.attributes.apis.length - 1);
+        target.trigger('change:apis');
+      }
+    } else if (this.get('changeProp')) {
       target.set(name, valueToSet, opts);
     } else {
       target.addAttributes({ [name]: valueToSet }, opts);

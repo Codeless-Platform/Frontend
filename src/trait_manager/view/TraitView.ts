@@ -13,6 +13,7 @@ export default class TraitView extends View<Trait> {
   elInput!: HTMLInputElement;
   input?: HTMLInputElement;
   $input?: JQuery<HTMLInputElement>;
+  $extraInput?: JQuery<HTMLInputElement>;
   eventCapture!: string[];
   noLabel?: boolean;
   em: EditorModel;
@@ -35,7 +36,7 @@ export default class TraitView extends View<Trait> {
     return `<div class="${ppfx}label" title="${label}">${label}</div>`;
   }
 
-  templateInput(data: ReturnType<TraitView['getClbOpts']>) {
+  templateInput(data: ReturnType<TraitView['getClbOpts']>, target?: String) {
     const { clsField } = this;
     return `<div class="${clsField}" data-input></div>`;
   }
@@ -95,7 +96,21 @@ export default class TraitView extends View<Trait> {
    */
   onChange(event: Event) {
     const el = this.getInputElem();
-    if (el && !isUndefined(el.value)) {
+    const extraEl = this.getExtraInputElem();
+    if (this.model.getType() == 'api') {
+      if (el && extraEl && !isUndefined(el.value) && !isUndefined(extraEl.value)) {
+        this.model.set('value', { link: el.value, name: extraEl.value });
+        // if (el.value && extraEl.value)
+        //   this.target.addTrait([
+        //     {
+        //       type: 'api',
+        //       name: 'c',
+        //       label: 'API',
+        //       changeProp: true,
+        //     },
+        //   ]);
+      }
+    } else if (el && !isUndefined(el.value)) {
       this.model.set('value', el.value);
     }
     this.onEvent({
@@ -110,7 +125,9 @@ export default class TraitView extends View<Trait> {
 
   setInputValue(value: string) {
     const el = this.getInputElem();
+    const extraEl = this.getExtraInputElem();
     el && (el.value = value);
+    extraEl && (extraEl.value = value);
   }
 
   /**
@@ -210,6 +227,11 @@ export default class TraitView extends View<Trait> {
   getInputElem() {
     const { input, $input } = this;
     return input || ($input && $input.get && $input.get(0)) || this.getElInput();
+  }
+
+  getExtraInputElem() {
+    const { $extraInput } = this;
+    return ($extraInput && $extraInput.get && $extraInput.get(0)) || this.getElInput();
   }
 
   getModelValue() {

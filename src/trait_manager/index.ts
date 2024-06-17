@@ -12,6 +12,7 @@ import TraitButtonView from './view/TraitButtonView';
 import EditorModel from '../editor/model/Editor';
 import Component from '../dom_components/model/Component';
 import Trait from './model/Trait';
+import TraitApiView from './view/TraitApiView';
 
 export const evAll = 'trait';
 export const evPfx = `${evAll}:`;
@@ -24,6 +25,7 @@ const typesDef: { [id: string]: { new (o: any): TraitView } } = {
   checkbox: TraitCheckboxView,
   color: TraitColorView,
   button: TraitButtonView,
+  api: TraitApiView,
 };
 
 interface ITraitView {
