@@ -33,15 +33,13 @@ export default class ComponentWrapper extends Component {
       ],
     };
   }
+
   initialize(props: any, opts: any) {
     this.on('change:apiUpdated', this.fetchApi);
-    this.on('change:apis', this.dothis);
     super.initialize(props, opts);
     this.addNewTrait();
   }
-  dothis() {
-    console.log(9);
-  }
+
   addNewTrait() {
     this.addTrait([
       {
