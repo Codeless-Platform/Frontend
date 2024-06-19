@@ -104,11 +104,9 @@ export default class Animation extends Model<AnimationProperties> {
   constructor(prop: AnimationProperties, em: EditorModel) {
     super(prop);
     const { target, name } = this.attributes;
-    // console.log(this.attributes);
     !this.get('id') && this.set('id', name);
     if (target) {
       this.setTarget(target);
-      console.log(656);
     }
     this.em = em;
   }

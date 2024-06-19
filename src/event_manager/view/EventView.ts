@@ -163,8 +163,6 @@ export default class EventView extends View<Event> {
    */
   onValueChange(model: Event, value: string, opts: SetOptions & { fromTarget?: boolean } = {}) {
     if (opts.fromTarget) {
-      // this.setEInputValue(model.get('eventx').value);
-      // this.setHInputValue(model.get('handler').value);
       this.postUpdate();
     } else {
       const val = this.getValueForTarget();
@@ -285,6 +283,7 @@ export default class EventView extends View<Event> {
 
     return this.$einput!.get(0);
   }
+
   getHandlerInputEl() {
     if (!this.$hinput) {
       const { model, em } = this;

@@ -11,14 +11,14 @@ export default class ComponentWrapper extends Component {
       copyable: false,
       draggable: false,
       components: [],
-      apilink: '',
+      apiUpdated: false,
       json: {},
+      apis: [],
       traits: [
         {
-          type: 'text',
+          type: 'api',
           name: 'apilink',
           label: 'API',
-          placeholder: 'api for this page',
           changeProp: true,
         },
       ],
@@ -34,15 +34,47 @@ export default class ComponentWrapper extends Component {
     };
   }
   initialize(props: any, opts: any) {
-    this.on('change:apilink', this.fetchApi);
+    this.on('change:apiUpdated', this.fetchApi);
+    this.on('change:apis', this.dothis);
     super.initialize(props, opts);
+    this.addNewTrait();
   }
-
+  dothis() {
+    console.log(9);
+  }
+  addNewTrait() {
+    this.addTrait([
+      {
+        type: 'button',
+        name: 'addnewAPI',
+        label: '',
+        changeProp: true,
+        text: 'Add New API',
+        command: () => {
+          if (this.em) {
+            this.addTrait(
+              [
+                {
+                  type: 'api',
+                  name: [...Array(length)].map(() => Math.random().toString(36).charAt(2)).join(''),
+                  label: 'API',
+                  changeProp: true,
+                },
+              ],
+              {
+                at: this.getTraits().length - 1,
+              }
+            );
+          }
+        },
+      },
+    ]);
+  }
   fetchApi() {
-    fetch(this.get('apilink'))
+    fetch(this.get('apis')[this.get('apiUpdated')].link)
       .then(response => response.json())
       .then(json => {
-        this.set('json', json);
+        this.get('apis')[this.get('apiUpdated')].json = json;
         console.log(json);
       });
   }

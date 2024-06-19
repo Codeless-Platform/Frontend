@@ -7,7 +7,8 @@
     <link rel="icon" href="imgs\70x70 white.png" type="image/x-icon" />
     <script src="grapes.min.js"></script>
     <script src="./dist/grapesjs-script-editor.min.js"></script>
-    <script src="./dist/grapesjs-tailwind.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="./dist/grapesjs-tailwind.min.js"></script> -->
     <script src="./dist/grapesjs-plugin-forms/dist/index.js"></script>
     <script src="./dist/grapesjs-parser-postcss/dist/index.js"></script>
     <script src="./dist/plugin-export-to-zip.js"></script>
@@ -41,9 +42,8 @@
     <script src="./dist/grapesjs-blockly/grapesjs-blockly.js"></script>
     <script src="./dist/grapesjs-templates.js"></script>
     <script src="./dist/grapesjs-pages-manager.js"></script>
+    <!-- <script src="./Blocks/Table.js"></script> -->
     <script src="./dist/grapesjs-blocks-table.min.js"></script>
-    <script src="./Blocks/Table.js"></script>
-    <!-- <script src="https://unpkg.com/grapesjs-table"></script> -->
 
     <style>
       body,
@@ -59,13 +59,7 @@
       <div class="panel">
         <h1 class="welcome">Welcome to</h1>
         <div class="big-title">
-          <img
-            src="imgs\70x70 white.png"
-            alt="Logo"
-            width="90"
-            height="90"
-            class="logo"
-          />
+          <img src="imgs\Codeless_Logo.png" alt="Logo" class="logo" />
           Codeless Platform
         </div>
         <div class="description">
@@ -142,14 +136,16 @@
         container: "#gjs",
         allowScripts: 1,
         fromElement: true,
+        theme: "light",
         cssComposer: {},
         plugins: [
           "grapesjs-blockly",
           "grapesjs-plugin-export",
           "gjs-blocks-basic",
+          "grapesjs-blocks-table",
           "grapesjs-project-manager",
-          "table",
-          "grapesjs-tailwind",
+          // "table",
+          // "grapesjs-tailwind",
           "grapesjs-plugin-forms",
           "grapesjs-script-editor",
           "grapesjs-parser-postcss",
@@ -175,7 +171,7 @@
           saveFile: {},
           openFile: {},
           "gjs-blocks-basic": {},
-          "grapesjs-tailwind": {},
+          // "grapesjs-tailwind": {},
           "grapesjs-plugin-forms": {},
           "grapesjs-script-editor": {},
           "grapesjs-parser-postcss": {},
