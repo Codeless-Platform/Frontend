@@ -23,10 +23,10 @@ export default class ComponentText extends Component {
   }
 
   startListeningtoApi() {
-    if (this.em.getWrapper()?.get('json')) {
+    if (this.em.getWrapper()?.get('apis')) {
       this.on('Rendered', this.setOptionsFromApi);
     }
-    this.listenTo(this.em.getWrapper(), 'change:json', this.setOptionsFromApi);
+    this.listenTo(this.em.getWrapper(), 'change:apis', this.setOptionsFromApi);
   }
 
   retrieve_json(obj: Record<string, any>[]): Record<string, string>[] {
@@ -34,18 +34,36 @@ export default class ComponentText extends Component {
   }
 
   setOptionsFromApi() {
-    let options: Record<string, string>[] = [];
-    let obj: Record<string, any> = this.em.getWrapper()?.get('json');
+    let options: Record<string, any>[] = [];
+    let obj: Record<string, any> = this.em.getWrapper()?.get('apis');
     pushOptions(obj);
 
-    function pushOptions(obj: Record<string, any>, prefix = '') {
-      for (let key in obj) {
-        if (typeof obj[key] === 'object' && obj[key] !== null) {
-          pushOptions(obj[key], `${prefix}${key}-`);
-        } else {
-          options.push({ name: `${prefix}${key}`, value: obj[key] });
+    function pushOptions(obj: Record<string, any>) {
+      Object.keys(obj).forEach(key => {
+        const item = obj[key];
+        const name = item.name;
+        const json = item.json;
+
+        function processElement(element: any, prefix: string) {
+          if (Array.isArray(element)) {
+            element.forEach((subElem, index) => {
+              processElement(subElem, `${prefix}-${index}`);
+            });
+          } else if (typeof element === 'object' && element !== null) {
+            Object.keys(element).forEach(elemKey => {
+              const optionName = `${prefix}-${elemKey}`;
+              const optionValue = element[elemKey];
+              processElement(optionValue, optionName);
+            });
+          } else {
+            options.push({ name: prefix, value: element });
+          }
         }
-      }
+
+        processElement(json, name);
+      });
+
+      console.log(options);
     }
 
     const newtrait = [
@@ -60,6 +78,7 @@ export default class ComponentText extends Component {
     ];
 
     if (options.length > 0 && this.em) {
+      this.removeTrait('dbinput');
       this.addTrait(newtrait);
     }
   }
