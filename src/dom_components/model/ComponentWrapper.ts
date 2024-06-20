@@ -11,13 +11,12 @@ export default class ComponentWrapper extends Component {
       copyable: false,
       draggable: false,
       components: [],
-      apiUpdated: false,
       json: {},
       apis: [],
       traits: [
         {
           type: 'api',
-          name: 'apilink',
+          name: [...Array(length)].map(() => Math.random().toString(36).charAt(3)).join(''),
           label: 'API',
           changeProp: true,
         },
@@ -35,7 +34,6 @@ export default class ComponentWrapper extends Component {
   }
 
   initialize(props: any, opts: any) {
-    this.on('change:apiUpdated', this.fetchApi);
     super.initialize(props, opts);
     this.addNewTrait();
   }
@@ -54,7 +52,7 @@ export default class ComponentWrapper extends Component {
               [
                 {
                   type: 'api',
-                  name: [...Array(length)].map(() => Math.random().toString(36).charAt(2)).join(''),
+                  name: [...Array(length)].map(() => Math.random().toString(36).charAt(3)).join(''),
                   label: 'API',
                   changeProp: true,
                 },
@@ -67,14 +65,6 @@ export default class ComponentWrapper extends Component {
         },
       },
     ]);
-  }
-  fetchApi() {
-    fetch(this.get('apis')[this.get('apiUpdated')].link)
-      .then(response => response.json())
-      .then(json => {
-        this.get('apis')[this.get('apiUpdated')].json = json;
-        console.log(json);
-      });
   }
 
   __postAdd() {

@@ -463,7 +463,7 @@ export default class EventView extends View<Event> {
     if (model.getTargetValue()[1] == 'redirecttourl') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
-        <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2">
+        <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
       </svg>
       <div class="${ppfx}label-wrp" data-label>
         <div class="gjs-label" title="URL">URL</div>
@@ -482,7 +482,7 @@ export default class EventView extends View<Event> {
     if (model.getTargetValue()[1] == 'redirecttopage') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
-        <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2">
+        <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
       </svg>
       <div class="${ppfx}label-wrp" data-label>
         <div class="gjs-label" title="Go to Page">Go to Page</div>

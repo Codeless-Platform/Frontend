@@ -1,4 +1,4 @@
-import { isFunction, isString, isUndefined } from 'underscore';
+import { isFunction, isString, isUndefined, object } from 'underscore';
 import { $, SetOptions, View } from '../../common';
 import Component from '../../dom_components/model/Component';
 import EditorModel from '../../editor/model/Editor';
@@ -100,15 +100,6 @@ export default class TraitView extends View<Trait> {
     if (this.model.getType() == 'api') {
       if (el && extraEl && !isUndefined(el.value) && !isUndefined(extraEl.value)) {
         this.model.set('value', { link: el.value, name: extraEl.value });
-        // if (el.value && extraEl.value)
-        //   this.target.addTrait([
-        //     {
-        //       type: 'api',
-        //       name: 'c',
-        //       label: 'API',
-        //       changeProp: true,
-        //     },
-        //   ]);
       }
     } else if (el && !isUndefined(el.value)) {
       this.model.set('value', el.value);
@@ -123,11 +114,18 @@ export default class TraitView extends View<Trait> {
     return this.model.get('value');
   }
 
-  setInputValue(value: string) {
+  setInputValue(value: string | Object = { link: String, name: String }) {
     const el = this.getInputElem();
     const extraEl = this.getExtraInputElem();
-    el && (el.value = value);
-    extraEl && (extraEl.value = value);
+    if (extraEl) {
+      //@ts-ignore
+      el && (el.value = value.link);
+      //@ts-ignore
+      extraEl && (extraEl.value = value.name);
+    } else {
+      //@ts-ignore
+      el && (el.value = value);
+    }
   }
 
   /**

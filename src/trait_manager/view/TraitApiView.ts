@@ -131,7 +131,7 @@ export default class TraitApiView extends TraitView {
     if (model.getType() == 'api') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
-        <polyline points="0,0 0,10 10,10" fill="none" stroke="gray" stroke-width="2">
+        <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
       </svg>
       <div class="${ppfx}label-wrp">
         <div class="gjs-label" title="name">Name</div>
