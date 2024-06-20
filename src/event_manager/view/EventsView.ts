@@ -85,7 +85,7 @@ export default class EventsView extends DomainViews {
     for (let item of listItems) {
       item.addEventListener('click', function () {
         let h = th.em.Events.handlers?.filter(handler => handler.value === item.classList[1])[0];
-        th.em.Editor.runCommand('blockly-script', h);
+        th.em.Editor.runCommand('edit-script', h);
       });
     }
     listItems = this.$el.find('.fa-trash');
