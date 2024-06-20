@@ -9,6 +9,7 @@ export default {
     rootElement.style.setProperty('--gjs-secondary-color', 'rgb(102, 102, 135)');
     rootElement.style.setProperty('--gjs-font-color', 'rgb(102, 102, 135)');
     rootElement.style.setProperty('--gjs-secondary-light-color', 'black');
+    rootElement.style.setProperty('--gjs-codeMirror-color', 'white');
   },
   stop(ed) {
     const rootElement = document.documentElement;
@@ -17,5 +18,6 @@ export default {
     rootElement.style.setProperty('--gjs-secondary-color', '#ffffff');
     rootElement.style.setProperty('--gjs-font-color', '#ffffff');
     rootElement.style.setProperty('--gjs-secondary-light-color', '#ffffff');
+    rootElement.style.setProperty('--gjs-codeMirror-color', 'rgb(33, 33, 52)');
   },
 } as CommandObject;
