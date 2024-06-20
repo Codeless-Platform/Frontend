@@ -29,10 +29,6 @@ export default class ComponentText extends Component {
     this.listenTo(this.em.getWrapper(), 'change:apis', this.setOptionsFromApi);
   }
 
-  retrieve_json(obj: Record<string, any>[]): Record<string, string>[] {
-    return [];
-  }
-
   setOptionsFromApi() {
     let options: Record<string, any>[] = [];
     let obj: Record<string, any> = this.em.getWrapper()?.get('apis');
