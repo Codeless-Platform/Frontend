@@ -116,7 +116,7 @@ export default class EventView extends View<Event> {
       hel = this.getHInputElem(),
       el = this.getInputElem();
     if (hel.value === 'newhandler') {
-      this.em.Editor.runCommand('blockly-script', { value: hel.value, name: '&#43 New Handler' });
+      this.em.Editor.runCommand('edit-script', { value: hel.value, name: '&#43 New Handler' });
     } else {
       if (type === 'NotCustomized') {
         if (eel && !isUndefined(eel.value) && hel && !isUndefined(hel.value)) {

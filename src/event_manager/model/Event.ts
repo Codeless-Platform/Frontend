@@ -205,7 +205,7 @@ export default class Event extends Model<EventProperties> {
           flag = true;
           m += `window.location.href = '${event.getPage()}.html';});`;
         } else if (handlresValue === 'newhandler') {
-          this.em.Editor.runCommand('blockly-script');
+          this.em.Editor.runCommand('edit-script');
         } else if (handlresValue === 'none') {
           m = '';
           event.setValue([eventsValue, '']);
