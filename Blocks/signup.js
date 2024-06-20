@@ -212,7 +212,7 @@ signup = (editor, opts = {}) => {
     });
 
     editor.BlockManager.add('signup', {
-        label: 'SignUpTemp1',
+        label: 'Light SignUp',
         media: '<img src="imgs/signup.png" width ="50px" height="50px">',
         category: 'Auth Pages',
         content: { type: 'signup-with-js' },
