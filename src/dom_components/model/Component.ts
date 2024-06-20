@@ -908,9 +908,6 @@ export default class Component extends StyleableModel<ComponentProperties> {
       default:
         break;
     }
-
-    // em.Css.getAll().models[2]._previousAttributes['mediaText'];
-    // console.log(em.Css.getAll().models);
   }
 
   onDurationChange() {

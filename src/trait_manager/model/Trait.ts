@@ -313,22 +313,70 @@ export default class Trait extends Model<TraitProperties> {
     }
     if (this.getType() === 'api' && this.get('changeProp')) {
       const { name, link } = value;
-      const existingApiIndex = target.attributes.apis.findIndex((api: Record<any, any>) => api.link === link);
+      const apis = target.attributes.apis;
 
-      if (existingApiIndex !== -1) {
-        target.attributes.apis[existingApiIndex].name = name;
-        target.attributes.apis[existingApiIndex].link = link;
-        target.set('apiUpdated', target.attributes.apis.length - 1);
-        target.trigger('change:apis');
+      const existingApiIndex = apis.findIndex((api: Record<any, any>) => api.link === link);
+      const existingNameIndex = apis.findIndex((api: Record<any, any>) => api.name === name);
+      const n = this.target
+        .getTraits()
+        .find(trait => trait.attributes.value?.link === link && trait.attributes.name !== this.getName());
+
+      const openErrorModal = (content: string) => {
+        this.em.Editor.Modal.open({
+          title: 'Error',
+          content,
+          attributes: { class: 'max-width-500' },
+        });
+      };
+
+      const handleFetchApi = async (link: string) => {
+        try {
+          const json = await this.fetchApi(link);
+          if (existingApiIndex !== -1) {
+            apis[existingApiIndex] = { name, link, json };
+          } else {
+            apis.push({ name, link, json });
+          }
+          target.trigger('change:apis');
+        } catch (error) {
+          console.error('Error fetching API:', error);
+          openErrorModal("Can't fetch this API");
+          this.view?.setInputValue({ name, link: '' });
+        }
+      };
+
+      if (existingApiIndex !== -1 && n) {
+        openErrorModal('You already added this API');
+        this.view?.setInputValue({ name, link: '' });
+      } else if (name && existingNameIndex !== -1 && existingApiIndex !== existingNameIndex) {
+        openErrorModal('The API name already exists. Please use a different name.');
+        this.view?.setInputValue({ name: '', link });
       } else {
-        target.attributes.apis.push({ name: name, link: link, json: '' });
-        target.set('apiUpdated', target.attributes.apis.length - 1);
-        target.trigger('change:apis');
+        handleFetchApi(link);
       }
     } else if (this.get('changeProp')) {
       target.set(name, valueToSet, opts);
     } else {
       target.addAttributes({ [name]: valueToSet }, opts);
+    }
+  }
+
+  async fetchApi(link: string): Promise<any> {
+    try {
+      const response = await fetch(link);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const json = await response.json();
+      console.log(json);
+      return json;
+    } catch (error) {
+      this.em.Editor.Modal.open({
+        title: 'Error',
+        content: "Can't fetch this API",
+        attributes: { class: 'max-width-500' },
+      });
+      throw error;
     }
   }
 

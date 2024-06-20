@@ -59,11 +59,8 @@ export default class ComponentText extends Component {
             options.push({ name: prefix, value: element });
           }
         }
-
-        processElement(json, name);
+        if (name) processElement(json, name);
       });
-
-      console.log(options);
     }
 
     const newtrait = [
