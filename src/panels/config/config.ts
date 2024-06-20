@@ -50,6 +50,7 @@ const config: PanelsConfig = {
           id: 'change-theme',
           className: 'fa fa-moon-o',
           command: theme,
+          context: theme,
           attributes: { title: 'Change theme' },
         },
         {

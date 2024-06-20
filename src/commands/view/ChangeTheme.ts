@@ -6,16 +6,16 @@ export default {
     const rootElement = document.documentElement;
     rootElement.style.setProperty('--gjs-primary-color', 'white');
     rootElement.style.setProperty('--gjs-main-color', 'white');
-    rootElement.style.setProperty('--gjs-secondary-color', 'black');
-    rootElement.style.setProperty('--gjs-font-color', 'black');
-    rootElement.style.setProperty('--gjs-codeMirror-color', 'white');
+    rootElement.style.setProperty('--gjs-secondary-color', 'rgb(102, 102, 135)');
+    rootElement.style.setProperty('--gjs-font-color', 'rgb(102, 102, 135)');
+    rootElement.style.setProperty('--gjs-secondary-light-color', 'black');
   },
   stop(ed) {
     const rootElement = document.documentElement;
-    rootElement.style.setProperty('--gjs-primary-color', '#444');
-    rootElement.style.setProperty('--gjs-main-color', '#444');
-    rootElement.style.setProperty('--gjs-secondary-color', '#ddd');
-    rootElement.style.setProperty('--gjs-font-color', '#ddd');
-    rootElement.style.setProperty('--gjs-codeMirror-color', '#322931');
+    rootElement.style.setProperty('--gjs-primary-color', 'rgb(33, 33, 52)');
+    rootElement.style.setProperty('--gjs-main-color', 'rgb(33, 33, 52)');
+    rootElement.style.setProperty('--gjs-secondary-color', '#ffffff');
+    rootElement.style.setProperty('--gjs-font-color', '#ffffff');
+    rootElement.style.setProperty('--gjs-secondary-light-color', '#ffffff');
   },
 } as CommandObject;

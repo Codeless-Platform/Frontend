@@ -56,6 +56,7 @@ export default class ButtonView extends ModuleView<Button> {
    *
    * @return   void
    * */
+
   private updateClassName() {
     const { model, pfx } = this;
     let cls = model.className;

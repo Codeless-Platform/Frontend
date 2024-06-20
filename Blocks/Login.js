@@ -205,7 +205,7 @@ login = (editor, opts = {}) => {
   });
 
   editor.BlockManager.add('Login', {
-    label: 'LoginTemp1',
+    label: 'Dark Login',
     media: '<img src="../imgs/login.png" height="50px" width="50px" />',
     category: 'Auth Pages',
     content: { type: 'login-with-js' },

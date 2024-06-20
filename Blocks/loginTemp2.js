@@ -1,87 +1,91 @@
 loginTemp2 = (editor, opts = {}) => {
-    const script1 = function() {
-        const form = document.querySelector("form");
-        const eField = form.querySelector(".email");
-        const eInput = eField.querySelector("input");
-        const pField = form.querySelector(".password");
-        const pInput = pField.querySelector("input");
+  const script1 = function () {
+    const form = document.querySelector('form');
+    const eField = form.querySelector('.email');
+    const eInput = eField.querySelector('input');
+    const pField = form.querySelector('.password');
+    const pInput = pField.querySelector('input');
 
-        form.onsubmit = async(e) => {
-            e.preventDefault();
-            (eInput.value == "") ? eField.classList.add("shake", "error"): checkEmail();
-            (pInput.value == "") ? pField.classList.add("shake", "error"): checkPass();
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      eInput.value == ''
+        ? eField.classList.add('shake', 'error')
+        : checkEmail();
+      pInput.value == '' ? pField.classList.add('shake', 'error') : checkPass();
 
-            setTimeout(() => {
-                eField.classList.remove("shake");
-                pField.classList.remove("shake");
-            }, 500);
+      setTimeout(() => {
+        eField.classList.remove('shake');
+        pField.classList.remove('shake');
+      }, 500);
 
-            eInput.onkeyup = () => {
-                checkEmail();
-            };
-            pInput.onkeyup = () => {
-                checkPass();
-            };
+      eInput.onkeyup = () => {
+        checkEmail();
+      };
+      pInput.onkeyup = () => {
+        checkPass();
+      };
 
-            function checkEmail() {
-                let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-                if (!eInput.value.match(pattern)) {
-                    eField.classList.add("error");
-                    eField.classList.remove("valid");
-                    let errorTxt = eField.querySelector(".error-txt");
-                    (eInput.value != "") ? errorTxt.innerText = "Enter a valid email address": errorTxt.innerText = "Email can't be blank";
-                } else {
-                    eField.classList.remove("error");
-                    eField.classList.add("valid");
-                }
-            }
+      function checkEmail() {
+        let pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (!eInput.value.match(pattern)) {
+          eField.classList.add('error');
+          eField.classList.remove('valid');
+          let errorTxt = eField.querySelector('.error-txt');
+          eInput.value != ''
+            ? (errorTxt.innerText = 'Enter a valid email address')
+            : (errorTxt.innerText = "Email can't be blank");
+        } else {
+          eField.classList.remove('error');
+          eField.classList.add('valid');
+        }
+      }
 
-            function checkPass() {
-                if (pInput.value == "") {
-                    pField.classList.add("error");
-                    pField.classList.remove("valid");
-                } else {
-                    pField.classList.remove("error");
-                    pField.classList.add("valid");
-                }
-            }
-            const apiLink = 'http://localhost:1337/api/auth/local';
-            const pageName = form.getAttribute('pageName');
+      function checkPass() {
+        if (pInput.value == '') {
+          pField.classList.add('error');
+          pField.classList.remove('valid');
+        } else {
+          pField.classList.remove('error');
+          pField.classList.add('valid');
+        }
+      }
+      const apiLink = 'http://localhost:1337/api/auth/local';
+      const pageName = form.getAttribute('pageName');
 
-            if (!eField.classList.contains("error") && !pField.classList.contains("error")) {
-                try {
-                    const response = await fetch(apiLink, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            identifier: eInput.value,
-                            password: pInput.value
-                        })
-                    });
-                    if (!response.ok) {
-                        throw new Error('User name or password are wrong,try again..');
-                    }
-                    alert('Login Successfully');
-                    window.location.href = `${pageName}.html`;
-                    return response.json();
-
-                } catch (error) {
-                    eInput.value = "";
-                    pInput.value = ""
-                    alert(error);
-                }
-            }
-        };
-
-
-    }
-    editor.Components.addType('loginTemp2', {
-        model: {
-            defaults: {
-                tagName: 'form',
-                components: `
+      if (
+        !eField.classList.contains('error') &&
+        !pField.classList.contains('error')
+      ) {
+        try {
+          const response = await fetch(apiLink, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              identifier: eInput.value,
+              password: pInput.value,
+            }),
+          });
+          if (!response.ok) {
+            throw new Error('User name or password are wrong,try again..');
+          }
+          alert('Login Successfully');
+          window.location.href = `${pageName}.html`;
+          return response.json();
+        } catch (error) {
+          eInput.value = '';
+          pInput.value = '';
+          alert(error);
+        }
+      }
+    };
+  };
+  editor.Components.addType('loginTemp2', {
+    model: {
+      defaults: {
+        tagName: 'form',
+        components: `
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" />
 
@@ -311,23 +315,25 @@ loginTemp2 = (editor, opts = {}) => {
     }
     </style>
               `,
-                script: script1,
-                droppable: false,
+        script: script1,
+        droppable: false,
 
-                traits: [{
-                    type: 'text',
-                    name: 'pageName',
-                    label: 'Go to Page',
-                    placeholder: 'name of page you want to go',
-                }, ],
-            },
-        },
-    });
+        traits: [
+          {
+            type: 'text',
+            name: 'pageName',
+            label: 'Go to Page',
+            placeholder: 'name of page you want to go',
+          },
+        ],
+      },
+    },
+  });
 
-    editor.BlockManager.add('loginTemp2', {
-        label: 'LoginTemp2',
-        media: `<img src="../imgs/loginTemp2.png" height="50px" width="50px" />`,
-        category: 'Auth Pages',
-        content: { type: 'loginTemp2' },
-    });
+  editor.BlockManager.add('loginTemp2', {
+    label: 'Light Login',
+    media: `<img src="../imgs/loginTemp2.png" height="50px" width="50px" />`,
+    category: 'Auth Pages',
+    content: { type: 'loginTemp2' },
+  });
 };

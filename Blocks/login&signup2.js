@@ -426,7 +426,7 @@ login_signup2 = (editor, opts = {}) => {
     });
 
     editor.BlockManager.add('login_signup2', {
-        label: 'login_signup2',
+        label: 'login_signup',
         media: '<img src="imgs/login_signup2.png" width ="50px" height="50px">',
         category: 'Auth Pages',
         content: { type: 'login_signup2' },
