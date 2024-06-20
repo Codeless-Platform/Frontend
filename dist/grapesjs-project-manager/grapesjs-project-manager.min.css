@@ -12,7 +12,7 @@
 
 .app a {
     text-decoration: none;
-    color: #4945ff
+    color: #7b79ff
 }
 
 .app h1 {
@@ -42,9 +42,13 @@
     transition-property: background-color, color, border, box-shadow;
     outline: 0;
     font-weight: 500;
-    background: #4945ff;
+    background: #7b79ff;
     color: #fff;
     border-color: transparent
+}
+
+.app button:hover {
+    color: #7b79ff;
 }
 
 .title-inner {
@@ -92,7 +96,7 @@
 .tm-input:active,
 .tm-input:focus,
 .tm-input:hover {
-    box-shadow: 0 0 0 2px #4945ff
+    box-shadow: 0 0 0 2px #7b79ff
 }
 
 .tm-input.sm {
@@ -130,7 +134,7 @@
 }
 
 .site-wrapper.selected {
-    border: 2px solid #4945ff
+    border: 2px solid #7b79ff
 }
 
 .site-wrapper.open,
@@ -241,16 +245,16 @@
 }
 
 .site-actions i {
-    color: #4945ff;
+    color: #7b79ff;
     background-color: rgba(0, 0, 0, .1);
-    border: 1px solid #4945ff;
+    border: 1px solid #7b79ff;
     border-radius: 2px;
     padding: 5px;
     cursor: pointer
 }
 
 .site-actions i:hover {
-    background-color: #4945ff;
+    background-color: #7b79ff;
     color: #fff
 }
 
@@ -277,7 +281,7 @@
     padding: 10px;
     font-size: .9rem;
     border: 1px solid rgba(0, 0, 0, .2);
-    border-left: 3px solid #4945ff;
+    border-left: 3px solid #7b79ff;
     background-color: rgba(0, 0, 0, .1);
     margin-bottom: 10px
 }
@@ -324,7 +328,7 @@
 }
 
 .add-page {
-    background: #4945ff;
+    background: #7b79ff;
     color: #fff;
     font-size: 12px;
     padding: 8px 5px;
@@ -348,13 +352,13 @@
 }
 
 .page:hover {
-    color: #4945ff;
+    color: #7b79ff;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .15)
 }
 
 .page.selected {
-    color: #4945ff;
-    border: 1px solid #4945ff;
+    color: #7b79ff;
+    border: 1px solid #7b79ff;
     background-color: rgba(0, 0, 0, .1)
 }
 
@@ -400,7 +404,7 @@
     left: 9px;
     width: 6px;
     height: 14px;
-    border: solid #4945ff;
+    border: solid #7b79ff;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg)
 }
@@ -414,7 +418,7 @@
     content: "";
     -webkit-appearance: none;
     background-color: transparent;
-    border: 2px solid #4945ff;
+    border: 2px solid #7b79ff;
     box-shadow: 0 1px 2px rgba(0, 0, 0, .05), inset 0px -15px 10px -12px rgba(0, 0, 0, .05);
     padding: 10px;
     display: inline-block;
