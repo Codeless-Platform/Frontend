@@ -4107,7 +4107,7 @@ span.CodeMirror-selectedtext {
 button,
 .gjs-btn-prim {
   background-color: var(--gjs-main-dark-color) !important;
-  color: #fff;
+  color: var(--gjs-secondary-color);
   border: 2px solid transparent !important;
   cursor: pointer;
 }
