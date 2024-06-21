@@ -368,7 +368,6 @@ export default class Trait extends Model<TraitProperties> {
         throw new Error('Network response was not ok');
       }
       const json = await response.json();
-      console.log(json);
       return json;
     } catch (error) {
       this.em.Editor.Modal.open({
