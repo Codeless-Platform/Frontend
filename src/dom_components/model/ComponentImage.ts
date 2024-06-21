@@ -48,7 +48,6 @@ export default class ComponentImage extends Component {
   }
 
   startListeningtoApi() {
-    console.log(1);
     if (this.em.getWrapper()?.get('apis')) {
       this.on('Rendered', this.setOptionsFromApi);
     }
@@ -111,6 +110,92 @@ export default class ComponentImage extends Component {
   }
 
   setData() {
+    let selectElement = this.getTrait('dbinput').view?.$input?.get(0) as HTMLSelectElement | undefined;
+
+    function generatePath(obj: any, selectedOptionName: string): string | undefined {
+      const segments = selectedOptionName.split('-').slice(1);
+      let currentObj = obj;
+      let path = '';
+
+      try {
+        for (const segment of segments) {
+          if (Array.isArray(currentObj)) {
+            const index = parseInt(segment, 10);
+            if (isNaN(index) || index < 0 || index >= currentObj.length) {
+              throw new Error(`Invalid array index: ${index}`);
+            }
+            path += `[${index}]`;
+            currentObj = currentObj[index];
+          } else if (typeof currentObj === 'object' && currentObj !== null) {
+            if (!(segment in currentObj)) {
+              throw new Error(`Property '${segment}' does not exist in object`);
+            }
+            path += `.${segment}`;
+            currentObj = currentObj[segment];
+          } else {
+            throw new Error(`Unexpected type encountered: ${typeof currentObj}`);
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(`Error generating path: ${error.message}`);
+        } else {
+          console.error('Unknown error generating path');
+        }
+        return undefined;
+      }
+
+      return path;
+    }
+
+    if (selectElement) {
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      const selectedText = selectedOption.text;
+      const apiName = selectedText.split('-')[0].trim();
+
+      const apiObject = this.em
+        .getWrapper()
+        ?.get('apis')
+        .find((obj: any) => obj.name === apiName);
+
+      if (apiObject && apiObject.json) {
+        const generatedPath = generatePath(apiObject.json, selectedText);
+
+        if (generatedPath) {
+          const script = `
+          async function fetch${this.getId()}Data() {
+              try {
+                  const res = await fetch('${apiObject.link}');
+                  if (!res.ok) throw new Error('Network response was not ok');
+                  let userData = await res.json();
+                  userData = Array.isArray(userData) ? userData : [userData];
+                  const el = document.getElementById('${this.getId()}');
+                  if (el) {
+                      el.src = userData${generatedPath};
+                  } else {
+                      console.error('Element not found to set the src');
+                  }
+              } catch (error) {
+                  if (error instanceof Error) {
+                      console.error('Error fetching data:', error.message);
+                  } else {
+                      console.error('Unknown error fetching data');
+                  }
+              }
+          }
+          fetch${this.getId()}Data();
+          `;
+          this.set('script-export', script);
+        } else {
+          console.error(`Generated path for selected option '${selectedText}' is invalid.`);
+        }
+      } else {
+        console.error(`API object not found or invalid for name: ${apiName}`);
+      }
+    } else {
+      console.error('Select element not found');
+    }
+
     this.set('src', this.get('dbinput'));
   }
 
