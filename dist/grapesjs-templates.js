@@ -69115,30 +69115,45 @@
                   value: function () {
                     var t = w;
                     if (null != this[t(304)]) {
-                      for (
-                        var e = this['editor'][t(270)]
-                            ['getWrapper']()
-                            ['getEl'](),
-                          n = e['getElementsByClassName'](t(273));
-                        n[t(212)] > 0;
+                      console.log('this[t(304)] is not null');
 
-                      )
-                        e[t(238)](n[0]);
-                      var r = '';
-                      this[t(304)][t(275)] &&
-                        this[t(304)]['styles']['forEach'](function (e) {
-                          r += t(293) + e + '" rel="stylesheet">';
-                        }),
-                        this['selectedTemplate'][t(267)] &&
+                      var wrapper = this['editor'][t(270)]['getWrapper']();
+                      console.log('Wrapper:', wrapper);
+
+                      var e = wrapper ? wrapper['getEl']() : null;
+                      console.log('Element e:', e);
+
+                      if (e) {
+                        var n = e['getElementsByClassName'](t(273));
+                        console.log('Elements with class t(273):', n);
+
+                        while (n[t(212)] > 0) {
+                          e[t(238)](n[0]);
+                        }
+
+                        var r = '';
+                        if (this[t(304)][t(275)]) {
+                          this[t(304)]['styles']['forEach'](function (e) {
+                            r += t(293) + e + '" rel="stylesheet">';
+                          });
+                        }
+
+                        if (this['selectedTemplate'][t(267)]) {
                           this['selectedTemplate'][t(267)]['forEach'](function (
                             e
                           ) {
                             var n = t;
                             r += n(262) + e + n(243);
-                          }),
-                        '' !== r &&
-                          ((r = '<div class="template-header">' + r + t(235)),
-                          e[t(265)]('beforeend', r));
+                          });
+                        }
+
+                        if ('' !== r) {
+                          r = '<div class="template-header">' + r + t(235);
+                          e[t(265)]('beforeend', r);
+                        }
+                      } else {
+                        console.error('Failed to get element e');
+                      }
                     }
                   },
                 },
