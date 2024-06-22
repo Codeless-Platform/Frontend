@@ -3159,7 +3159,7 @@
                                 ? j('span', '​')
                                 : j(
                                     'span',
-                                    ' ',
+                                    ' ',
                                     null,
                                     'display: inline-block; width: 1px; margin-right: -1px'
                                   );
@@ -4438,7 +4438,7 @@
                                             !n ||
                                             (o != t.length - 1 &&
                                               32 != t.charCodeAt(o + 1)) ||
-                                            (i = ' '),
+                                            (i = ' '),
                                             (r += i),
                                             (n = ' ' == i);
                                         }
@@ -6127,7 +6127,7 @@
                                   !t.options.singleCursorHeightPerLine
                                 ),
                                 o = n.appendChild(
-                                  j('div', ' ', 'CodeMirror-cursor')
+                                  j('div', ' ', 'CodeMirror-cursor')
                                 );
                               if (
                                 ((o.style.left = r.left + 'px'),
@@ -6149,7 +6149,7 @@
                                 var s = n.appendChild(
                                   j(
                                     'div',
-                                    ' ',
+                                    ' ',
                                     'CodeMirror-cursor CodeMirror-secondarycursor'
                                   )
                                 );

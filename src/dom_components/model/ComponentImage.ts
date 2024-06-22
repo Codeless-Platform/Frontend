@@ -163,28 +163,9 @@ export default class ComponentImage extends Component {
 
         if (generatedPath) {
           const script = `
-          async function fetch${this.getId()}Data() {
-              try {
-                  const res = await fetch('${apiObject.link}');
-                  if (!res.ok) throw new Error('Network response was not ok');
-                  let userData = await res.json();
-                  userData = Array.isArray(userData) ? userData : [userData];
-                  const el = document.getElementById('${this.getId()}');
-                  if (el) {
-                      el.src = userData${generatedPath};
-                  } else {
-                      console.error('Element not found to set the src');
-                  }
-              } catch (error) {
-                  if (error instanceof Error) {
-                      console.error('Error fetching data:', error.message);
-                  } else {
-                      console.error('Unknown error fetching data');
-                  }
-              }
-          }
-          fetch${this.getId()}Data();
-          `;
+          async function fetch${this.getId()}Data() {\n  try {\n    const res = await fetch('${
+            apiObject.link
+          }');\n    if (!res.ok) throw new Error('Network response was not ok');\n    let userData = await res.json();\n    userData = Array.isArray(userData) ? userData : [userData];\n    const el = document.getElementById('${this.getId()}');\n    if (el) {\n      el.src = userData${generatedPath};\n    } else {\n      console.error('Element not found to set the innerHTML');\n    }\n  } catch (error) {\n    if (error instanceof Error) {\n      console.error('Error fetching data:', error.message);\n    } else {\n      console.error('Unknown error fetching data');\n    }\n  }\n}\nfetch${this.getId()}Data();\n`;
           this.set('script-export', script);
         } else {
           console.error(`Generated path for selected option '${selectedText}' is invalid.`);
