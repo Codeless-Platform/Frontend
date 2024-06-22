@@ -118,14 +118,16 @@ export default class Event extends Model<EventProperties> {
       this.setTarget(target);
     }
     this.em = em;
-    let x = target.attributes.events;
-    // @ts-ignore
-    let m = x.at(0)['type'];
-    if (m) {
-      if (m === 'Customized' && this.getType() !== 'Customized') {
-        //@ts-ignore
-        let neweventx = this.getEventx()?.filter(eventx => eventx.name !== x?.at(0)['label']);
-        this.set('eventx', neweventx);
+    if (target && target.attributes.events) {
+      const x = target.attributes.events as Events | undefined;
+      //@ts-ignore
+      const m = x.at(0)?.['type'];
+      if (m) {
+        if (m === 'Customized' && this.getType() !== 'Customized') {
+          // @ts-ignore
+          const neweventx = this.getEventx()?.filter(eventx => eventx.name !== x.at(0)?.['label']);
+          this.set('eventx', neweventx);
+        }
       }
     }
     this.set('handler', this.getCurrentHandlers());
@@ -135,7 +137,8 @@ export default class Event extends Model<EventProperties> {
   }
 
   getCurrentHandlers(): [] {
-    return this.em.get('EventManager').handlers;
+    if (this.em && this.em.get('EventManager')) return this.em.get('EventManager').handlers;
+    else return [];
   }
 
   updateHandlers() {
