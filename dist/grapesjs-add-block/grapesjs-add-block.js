@@ -5,8 +5,8 @@
     : 'function' == typeof define && define.amd
     ? define([], e)
     : 'object' == typeof exports
-    ? (exports['grapesjs-script-editor'] = e())
-    : (t['grapesjs-script-editor'] = e());
+    ? (exports['grapesjs-add-block'] = e())
+    : (t['grapesjs-add-block'] = e());
 })(window, function () {
   return (function (t) {
     var e = {};
@@ -84,7 +84,7 @@
       r.r(e);
       var n = r(0),
         o = r.n(n),
-        i = 'edit-script';
+        i = 'add-block';
       function c(t, e) {
         var r = Object.keys(t);
         if (Object.getOwnPropertySymbols) {
@@ -147,22 +147,22 @@
           b &&
             b.forEach(function (t) {
               var r = o.getType(t).model;
-              // o.addType(t, {
-              //   model: {
-              //     initToolbar: function () {
-              //       r.prototype.initToolbar.apply(this, arguments);
-              //       var t = this.get('toolbar'),
-              //         n = t.some(function (t) {
-              //           return t.command === i;
-              //         });
-              //       n ||
-              //         (t.unshift(
-              //           a({ command: i, label: l }, e.toolbarBtnCustomScript)
-              //         ),
-              //         this.set('toolbar', t));
-              //     },
-              //   },
-              // });
+              o.addType(t, {
+                model: {
+                  initToolbar: function () {
+                    r.prototype.initToolbar.apply(this, arguments);
+                    var t = this.get('toolbar'),
+                      n = t.some(function (t) {
+                        return t.command === i;
+                      });
+                    n ||
+                      (t.unshift(
+                        a({ command: i, label: l }, e.toolbarBtnCustomScript)
+                      ),
+                      this.set('toolbar', t));
+                  },
+                },
+              });
             }),
           r.add(
             i,
@@ -173,86 +173,78 @@
                     arguments.length > 2 && void 0 !== arguments[2]
                       ? arguments[2]
                       : {};
-                  (this.editor = t),
-                    (this.options = r),
-                    (this.target = r.target || t.getSelected());
+                  this.editor = t;
+                  this.options = r;
+                  this.target = r.target || t.getSelected();
                   var n = this.target;
-                  n && this.showCustomCode(n, r);
-                },
-                stop: function (t) {
-                  document.removeEventListener('keypress', xy);
-                  n.close();
-                },
-                showCustomCode: function (t, options) {
-                  var e = this,
-                    r = this.editor,
-                    o = this.options.title || c;
-                  g || (g = this.getContent());
-                  var i = options.logic || f;
-
-                  n
-                    .open({ title: o, content: g })
-                    .getModel()
-                    .once('change:open', function () {
-                      return r.stopCommand(e.id);
-                    }),
-                    this.getCodeViewer().setContent(i);
-                  if (options.name !== '&#43 New Handler') {
-                    document.getElementById('x').value = options.name;
+                  var exists = t.Blocks.get(n.getId());
+                  if (exists) {
+                    t.Modal.open({
+                      title: 'Error',
+                      content: 'You already added this block',
+                      attributes: { class: 'max-width-500' },
+                    });
                   } else {
-                    document.getElementById('x').value = '';
+                    this.addBlock(n, t);
                   }
                 },
-                getPreContent: function () {
-                  var e = document.createElement('div');
-                  e.id = 'Handler-name';
-                  var inputLabel = document.createElement('label');
-                  inputLabel.classList.add('inl');
-                  inputLabel.style.marginRight = '10px';
-                  var input = document.createElement('input');
-                  input.id = 'x';
-                  input.autocomplete = 'off';
-                  inputLabel.textContent = 'Handler Name:';
-                  var y = document.createElement('div');
-                  y.classList.add('gjs-field');
-                  y.classList.add('gjs-field-text');
-                  y.style.height = 'fit-content';
-                  y.style.borderRadius = '10px';
-                  inputLabel.htmlFor = input.id;
-                  var div = document.createElement('div');
-                  div.style.display = 'flex';
-                  y.appendChild(input);
-                  div.appendChild(inputLabel);
-                  div.appendChild(y);
-                  div.style.height = '35px';
-                  div.style.alignItems = 'center';
-                  return e.appendChild(div), e;
+
+                addBlock: function (t, e) {
+                  var m = this;
+                  g || (g = this.getContent());
+                  n.open({
+                    title: 'Add Custom Block',
+                    content: g,
+                    attributes: { class: 'max-width-500' },
+                  })
+                    .getModel()
+                    .once('change:open', function () {
+                      return m.addtoBlocks(e, t);
+                    });
                 },
-                getPostContent: function () {},
+                addtoBlocks(e, t) {
+                  e.Blocks.add(t.getId(), {
+                    label:
+                      document.getElementById('block-name-input').value ||
+                      'Custom Block',
+                    media: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\n  <rect x="0" y="0" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="2" width="8" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="8" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="10" y="8" width="12" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="10" y="2" width="12" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="16" width="8" height="6" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="12" y="14" width="10" height="8" fill="none" stroke="currentColor" stroke-width="1"/>\n</svg>`,
+                    category: 'Custom',
+                    content: t.clone(),
+                  });
+                },
                 getContent: function () {
                   var e = this.editor,
                     t = document.createElement('div'),
                     n = document.createElement('div');
-                  n.className = 'modal';
-                  n.id = 'messageModal';
-                  r = e.getConfig('stylePrefix');
-                  n.innerHTML = `
-                     <div class ="fa fa-circle-exclamation"></div>
-                      <div class="modal-content">
-                        <p id ="messageText"></p>
-                        <button id="okButton">OK</button>
-                      </div>`;
-                  (t.className = ''.concat(r, 'attach-script')),
-                    h(t, this.getPreContent());
-                  var c = this.getCodeViewer();
+                  t.innerHTML = `<div class="modal" id="messageModal"><div class="fa fa-circle-exclamation"></div><div class="modal-content"><p id="messageText"></p><button id="okButton">OK</button></div></div>`;
+                  var e = document.createElement('div');
+                  e.id = 'Block-name';
+                  var inputLabel = document.createElement('label');
+                  inputLabel.classList.add('inl');
+                  inputLabel.style.marginRight = '10px';
+                  inputLabel.textContent = 'Block Name:';
+                  var input = document.createElement('input');
+                  input.id = 'block-name-input';
+                  input.autocomplete = 'off';
+                  inputLabel.htmlFor = input.id;
+                  var y = document.createElement('div');
+                  y.classList.add('gjs-field', 'gjs-field-text');
+                  y.style.height = 'fit-content';
+                  y.style.borderRadius = '10px';
+                  y.appendChild(input);
+                  var div = document.createElement('div');
+                  div.style.display = 'flex';
+                  div.style.height = '35px';
+                  div.style.alignItems = 'center';
+                  div.appendChild(inputLabel);
+                  div.appendChild(y);
+                  e.appendChild(div);
+                  t.appendChild(e);
+
                   return (
-                    c.refresh(),
                     setTimeout(function () {
                       return n.focus();
                     }, 0),
-                    t.appendChild(c.getElement()),
-                    t.appendChild(n),
-                    h(t, this.getPostContent()),
                     h(t, this.getContentActions()),
                     t
                   );
@@ -271,61 +263,16 @@
                     (o.onclick = function () {
                       return t.handleSave();
                     });
-                  var c = document.createElement('div');
-                  return (
-                    (c.id = 'logic-toolbar'),
-                    (c.className = 'fa fa-bug'),
-                    (c.style =
-                      'margin:5px;padding:10px;background:rgba(0,0,0,0.2);border-radius:3px;border:1px solid rgba(0,0,0,0.2);cursor:pointer'),
-                    (c.onclick = function () {
-                      return t.runCode();
-                    }),
-                    n.appendChild(c),
-                    n.appendChild(o),
-                    n
-                  );
+                  return n.appendChild(o), n;
                 },
                 handleSave: function () {
-                  let status =
-                    this.options.name !== '&#43 New Handler' ? 'NotNew' : 'New';
-                  let m = document.getElementById('x').value;
-                  let n = this.getCodeViewer().getContent();
-                  let handlersCount = this.em.Events.handlers.length;
-                  const handlerNames = this.em.Events.handlers.map(
-                    (handler) => handler.name
-                  );
-                  let hid =
-                    status === 'New'
-                      ? handlersCount + 1
-                      : this.options.handlerId;
-
-                  if (!m) {
-                    m = `New Handler ${handlersCount - 5}`;
-                  }
-
-                  if (
-                    (status === 'New' && !handlerNames.includes(m)) ||
-                    status === 'NotNew'
-                  ) {
-                    let h = {
-                      handlerId: hid,
-                      name: m,
-                      value: m.replace(/\s/g, ''),
-                      logic: n,
-                    };
-                    let e = this.editor,
-                      t = this.target,
-                      o = this;
-                    document.getElementById('x').value = '';
-                    e.Modal.close();
-                    document.removeEventListener('keypress', xy);
-                    this.fcs(this.target, h);
+                  let e = this.editor;
+                  let input = document.getElementById('block-name-input').value;
+                  if (!input) {
+                    this.showErrorMessage('Block name is Empty');
                   } else {
-                    this.showErrorMessage('This Handler name already exists');
+                    e.Modal.close();
                   }
-                },
-                fcs: function (uu, h) {
-                  uu.get('events').models[0].addHandler(h);
                 },
                 showErrorMessage: function (m) {
                   var messageModal = document.getElementById('messageModal');
@@ -342,32 +289,6 @@
                       messageModal.classList.remove('fadeOut');
                     }, 500);
                   };
-                },
-                getCodeViewer: function () {
-                  var t = this.editor;
-                  return (
-                    this.codeViewer ||
-                      (this.codeViewer = t.CodeManager.createViewer(
-                        a(
-                          {
-                            codeName: 'javascript',
-                            theme: 'hopscotch',
-                            readOnly: 0,
-                            autoBeautify: 1,
-                          },
-                          s
-                        )
-                      )),
-                    this.codeViewer
-                  );
-                },
-                runCode: function () {
-                  try {
-                    var t = this.getCodeViewer().getContent();
-                    Function('"use strict";' + t)(), p && p();
-                  } catch (t) {
-                    console.log('error', t), d && d(t);
-                  }
                 },
               },
               u
@@ -413,7 +334,8 @@
               {},
               {
                 starter: 'let el = this',
-                toolbarIcon: '<i class="fa fa-file-code-o"></i>',
+                toolbarIcon:
+                  '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\n<path fill="currentColor" d="M11,11V4h2v7h7v2h-7v7h-2v-7H4v-2h7z"/>\n</svg>',
                 scriptTypesSupport: [
                   'default',
                   'wrapper',
