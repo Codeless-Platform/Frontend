@@ -85,6 +85,7 @@ const commandsDef = [
   ['redo', 'Redo', 'redo'],
   ['save-as-grapesjs', 'SaveFile', 'save-as-grapesjs'],
   ['open-grapesjs-file', 'OpenFile', 'open-grapesjs-file'],
+  ['start-tour', 'EditorTour', 'start-tour'],
 ];
 
 export default class CommandsModule extends Module<CommandsConfig & { pStylePrefix?: string }> {
