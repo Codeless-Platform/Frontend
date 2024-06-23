@@ -11,6 +11,12 @@ const obl = 'open-blocks';
 const ful = 'fullscreen';
 const prv = 'preview';
 const theme = 'change-theme';
+const clr = 'clear';
+const un = 'undo';
+const re = 'redo';
+const sv = 'save';
+const op = 'open';
+const ex = 'export';
 
 interface ButtonProps {
   id?: string;
@@ -66,7 +72,7 @@ const config: PanelsConfig = {
           className: 'fa fa-eye',
           command: prv,
           context: prv,
-          attributes: { title: 'Preview' },
+          attributes: { title: 'Preview Current Page' },
         },
         {
           id: ful,
@@ -80,6 +86,48 @@ const config: PanelsConfig = {
           className: 'fa fa-code',
           command: expt,
           attributes: { title: 'View code' },
+        },
+        {
+          id: clr,
+          className: 'fa fa-trash',
+          command: 'clear-page',
+          attributes: { title: 'Clear Page' },
+        },
+        {
+          id: un,
+          className: 'fa fa-undo icon-undo',
+          command: 'undo',
+          attributes: {
+            title: 'Undo',
+          },
+        },
+        {
+          id: re,
+          className: 'fa fa-repeat icon-redo',
+          command: 'redo',
+          attributes: {
+            title: 'Redo',
+          },
+        },
+        {
+          id: sv,
+          className: 'fa fa-floppy-o',
+          command: 'save-as-grapesjs',
+          attributes: { title: 'save-as-grapesjs file' },
+        },
+        {
+          id: op,
+          className: 'fa fa-folder-open-o',
+          command: 'open-grapesjs-file',
+          attributes: { title: 'Open grapesjs file' },
+        },
+        {
+          id: ex,
+          className: 'fa fa-download',
+          command: 'gjs-export-zip',
+          attributes: {
+            title: 'Export to zip',
+          },
         },
       ],
     },

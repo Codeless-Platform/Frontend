@@ -55242,7 +55242,7 @@
                                 command: au,
                                 context: au,
                                 attributes: {
-                                  title: 'Preview',
+                                  title: 'Preview Current Page',
                                 },
                               },
                               {

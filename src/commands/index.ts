@@ -80,6 +80,11 @@ const commandsDef = [
   ['component-style-clear', 'ComponentStyleClear'],
   ['component-drag', 'ComponentDrag'],
   ['change-theme', 'ChangeTheme', 'change-theme'],
+  ['clear-page', 'ClearPage', 'clear-page'],
+  ['undo', 'Undo', 'undo'],
+  ['redo', 'Redo', 'redo'],
+  ['save-as-grapesjs', 'SaveFile', 'save-as-grapesjs'],
+  ['open-grapesjs-file', 'OpenFile', 'open-grapesjs-file'],
 ];
 
 export default class CommandsModule extends Module<CommandsConfig & { pStylePrefix?: string }> {
