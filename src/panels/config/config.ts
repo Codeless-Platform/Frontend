@@ -129,6 +129,12 @@ const config: PanelsConfig = {
             title: 'Export to zip',
           },
         },
+        {
+          id: 'start-tour',
+          className: 'fa fa-question-circle',
+          command: 'start-tour',
+          attributes: { title: 'Editor Tour' },
+        },
       ],
     },
     {
