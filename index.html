@@ -29,10 +29,6 @@
     <script src="./Blocks/login&signup2.js"></script>
     <script src="./Blocks/carousel.js"></script>
     <!-- <script src="./Blocks/tailwind.js"></script> -->
-    <script src="./plugins/saveFile.js"></script>
-    <script src="./plugins/openFile.js"></script>
-    <script src="./plugins/clearPage.js"></script>
-    <script src="./plugins/undo_redo.js"></script>
     <script src="./dist/grapesjs-project-manager/grapejs-project-manager.js"></script>
     <script src="https://unpkg.com/blockly@11.0.0-beta.5"></script>
     <script src="./dist/grapesjs-blockly/grapesjs-blockly.js"></script>
@@ -41,6 +37,8 @@
     <!-- <script src="./Blocks/Table.js"></script> -->
     <script src="./dist/grapesjs-blocks-table/grapesjs-blocks-table.min.js"></script>
     <script src="./dist/grapesjs-add-block/grapesjs-add-block.js"></script>
+    <link rel="stylesheet" href="./dist/shephered/shepherd.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shepherd.js/8.0.0/js/shepherd.js"></script>
 
     <style>
       body,
@@ -153,18 +151,12 @@
           "login_signup2",
           "carousel",
           // "tailwind",
-          "clearPage",
-          "undo_redo",
-          "saveFile",
-          "openFile",
           "grapesjs-templates",
           "grapesjs-pages-manager",
         ],
         pluginsOpts: {
           "grapesjs-plugin-export": {},
           table: { containerId: "#gjs" },
-          saveFile: {},
-          openFile: {},
           "grapesjs-add-block": {},
           "gjs-blocks-basic": {},
           "grapesjs-plugin-forms": {},
@@ -177,8 +169,6 @@
           login_signup: {},
           login_signup2: {},
           carousel: {},
-          clearPage: {},
-          undo_redo: {},
           "grapesjs-project-manager": {},
           "grapesjs-templates": {
             appendTo: "",
@@ -285,19 +275,6 @@
       //to enable freeMove
       editor.getModel().set("dmode", "absolute");
 
-      //first create an object from panels
-      const panelManager = editor.Panels;
-
-      //add export to zip button to options panel
-      const export_btn = panelManager.addButton("options", {
-        id: "export_to_zip",
-        className: "fa fa-download",
-        command: "gjs-export-zip",
-        attributes: {
-          title: "Export to zip",
-        },
-      });
-
       const pageManager = editor.Pages;
       editor.runCommand("open-pages");
       pageManager.getAll()[0].setName("index");
@@ -306,6 +283,7 @@
         editor.getWrapper().set("stylable", true);
       });
 
+      //for change theme
       const prefersLightScheme = window.matchMedia(
         "(prefers-color-scheme: light)"
       );
@@ -341,6 +319,374 @@
         // Toggle theme state
         isLightMode = !isLightMode;
         setTheme(isLightMode);
+      });
+
+      const shepherd = new Shepherd.Tour({
+        defaultStepOptions: {
+          cancelIcon: {
+            enabled: true,
+          },
+          classes: "shadow-md bg-purple-dark",
+          scrollTo: { behavior: "smooth", block: "center" },
+        },
+      });
+
+      shepherd.addStep({
+        id: "intro",
+        title: "Welcome",
+        text: "Welcome to the CODELESS editor!",
+        attachTo: {
+          element: "body",
+          on: "top",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "panel",
+        title: "Canvas",
+        text: "This is the canvas. Here, you will design pages for your project.Each page is composed of Blocks. Blocks are made up of coding elements that we've simplified down to a drag-and-drop feature. This allows you to manipulate the layout and functionality of each page with ease and simplicity.",
+        attachTo: {
+          element: ".gjs-editor",
+          on: "right",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "blockManager",
+        title: "Blocks Manager",
+        text: "Here you will find the list of blocks (grouped by category) available in the selected library. To use them, just drag and drop them into the canvas. It’s that simple!",
+        attachTo: {
+          element: "#open-blocks",
+          on: "right",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "template-pages",
+        title: "Templates",
+        text: "Here you'll find templates for multipage and single-page websites to help you save time on your projects. Feel free to customize any element, Just click on the template and use it!",
+        attachTo: {
+          element: "#template-pages",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+      shepherd.addStep({
+        id: "pages-wrp",
+        title: "Pages Panel",
+        text: "Here,You can manage all of your project's pages in the Pages panel.You can add, delete, and change the name of each page by clicking on hand icon.",
+        attachTo: {
+          element: ".pages-wrp",
+          on: "left",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+      shepherd.addStep({
+        id: "open-layers",
+        title: "Layers",
+        text: "Here, you can manage all the Blocks on the selected page. The Body block is the root block for each page, holding all other blocks.Imagine dropping blocks into the Body as stacking them to create a hierarchy. The Body is at the bottom, followed by a Section, and so on. Changes to the Body affect all blocks above it, but changes to higher blocks override Body changes. This also applies to a Grid within a Section, as the Grid is higher in the hierarchy.",
+        attachTo: {
+          element: "#open-layers",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+      shepherd.addStep({
+        id: "open-an",
+        title: "Animation Manager",
+        text: "Here,You can  create and manage animations for your page. you can easily add animations to different elements on your page, such as text, images, or buttons. You can choose from a variety of animation styles and customize the duration, delay,but you have to select an element first.",
+        attachTo: {
+          element: "#open-an",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+      shepherd.addStep({
+        id: "open-em",
+        title: "Event Manager",
+        text: "Here,You can create and manage events and handlers for more interactive page. you can easily add events to different elements on your page, such as text, images, or buttons. You can choose from a variety of handlers and events, or you can custimize your own script by clicking on (New Handler),but you have to select an element first.",
+        attachTo: {
+          element: "#open-em",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "open-tm",
+        title: "Trait Manager",
+        text: "Here,You can find a list of traits for each component which allows you to add attributes, apis,placeholders and much more.",
+        attachTo: {
+          element: "#open-tm",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+      shepherd.addStep({
+        id: "open-sm",
+        title: "Style Manager",
+        text: "Style Manager lets you easily customize the look of your webpage elements, such as text and buttons, without needing to write CSS code. You can adjust properties like size, color, and spacing using simple controls. It also allows you to create and apply custom styles to maintain consistency across your site,but you have to select an element first.",
+        attachTo: {
+          element: "#open-sm",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "export",
+        title: "Export To Zip",
+        text: "This allows you to export the whole project as a zip file , and save it in your PC.",
+        attachTo: {
+          element: "#export",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+      shepherd.addStep({
+        id: "open",
+        title: "Open .grapesjs",
+        text: "This allows you to open an existing grapesjs file to modify it as you need.",
+        attachTo: {
+          element: "#open",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "save",
+        title: "Save .grapesjs",
+        text: "This allows you to save your project as a grapesjs file, so you can return to it later.",
+        attachTo: {
+          element: "#save",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "preview",
+        title: "Preview",
+        text: "This allows you to preview only the current selected page.",
+        attachTo: {
+          element: "#preview",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "clear",
+        title: "Clear Canvas",
+        text: "This allows you to clear canvas of the current selected page",
+        attachTo: {
+          element: "#clear",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+      shepherd.addStep({
+        id: "change-theme",
+        title: "Change Theme",
+        text: "You can customize the theme of your editor, keeping in mind that it Initially follows the system's default mode.",
+        attachTo: {
+          element: "#change-theme",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "devices",
+        title: "Devices for Responsive Webpage",
+        text: "Devices are used to define different breakpoints for responsive design. Each device represents a specific screen size or device type, such as desktop, tablet, or mobile. These devices can be configured in the GrapesJS settings to define the available breakpoints and their corresponding widths. This allows you to create responsive layouts that adapt to different screen sizes and devices.",
+        attachTo: {
+          element: ".gjs-devices",
+          on: "bottom",
+        },
+        buttons: [
+          {
+            text: "Next",
+            action: shepherd.next,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      shepherd.addStep({
+        id: "end",
+        title: "Well Done!",
+        text: "Congratulations! You've completed the Editor Tour and are now ready to start building your webpages with GrapesJS.Let your creativity flow and enjoy the process of designing your next project!",
+        attachTo: {
+          element: "body",
+          on: "top",
+        },
+        buttons: [
+          {
+            text: "Finish",
+            action: shepherd.complete,
+          },
+          {
+            text: "Back",
+            action: shepherd.back,
+          },
+        ],
+      });
+
+      editor.Commands.add("start-tour", {
+        run(editor, sender) {
+          sender.set("active", false);
+          setTimeout(() => {
+            shepherd.start();
+          }, 500);
+        },
       });
     </script>
   </body>
