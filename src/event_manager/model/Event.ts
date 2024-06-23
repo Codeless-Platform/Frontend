@@ -178,50 +178,90 @@ export default class Event extends Model<EventProperties> {
     this.renderEvents();
     let Allevents = this.target.getEvents();
     let elname = this.target.getId();
-    let s = `var ${elname} = document.querySelector('#${this.target.getId()}');`;
+    let s = `var ${elname} = document.querySelector('#${elname}');`;
     let flag = false;
     let Handlers = this.getHandler();
+
     Allevents.forEach(event => {
-      let eventsValue = event.getValue()[0],
-        handlresValue = event.getValue()[1];
+      let eventsValue = event.getValue()[0];
+      let handlresValue = event.getValue()[1];
       let l = Handlers?.filter(handler => handler.value === handlresValue)[0];
+
       if (l) {
         l = l.logic;
       }
-      if (eventsValue !== 'none' && !isUndefined(eventsValue) && eventsValue !== '') {
+
+      if (eventsValue !== 'none' && eventsValue !== undefined && eventsValue !== '') {
         let m = `${elname}.addEventListener('${eventsValue}', function(event) {`;
+
         if (l) {
           flag = true;
           m += l;
           m += '});';
         }
-        if (handlresValue === 'fullscreen') {
-          flag = true;
-          m += `${elname}.requestFullscreen();});`;
-        } else if (handlresValue === 'resize') {
-          flag = true;
-          m += `${elname}.style.width="200px";});`;
-        } else if (handlresValue === 'redirecttourl' && event.getUrl() != '') {
-          flag = true;
-          m += `window.location.href = '${event.getUrl()}';});`;
-        } else if (handlresValue === 'redirecttopage' && event.getPage() != '') {
-          flag = true;
-          m += `window.location.href = '${event.getPage()}.html';});`;
-        } else if (handlresValue === 'newhandler') {
-          this.em.Editor.runCommand('edit-script');
-        } else if (handlresValue === 'none') {
-          m = '';
-          event.setValue([eventsValue, '']);
-        } else if ((handlresValue = '')) {
-          m = '';
+
+        switch (handlresValue) {
+          case 'fullscreen':
+            flag = true;
+            m += `${elname}.requestFullscreen();});`;
+            break;
+
+          case 'resize':
+            flag = true;
+            m += `${elname}.style.width="200px";});`;
+            break;
+
+          case 'redirecttourl':
+            if (event.getUrl() !== '') {
+              flag = true;
+              m += `window.location.href = '${event.getUrl()}';});`;
+            }
+            break;
+
+          case 'redirecttopage':
+            if (event.getPage() !== '') {
+              flag = true;
+              m += `window.location.href = '${event.getPage()}.html';});`;
+            }
+            break;
+
+          case 'newhandler':
+            this.em.Editor.runCommand('edit-script');
+            break;
+
+          case 'none':
+            m = '';
+            event.setValue([eventsValue, '']);
+            break;
+
+          default:
+            if (handlresValue === '') {
+              m = '';
+            }
+            break;
         }
+
         s += m;
       } else {
         event.setValue(['', handlresValue]);
       }
     });
+
     if (!flag) s = '';
-    this.target.set('script', s);
+
+    // Ensuring the `handlresValue` is accessible in the conditional block
+    let containsRedirect = Allevents.some(event => {
+      let handlresValue = event.getValue()[1];
+      return handlresValue === 'redirecttourl' || handlresValue === 'redirecttopage';
+    });
+
+    if (containsRedirect) {
+      this.target.set('script-export', s);
+      console.log('export');
+    } else {
+      this.target.set('script', s);
+      console.log('sc');
+    }
   }
 
   setTarget(target: Component) {

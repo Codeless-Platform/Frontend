@@ -52200,7 +52200,7 @@
                             panels: {
                               buttons: {
                                 titles: {
-                                  preview: 'Preview',
+                                  preview: 'Preview Current Page',
                                   fullscreen: 'Fullscreen',
                                   'sw-visibility': 'View components',
                                   'export-template': 'View code',
@@ -55060,7 +55060,7 @@
                                 command: au,
                                 context: au,
                                 attributes: {
-                                  title: 'Preview',
+                                  title: 'Preview Current Page',
                                 },
                               },
                               {
