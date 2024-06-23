@@ -187,12 +187,10 @@
 
 .shepherd-button.shepherd-button-secondary {
     background: #f1f2f3;
-    color: rgba(0, 0, 0, .75)
 }
 
 .shepherd-button.shepherd-button-secondary:not(:disabled):hover {
     background: #d6d9db;
-    color: rgba(0, 0, 0, .75)
 }
 
 .shepherd-button:disabled {
@@ -200,7 +198,6 @@
 }
 
 .shepherd-title {
-    color: rgba(0, 0, 0, .75);
     display: flex;
     font-size: 1rem;
     font-weight: 400;
@@ -211,22 +208,12 @@
 
 .shepherd-cancel-icon {
     background: transparent !important;
-    border: none;
-    color: hsla(0, 0%, 50.2%, .75);
+    border: none !important;
+    color: white;
     font-size: 2em;
     cursor: pointer;
     font-weight: 400;
     margin: 0;
     padding: 0;
     transition: color .5s ease
-}
-
-
-
-.shepherd-has-title .shepherd-content .shepherd-cancel-icon {
-    color: hsla(0, 0%, 50.2%, .75)
-}
-
-.shepherd-has-title .shepherd-content .shepherd-cancel-icon:hover {
-    color: rgba(0, 0, 0, .75)
 }
