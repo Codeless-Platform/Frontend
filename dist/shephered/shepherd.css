@@ -74,11 +74,13 @@
 }
 
 .shepherd-element[data-popper-placement^=top]>.shepherd-arrow {
-    bottom: -8px
+    bottom: -8px;
+
 }
 
 .shepherd-element[data-popper-placement^=bottom]>.shepherd-arrow {
-    top: -8px
+    top: -8px;
+
 }
 
 .shepherd-element[data-popper-placement^=left]>.shepherd-arrow {
@@ -94,7 +96,8 @@
 }
 
 .shepherd-element.shepherd-has-title[data-popper-placement^=bottom]>.shepherd-arrow:before {
-    background-color: #e6e6e6
+    background-color: #4a4a6a;
+
 }
 
 .shepherd-target-click-disabled.shepherd-enabled.shepherd-target,
@@ -129,7 +132,11 @@
     line-height: 1.3em;
     max-height: 30vh;
     padding: .75em;
-    overflow: auto;
+    overflow: hidden;
+    /* Optionally adjust the height to ensure all content fits */
+    height: auto;
+    max-height: none;
+    /* Ensures no implicit max-height applies */
     background-color: rgb(33, 33, 52);
 }
 
