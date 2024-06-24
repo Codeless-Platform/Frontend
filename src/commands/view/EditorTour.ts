@@ -41,12 +41,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -61,12 +61,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -81,12 +81,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -101,12 +101,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -121,12 +121,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -141,12 +141,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -161,12 +161,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -181,12 +181,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -201,12 +201,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -221,12 +221,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -241,12 +241,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -261,12 +261,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -281,12 +281,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -301,12 +301,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -321,12 +321,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -340,12 +340,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -359,12 +359,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -378,12 +378,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Next',
-          action: tour.next,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
         },
       ],
     });
@@ -398,12 +398,12 @@ export default {
       },
       buttons: [
         {
-          text: 'Finish',
-          action: tour.complete,
-        },
-        {
           text: 'Back',
           action: tour.back,
+        },
+        {
+          text: 'Finish',
+          action: tour.complete,
         },
       ],
     });
