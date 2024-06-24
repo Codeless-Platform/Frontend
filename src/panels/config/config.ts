@@ -60,7 +60,7 @@ const config: PanelsConfig = {
           attributes: { title: 'Change theme' },
         },
         {
-          active: false,
+          active: true,
           id: swv,
           className: 'fa fa-square-o',
           command: 'core:component-outline',
