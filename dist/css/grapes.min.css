@@ -4123,3 +4123,44 @@ button:hover,
     opacity: 0;
   }
 }
+
+body.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark-mode {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#change-theme {
+  height: 22px;
+  width: 35px;
+  display: inline-block;
+  cursor: pointer;
+  background-color: #ccc;
+  position: relative;
+  border-radius: 34px;
+  transition: background-color 0.4s;
+}
+
+#change-theme:before {
+  font: normal normal normal 10px / 1 FontAwesome;
+  content: "\f186";
+  position: absolute;
+  height: 14px;
+  width: 14px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.4s;
+}
+
+#change-theme.checked:before {
+  content: "\f185";
+  color: #ffdd12;
+  transform: translateX(12px);
+}

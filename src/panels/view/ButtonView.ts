@@ -60,13 +60,6 @@ export default class ButtonView extends ModuleView<Button> {
   private updateClassName() {
     const { model, pfx } = this;
     let cls = model.className;
-    if (model.id == 'change-theme') {
-      if (model.active) {
-        cls = 'fa fa-moon-o';
-      } else {
-        cls = 'fa fa-sun-o';
-      }
-    }
     const attrCls = model.get('attributes').class;
     const classStr = `${attrCls ? attrCls : ''} ${pfx}btn ${cls ? cls : ''}`;
     this.$el.attr('class', classStr.trim());

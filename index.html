@@ -297,15 +297,17 @@
         if (isLightMode) {
           console.log("User prefers light mode");
           editor.runCommand("change-theme");
-          button.classList.remove("fa-sun-o");
-          button.classList.add("fa-moon-o");
+          button.classList.remove("light-mode");
+          button.classList.add("dark-mode");
+          button.classList.add("checked");
           button.classList.add("gjs-pn-active");
           button.classList.add("gjs-four-color");
         } else {
           console.log("User prefers dark mode");
           editor.stopCommand("change-theme");
-          button.classList.remove("fa-moon-o");
-          button.classList.add("fa-sun-o");
+          button.classList.remove("dark-mode");
+          button.classList.remove("checked");
+          button.classList.add("light-mode");
           button.classList.add("gjs-pn-active");
           button.classList.add("gjs-four-color");
         }

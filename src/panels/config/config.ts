@@ -54,7 +54,6 @@ const config: PanelsConfig = {
       buttons: [
         {
           id: 'change-theme',
-          className: 'fa fa-moon-o',
           command: theme,
           context: theme,
           attributes: { title: 'Change theme' },
