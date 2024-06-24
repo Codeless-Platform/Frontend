@@ -1,0 +1,413 @@
+import Shepherd from 'shepherd.js';
+import EditorView from '../../editor/view/EditorView';
+import { CommandObject } from './CommandAbstract';
+
+export default {
+  run(ed, sender) {
+    sender.set('active', true);
+    const tour = new Shepherd.Tour({
+      defaultStepOptions: {
+        cancelIcon: {
+          enabled: true,
+        },
+        classes: 'shadow-md bg-purple-dark',
+        scrollTo: { behavior: 'smooth', block: 'center' },
+      },
+    });
+
+    tour.addStep({
+      id: 'intro',
+      title: 'Welcome',
+      text: 'Welcome to the CODELESS editor!',
+      attachTo: {
+        element: 'body',
+        on: 'top',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'panel',
+      title: 'Canvas',
+      text: "This is the canvas. Here, you will design pages for your project. Each page is composed of Blocks. Blocks are made up of coding elements that we've simplified down to a drag-and-drop feature. This allows you to manipulate the layout and functionality of each page with ease and simplicity.",
+      attachTo: {
+        element: '.gjs-editor',
+        on: 'right',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'blockManager',
+      title: 'Blocks Manager',
+      text: 'Here you will find the list of blocks (grouped by category) available in the selected library. To use them, just drag and drop them into the canvas. It’s that simple!',
+      attachTo: {
+        element: '#open-blocks',
+        on: 'right',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'template-pages',
+      title: 'Templates',
+      text: "Here you'll find templates for multipage and single-page websites to help you save time on your projects. Feel free to customize any element, just click on the template and use it!",
+      attachTo: {
+        element: '#template-pages',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'pages-wrp',
+      title: 'Pages Panel',
+      text: "Here, you can manage all of your project's pages in the Pages panel. You can add, delete, and change the name of each page by clicking on hand icon.",
+      attachTo: {
+        element: '.pages-wrp',
+        on: 'left',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'open-layers',
+      title: 'Layers',
+      text: 'Here, you can manage all the Blocks on the selected page. The Body block is the root block for each page, holding all other blocks.Changes to the Body affect all blocks above it, but changes to higher blocks override Body changes. This also applies to a Grid within a Section, as the Grid is higher in the hierarchy.',
+      attachTo: {
+        element: '#open-layers',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'open-an',
+      title: 'Animation Manager',
+      text: 'Here, you can create and manage animations for your page. You can easily add animations to different elements on your page, such as text, images, or buttons. You can choose from a variety of animation styles and customize the duration, delay, but you have to select an element first.',
+      attachTo: {
+        element: '#open-an',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'open-em',
+      title: 'Event Manager',
+      text: 'Here, you can create and manage events and handlers for more interactive pages. You can easily add events to different elements on your page, such as text, images, or buttons. You can choose from a variety of handlers and events, or you can customize your own script by clicking on (New Handler), but you have to select an element first.',
+      attachTo: {
+        element: '#open-em',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'open-tm',
+      title: 'Trait Manager',
+      text: 'Here, you can find a list of traits for each component which allows you to add attributes, APIs, placeholders and much more.',
+      attachTo: {
+        element: '#open-tm',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'open-sm',
+      title: 'Style Manager',
+      text: 'Style Manager lets you easily customize the look of your webpage elements, such as text and buttons, without needing to write CSS code. You can adjust properties like size, color, and spacing using simple controls. It also allows you to create and apply custom styles to maintain consistency across your site, but you have to select an element first.',
+      attachTo: {
+        element: '#open-sm',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'gjs-clm-states',
+      title: 'States',
+      text: 'Here, you can change the state of your component to apply styles on different states:<br>State<br>Hover<br>Click',
+      attachTo: {
+        element: '#gjs-clm-states',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'export',
+      title: 'Export To Zip',
+      text: 'This allows you to export the whole project as a zip file and save it on your PC.',
+      attachTo: {
+        element: '#export',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'open',
+      title: 'Open .grapesjs',
+      text: 'This allows you to open an existing GrapesJS file to modify it as you need.',
+      attachTo: {
+        element: '#open',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'save',
+      title: 'Save .grapesjs',
+      text: 'This allows you to save your project as a GrapesJS file, so you can return to it later.',
+      attachTo: {
+        element: '#save',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'preview',
+      title: 'Preview',
+      text: 'This allows you to preview only the current selected page.',
+      attachTo: {
+        element: '#preview',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'clear',
+      title: 'Clear Canvas',
+      text: 'This allows you to clear canvas of the current selected page',
+      attachTo: {
+        element: '#clear',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+    tour.addStep({
+      id: 'change-theme',
+      title: 'Change Theme',
+      text: "You can customize the theme of your editor, keeping in mind that it Initially follows the system's default mode.",
+      attachTo: {
+        element: '#change-theme',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+    tour.addStep({
+      id: 'toolbar',
+      title: 'Toolbar',
+      text: 'Some commands help you while creating your webpage,<br>*first icon for deleting the component<br>*second icon for copying the component<br>*third icon for free moving the component<br>*fourth icon for going to the above component<br>*last icon for creating your own block.',
+      attachTo: {
+        element: '.gjs-toolbar',
+        on: 'right',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+    tour.addStep({
+      id: 'devices',
+      title: 'Devices for Responsive Webpage',
+      text: 'Devices are used to define different breakpoints for responsive design. Each device represents a specific screen size or device type, such as desktop, tablet, or mobile. These devices can be configured in the GrapesJS settings to define the available breakpoints and their corresponding widths. This allows you to create responsive layouts that adapt to different screen sizes and devices.',
+      attachTo: {
+        element: '.gjs-devices',
+        on: 'bottom',
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.addStep({
+      id: 'end',
+      title: 'Well Done!',
+      text: "Congratulations! You've completed the Editor Tour and are now ready to start building your webpages with GrapesJS.Let your creativity flow and enjoy the process of designing your next project!",
+      attachTo: {
+        element: 'body',
+        on: 'top',
+      },
+      buttons: [
+        {
+          text: 'Finish',
+          action: tour.complete,
+        },
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+      ],
+    });
+
+    tour.start();
+  },
+} as CommandObject<EditorView>;
