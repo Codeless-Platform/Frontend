@@ -42,7 +42,7 @@ export default class TraitApiView extends TraitView {
 
       if (!isUndefined(value)) {
         md.set({ value }, { silent: true });
-        input.prop('value', value.link);
+        input.prop('value', value ? value.link : '');
       }
 
       if (min) {
@@ -78,7 +78,7 @@ export default class TraitApiView extends TraitView {
 
       if (!isUndefined(value)) {
         md.set({ value }, { silent: true });
-        input.prop('value', value.name);
+        input.prop('value', value ? value.name : '');
       }
 
       if (min) {
