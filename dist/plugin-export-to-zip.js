@@ -7357,7 +7357,7 @@
                           (page.get('name') || page.id) +
                           '.css"/>\n</head>\n' +
                           bodyTagOnly +
-                          '\n    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> \n    <script src="https://cdn.tailwindcss.com"></script>\n                                                ' +
+                          '\n    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> \n    <script src="https://cdn.tailwindcss.com"></script>\n    ' +
                           bodyContent +
                           '\n<script src="../js/script-' +
                           (page.get('name') || page.id) +
