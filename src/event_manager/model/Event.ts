@@ -257,10 +257,8 @@ export default class Event extends Model<EventProperties> {
 
     if (containsRedirect) {
       this.target.set('script-export', s);
-      console.log('export');
     } else {
       this.target.set('script', s);
-      console.log('sc');
     }
   }
 

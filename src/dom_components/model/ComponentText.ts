@@ -20,6 +20,7 @@ export default class ComponentText extends Component {
       : this.listenTo(this.em, 'wrapperRendered', this.startListeningtoApi);
     super.initialize(props, opts);
     this.__checkInnerChilds();
+    this.on('Rendered', this.setOptionsFromApi);
   }
 
   startListeningtoApi() {
@@ -98,7 +99,7 @@ export default class ComponentText extends Component {
             console.error(`Property '${segment}' does not exist in object`);
             return undefined;
           }
-          path += `.${segment}`;
+          path += `["${segment}"]`;
           currentObj = currentObj[segment];
         } else {
           console.error(`Unexpected type encountered: ${typeof currentObj}`);

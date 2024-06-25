@@ -6,6 +6,22 @@ export default class TraitApiView extends TraitView {
     const { clsField } = this;
     return `<div class="${clsField}" ${target}-input></div>`;
   }
+  getModelValue() {
+    let value;
+    const model = this.model;
+    const target = this.target;
+    const name = model.getName();
+
+    if (model.get('changeProp')) {
+      value = target.get(name);
+    } else {
+      const attrs = target.get('attributes')!;
+      value = model.get('value') || attrs[name];
+    }
+
+    return !isUndefined(value) ? value : '';
+  }
+
   getInputEl() {
     if (!this.$input) {
       const { em, model } = this;
@@ -26,7 +42,7 @@ export default class TraitApiView extends TraitView {
 
       if (!isUndefined(value)) {
         md.set({ value }, { silent: true });
-        input.prop('value', value);
+        input.prop('value', value.link);
       }
 
       if (min) {
@@ -62,7 +78,7 @@ export default class TraitApiView extends TraitView {
 
       if (!isUndefined(value)) {
         md.set({ value }, { silent: true });
-        input.prop('value', value);
+        input.prop('value', value.name);
       }
 
       if (min) {

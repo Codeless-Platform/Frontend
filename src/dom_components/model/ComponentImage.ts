@@ -45,6 +45,7 @@ export default class ComponentImage extends Component {
     this.em.getWrapper()
       ? this.startListeningtoApi()
       : this.listenTo(this.em, 'wrapperRendered', this.startListeningtoApi);
+    this.on('Rendered', this.setOptionsFromApi);
   }
 
   startListeningtoApi() {
@@ -130,7 +131,7 @@ export default class ComponentImage extends Component {
             if (!(segment in currentObj)) {
               throw new Error(`Property '${segment}' does not exist in object`);
             }
-            path += `.${segment}`;
+            path += `["${segment}"]`;
             currentObj = currentObj[segment];
           } else {
             throw new Error(`Unexpected type encountered: ${typeof currentObj}`);

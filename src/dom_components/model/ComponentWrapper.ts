@@ -16,7 +16,7 @@ export default class ComponentWrapper extends Component {
       traits: [
         {
           type: 'api',
-          name: [...Array(length)].map(() => Math.random().toString(36).charAt(3)).join(''),
+          name: 'api1',
           label: 'API',
           changeProp: true,
         },
@@ -35,10 +35,31 @@ export default class ComponentWrapper extends Component {
 
   initialize(props: any, opts: any) {
     super.initialize(props, opts);
+    if (this.get('apis').length > 1) {
+      this.renderTraits();
+    }
     this.addNewTrait();
   }
-
+  renderTraits() {
+    let index = this.get('apis').length - 1;
+    for (let i = 1; i <= index; i++) {
+      this.addTrait(
+        [
+          {
+            type: 'api',
+            name: `api${i + 1}`,
+            label: 'API',
+            changeProp: true,
+          },
+        ],
+        {
+          at: this.getTraits().length - 1,
+        }
+      );
+    }
+  }
   addNewTrait() {
+    let index = this.get('apis').length;
     this.addTrait([
       {
         type: 'button',
@@ -52,7 +73,7 @@ export default class ComponentWrapper extends Component {
               [
                 {
                   type: 'api',
-                  name: [...Array(length)].map(() => Math.random().toString(36).charAt(3)).join(''),
+                  name: `api${this.get('apis').length + 1}`,
                   label: 'API',
                   changeProp: true,
                 },

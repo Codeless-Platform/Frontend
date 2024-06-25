@@ -3924,7 +3924,10 @@
                           t.next = 21;
                           break;
                         }
-                        return (t.next = 6), r && r.loadAll();
+                        return (
+                          (t.next = 6),
+                          r && r.load && r.load() && r.loadAll && r.loadAll()
+                        );
                       case 6:
                         o = t.sent;
                         if (o) {
@@ -3934,12 +3937,12 @@
                           }
                         }
                         return (
-                          r && r.setId(i.id),
-                          r && r.setName(i.name),
-                          r && r.setThumbnail(i.thumbnail),
-                          r && r.setIsTemplate(i.template),
-                          (t.next = 15),
-                          e.load()
+                          r && r.setId && r.setId(i.id),
+                          r && r.setName && r.setName(i.name),
+                          r && r.setThumbnail && r.setThumbnail(i.thumbnail),
+                          r && r.setIsTemplate && r.setIsTemplate(i.template),
+                          (t.next = 15)
+                          // e.load()
                         );
                       case 15:
                         e.stopCommand('sw-visibility'),

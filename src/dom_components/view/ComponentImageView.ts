@@ -2,6 +2,8 @@ import { isString } from 'underscore';
 import { ObjectAny } from '../../common';
 import ComponentImage from '../model/ComponentImage';
 import ComponentView from './ComponentView';
+import Component from '../model/Component';
+import Editor from '../../editor';
 
 export default class ComponentImageView extends ComponentView {
   classEmpty!: string;
@@ -110,6 +112,10 @@ export default class ComponentImageView extends ComponentView {
   noDrag(ev: Event) {
     ev.preventDefault();
     return false;
+  }
+
+  onRender(opts: { editor: Editor; model: Component; el: HTMLElement }): void {
+    this.model.trigger('Rendered');
   }
 
   render() {

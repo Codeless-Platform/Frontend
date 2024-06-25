@@ -311,7 +311,7 @@ export default class Trait extends Model<TraitProperties> {
         valueToSet = valueFalse;
       }
     }
-    if (this.getType() === 'api' && this.get('changeProp')) {
+    if (this.getType() === 'api') {
       const { name, link } = value;
       const apis = target.attributes.apis;
 
@@ -354,6 +354,7 @@ export default class Trait extends Model<TraitProperties> {
       } else {
         handleFetchApi(link);
       }
+      target.set(this.getName(), valueToSet, opts);
     } else if (this.get('changeProp')) {
       target.set(name, valueToSet, opts);
     } else {
