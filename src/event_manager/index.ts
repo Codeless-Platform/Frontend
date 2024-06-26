@@ -59,6 +59,7 @@ export default class EventManager extends Module<EventManagerConfig & { pStylePr
     const model = new Model();
     this.model = model;
     this.types = typesDef;
+    const m = em;
     this.handlers = [
       { value: 'fullscreen', name: 'Fullscreen', logic: '', blockly: '' },
       { value: 'resize', name: 'Resize', logic: '', blockly: '' },

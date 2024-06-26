@@ -110,7 +110,6 @@ export default class ComponentWrapper extends Component {
         }
       });
     }
-    console.log(1);
     this.trigger('change:apis');
   }
 

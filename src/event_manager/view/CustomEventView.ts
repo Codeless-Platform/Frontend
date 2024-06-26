@@ -43,6 +43,7 @@ export default class CustomEventView extends EventView {
     const hasLabel = this.hasLabel && this.hasLabel();
     const cls = `${pfx}event`;
     delete this.$hinput;
+    const val = model.getTargetValue()[1];
     let tmpl = `<div class="${cls}">
       ${hasLabel ? `<div class="${ppfx}label-wrp" data-label></div>` : ''}
       <div class="${ppfx}field-wrp ${ppfx}field-wrp--select">
@@ -55,7 +56,7 @@ export default class CustomEventView extends EventView {
         }
       </div>
     </div>`;
-    if (model.getTargetValue()[1] == 'redirecttourl') {
+    if (val == 'redirecttourl') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
         <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
@@ -74,7 +75,7 @@ export default class CustomEventView extends EventView {
       </div>
       </div>`;
     }
-    if (model.getTargetValue()[1] == 'redirecttopage') {
+    if (val == 'redirecttopage') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
         <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
@@ -96,10 +97,10 @@ export default class CustomEventView extends EventView {
     $el.empty().append(tmpl);
     hasLabel && this.renderLabel();
     this.renderField();
-    if (model.getTargetValue()[1] == 'redirecttourl') {
+    if (val[1] == 'redirecttourl') {
       this.renderHandlerData();
     }
-    if (model.getTargetValue()[1] == 'redirecttopage') {
+    if (val[1] == 'redirecttopage') {
       this.renderHandlerData();
     }
 

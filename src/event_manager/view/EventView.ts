@@ -393,6 +393,7 @@ export default class EventView extends View<Event> {
       this.handlerelInput = htpl as HTMLInputElement;
     }
   }
+
   renderHandlerData() {
     const { $el, appendInput, model } = this;
     const inputs = $el.find('[data-input]');
@@ -432,6 +433,7 @@ export default class EventView extends View<Event> {
     const cls = `${pfx}event`;
     delete this.$hinput;
     delete this.$einput;
+    const val = model.getTargetValue()[1];
     let tmpl = `<div class="${cls}">
       <div class="${ppfx}label-wrp" data-label>
         <div class="gjs-label" title="Event">Event</div>
@@ -460,7 +462,7 @@ export default class EventView extends View<Event> {
         }
       </div>
     </div>`;
-    if (model.getTargetValue()[1] == 'redirecttourl') {
+    if (val == 'redirecttourl') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
         <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
@@ -479,7 +481,7 @@ export default class EventView extends View<Event> {
       </div>
       </div>`;
     }
-    if (model.getTargetValue()[1] == 'redirecttopage') {
+    if (val == 'redirecttopage') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
         <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
@@ -500,10 +502,10 @@ export default class EventView extends View<Event> {
     }
     $el.empty().append(tmpl);
     this.renderEventField();
-    if (model.getTargetValue()[1] == 'redirecttourl') {
+    if (val == 'redirecttourl') {
       this.renderHandlerData();
     }
-    if (model.getTargetValue()[1] == 'redirecttopage') {
+    if (val == 'redirecttopage') {
       this.renderHandlerData();
     }
 

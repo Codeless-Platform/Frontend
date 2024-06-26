@@ -295,8 +295,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
           ],
         },
       ],
-
-      events: ['0'],
+      events: ['event0'],
       propagate: '',
       dmode: '',
       toolbar: null,
@@ -1996,12 +1995,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
   updateScript() {
     let s = '';
     if (this.get('click')) {
-      s = `
-            var element = document.querySelector('#${this.getId()}');
-          element.addEventListener('click', function(event) {
-              console.log('Element clicked!');
-            });
-            `;
+      s = `var element = document.querySelector('#${this.getId()}');\nelement.addEventListener('click', function (event) {\n  console.log('Element clicked!');\n});`;
     }
     this.set('script', s);
   }

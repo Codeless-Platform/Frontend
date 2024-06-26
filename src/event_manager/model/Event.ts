@@ -134,6 +134,11 @@ export default class Event extends Model<EventProperties> {
     this.listenTo(em, 'change:Events', this.updateHandlers);
     this.listenTo(em, 'change:Events', this.updateScript);
     this.on('change', this.updateScript);
+    if (this.getTargetValue()) {
+      setTimeout(() => {
+        this.renderEvents();
+      }, 2000);
+    }
   }
 
   getCurrentHandlers(): [] {
@@ -157,7 +162,7 @@ export default class Event extends Model<EventProperties> {
         if (neweventx && neweventx.length > 0 && !(neweventx.length === 1 && neweventx[0].value === 'none')) {
           this.target.addEvent([
             {
-              name: Allevents.length.toString(),
+              name: 'event' + Allevents.length.toString(),
               type: 'NotCustomized',
               eventx: neweventx,
             },
@@ -447,7 +452,6 @@ export default class Event extends Model<EventProperties> {
       // @ts-ignore TODO update post component update
       value = target.getAttributes()[name];
     }
-
     return !isUndefined(value) ? value : '';
   }
 
@@ -474,7 +478,6 @@ export default class Event extends Model<EventProperties> {
         valueToSet = valueFalse;
       }
     }
-
     if (this.get('changeProp')) {
       target.set(name, valueToSet, opts);
     } else {
