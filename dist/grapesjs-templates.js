@@ -69115,17 +69115,12 @@
                   value: function () {
                     var t = w;
                     if (null != this[t(304)]) {
-                      console.log('this[t(304)] is not null');
-
                       var wrapper = this['editor'][t(270)]['getWrapper']();
-                      console.log('Wrapper:', wrapper);
 
                       var e = wrapper ? wrapper['getEl']() : null;
-                      console.log('Element e:', e);
 
                       if (e) {
                         var n = e['getElementsByClassName'](t(273));
-                        console.log('Elements with class t(273):', n);
 
                         while (n[t(212)] > 0) {
                           e[t(238)](n[0]);
@@ -69151,8 +69146,6 @@
                           r = '<div class="template-header">' + r + t(235);
                           e[t(265)]('beforeend', r);
                         }
-                      } else {
-                        console.error('Failed to get element e');
                       }
                     }
                   },
