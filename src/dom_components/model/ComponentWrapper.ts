@@ -30,6 +30,7 @@ export default class ComponentWrapper extends Component {
         'background-position',
         'background-size',
       ],
+      events: [{ label: 'onload', type: 'Customized' }, '0'],
     };
   }
 
