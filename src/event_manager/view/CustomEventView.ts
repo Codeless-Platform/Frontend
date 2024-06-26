@@ -97,10 +97,10 @@ export default class CustomEventView extends EventView {
     $el.empty().append(tmpl);
     hasLabel && this.renderLabel();
     this.renderField();
-    if (val[1] == 'redirecttourl') {
+    if (val == 'redirecttourl') {
       this.renderHandlerData();
     }
-    if (val[1] == 'redirecttopage') {
+    if (val == 'redirecttopage') {
       this.renderHandlerData();
     }
 
