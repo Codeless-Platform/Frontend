@@ -457,18 +457,19 @@ export default class Event extends Model<EventProperties> {
     const target = this.target;
     const getValue = this.get('getValue');
     let value;
-
-    if (getValue) {
-      value = getValue({
-        editor: this.em?.getEditor()!,
-        event: this,
-        component: target,
-      });
-    } else if (this.get('changeProp')) {
-      value = target.get(name);
-    } else {
-      // @ts-ignore TODO update post component update
-      value = target.getAttributes()[name];
+    if (target) {
+      if (getValue) {
+        value = getValue({
+          editor: this.em?.getEditor()!,
+          event: this,
+          component: target,
+        });
+      } else if (this.get('changeProp')) {
+        value = target.get(name);
+      } else {
+        // @ts-ignore TODO update post component update
+        value = target.getAttributes()[name];
+      }
     }
     return !isUndefined(value) ? value : '';
   }

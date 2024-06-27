@@ -83,13 +83,17 @@ export default class ComponentText extends Component {
   renderContent() {
     const apiName = this.get('dbinput').split('-')[0].trim();
     const apiObject = this.getApiObject(apiName);
-    const path = this.generatePath(apiObject.json, this.get('dbinput'));
-    const childrenContainer = this.view?.getChildrenContainer();
-    if (childrenContainer) {
-      childrenContainer.innerHTML = eval(`apiObject.json${path}`);
-      //@ts-ignore
-      this.view.rteEnabled = true;
-      this.trigger('sync:content');
+    if (apiObject) {
+      const path = this.generatePath(apiObject.json, this.get('dbinput'));
+      const childrenContainer = this.view?.getChildrenContainer();
+      if (path) {
+        if (childrenContainer) {
+          childrenContainer.innerHTML = eval(`apiObject.json${path}`);
+          //@ts-ignore
+          this.view.rteEnabled = true;
+          this.trigger('sync:content');
+        }
+      }
     }
   }
 
@@ -131,31 +135,24 @@ export default class ComponentText extends Component {
   }
 
   setData() {
-    const selectElement = this.getTrait('dbinput').view?.$input?.get(0) as HTMLSelectElement | undefined;
+    const selectedText = this.get('dbinput');
+    const apiName = selectedText.split('-')[0].trim();
+    const apiObject = this.getApiObject(apiName);
 
-    if (selectElement) {
-      const selectedOption = selectElement.options[selectElement.selectedIndex];
-      const selectedText = selectedOption.text;
-      const apiName = selectedText.split('-')[0].trim();
-      const apiObject = this.getApiObject(apiName);
+    if (apiObject && apiObject.json) {
+      const generatedPath = this.generatePath(apiObject.json, selectedText);
 
-      if (apiObject && apiObject.json) {
-        const generatedPath = this.generatePath(apiObject.json, selectedText);
-
-        if (generatedPath) {
-          const script = `
+      if (generatedPath) {
+        const script = `
           async function fetch${this.getId()}Data() {\n  try {\n    const res = await fetch('${
-            apiObject.link
-          }');\n    if (!res.ok) throw new Error('Network response was not ok');\n    let userData = await res.json();\n    userData = Array.isArray(userData) ? userData : [userData];\n    const el = document.getElementById('${this.getId()}');\n    if (el) {\n      el.innerHTML = userData${generatedPath};\n    } else {\n      console.error('Element not found to set the innerHTML');\n    }\n  } catch (error) {\n    if (error instanceof Error) {\n      console.error('Error fetching data:', error.message);\n    } else {\n      console.error('Unknown error fetching data');\n    }\n  }\n}\nfetch${this.getId()}Data();\n`;
-          this.set('script-export', script);
-        } else {
-          console.error(`Generated path for selected option '${selectedText}' is invalid.`);
-        }
+          apiObject.link
+        }');\n    if (!res.ok) throw new Error('Network response was not ok');\n    let userData = await res.json();\n    userData = Array.isArray(userData) ? userData : [userData];\n    const el = document.getElementById('${this.getId()}');\n    if (el) {\n      el.innerHTML = userData${generatedPath};\n    } else {\n      console.error('Element not found to set the innerHTML');\n    }\n  } catch (error) {\n    if (error instanceof Error) {\n      console.error('Error fetching data:', error.message);\n    } else {\n      console.error('Unknown error fetching data');\n    }\n  }\n}\nfetch${this.getId()}Data();\n`;
+        this.set('script-export', script);
       } else {
-        console.error(`API object not found or invalid for name: ${apiName}`);
+        console.error(`Generated path for selected option '${selectedText}' is invalid.`);
       }
     } else {
-      console.error('Select element not found');
+      console.error(`API object not found or invalid for name: ${apiName}`);
     }
   }
 

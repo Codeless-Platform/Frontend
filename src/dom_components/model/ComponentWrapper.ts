@@ -42,9 +42,7 @@ export default class ComponentWrapper extends Component {
       this.renderTraits();
     }
     this.addNewTrait();
-    setInterval(() => {
-      this.loadJsons();
-    }, 10000);
+    this.loadJsons();
   }
 
   renderTraits() {
