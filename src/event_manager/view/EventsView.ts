@@ -24,11 +24,11 @@ export default class EventsView extends DomainViews {
     this.pfx = this.ppfx + config.stylePrefix || '';
     this.className = `${this.pfx}events`;
     this.listenTo(em, 'component:toggled', this.updatedCollection);
-    this.listenTo(em, 'change:Events', this.dothis);
+    this.listenTo(em, 'change:Events', this.renderHandlers);
     this.updatedCollection();
   }
 
-  dothis() {
+  renderHandlers() {
     let handlercont = this.$el.find('.x').get(0) as HTMLElement | undefined;
 
     if (!handlercont) {
@@ -93,7 +93,7 @@ export default class EventsView extends DomainViews {
     // @ts-ignore
     this.collection = comp ? comp.events : [];
     this.render();
-    this.dothis();
+    this.renderHandlers();
   }
 }
 

@@ -82,13 +82,11 @@ export default class ComponentImage extends Component {
               processElement(optionValue, optionName);
             });
           } else {
-            // Check if the value is a link to an image
             if (typeof element === 'string' && isImageUrl(element)) {
-              options.push({ name: prefix, value: element });
+              options.push({ name: prefix, value: prefix });
             }
           }
         }
-
         if (name) processElement(json, name);
       });
     }
@@ -97,7 +95,7 @@ export default class ComponentImage extends Component {
       {
         type: 'select',
         name: 'dbinput',
-        label: 'Content',
+        label: 'API Content',
         placeholder: 'api for this page',
         changeProp: true,
         options: options,
@@ -108,59 +106,72 @@ export default class ComponentImage extends Component {
       this.removeTrait('dbinput');
       this.addTrait(newtrait);
     }
+    if (this.get('dbinput')) {
+      this.renderContent();
+    }
+  }
+
+  renderContent() {
+    const apiName = this.get('dbinput').split('-')[0].trim();
+    const apiObject = this.getApiObject(apiName);
+    const path = this.generatePath(apiObject.json, this.get('dbinput'));
+    this.set('src', eval(`apiObject.json${path}`));
+  }
+
+  getApiObject(apiName: String) {
+    return this.em
+      .getWrapper()
+      ?.get('apis')
+      .find((obj: any) => obj.name === apiName);
+  }
+
+  generatePath(obj: any, selectedOptionName: string): string | undefined {
+    const segments = selectedOptionName.split('-').slice(1);
+    let currentObj = obj;
+    let path = '';
+
+    try {
+      for (const segment of segments) {
+        if (Array.isArray(currentObj)) {
+          const index = parseInt(segment, 10);
+          if (isNaN(index) || index < 0 || index >= currentObj.length) {
+            throw new Error(`Invalid array index: ${index}`);
+          }
+          path += `[${index}]`;
+          currentObj = currentObj[index];
+        } else if (typeof currentObj === 'object' && currentObj !== null) {
+          if (!(segment in currentObj)) {
+            throw new Error(`Property '${segment}' does not exist in object`);
+          }
+          path += `["${segment}"]`;
+          currentObj = currentObj[segment];
+        } else {
+          throw new Error(`Unexpected type encountered: ${typeof currentObj}`);
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`Error generating path: ${error.message}`);
+      } else {
+        console.error('Unknown error generating path');
+      }
+      return undefined;
+    }
+
+    return path;
   }
 
   setData() {
     let selectElement = this.getTrait('dbinput').view?.$input?.get(0) as HTMLSelectElement | undefined;
 
-    function generatePath(obj: any, selectedOptionName: string): string | undefined {
-      const segments = selectedOptionName.split('-').slice(1);
-      let currentObj = obj;
-      let path = '';
-
-      try {
-        for (const segment of segments) {
-          if (Array.isArray(currentObj)) {
-            const index = parseInt(segment, 10);
-            if (isNaN(index) || index < 0 || index >= currentObj.length) {
-              throw new Error(`Invalid array index: ${index}`);
-            }
-            path += `[${index}]`;
-            currentObj = currentObj[index];
-          } else if (typeof currentObj === 'object' && currentObj !== null) {
-            if (!(segment in currentObj)) {
-              throw new Error(`Property '${segment}' does not exist in object`);
-            }
-            path += `["${segment}"]`;
-            currentObj = currentObj[segment];
-          } else {
-            throw new Error(`Unexpected type encountered: ${typeof currentObj}`);
-          }
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error(`Error generating path: ${error.message}`);
-        } else {
-          console.error('Unknown error generating path');
-        }
-        return undefined;
-      }
-
-      return path;
-    }
-
     if (selectElement) {
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       const selectedText = selectedOption.text;
       const apiName = selectedText.split('-')[0].trim();
-
-      const apiObject = this.em
-        .getWrapper()
-        ?.get('apis')
-        .find((obj: any) => obj.name === apiName);
+      const apiObject = this.getApiObject(apiName);
 
       if (apiObject && apiObject.json) {
-        const generatedPath = generatePath(apiObject.json, selectedText);
+        const generatedPath = this.generatePath(apiObject.json, selectedText);
 
         if (generatedPath) {
           const script = `
@@ -177,8 +188,6 @@ export default class ComponentImage extends Component {
     } else {
       console.error('Select element not found');
     }
-
-    this.set('src', this.get('dbinput'));
   }
 
   initToolbar() {

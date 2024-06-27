@@ -53,7 +53,7 @@ export default class ComponentText extends Component {
               processElement(optionValue, optionName);
             });
           } else {
-            options.push({ name: prefix, value: element });
+            options.push({ name: prefix, value: prefix });
           }
         }
         if (name) processElement(json, name);
@@ -64,7 +64,7 @@ export default class ComponentText extends Component {
       {
         type: 'select',
         name: 'dbinput',
-        label: 'Content',
+        label: 'API Content',
         placeholder: 'api for this page',
         changeProp: true,
         options: options,
@@ -75,53 +75,72 @@ export default class ComponentText extends Component {
       this.removeTrait('dbinput');
       this.addTrait(newtrait);
     }
+    if (this.get('dbinput')) {
+      this.renderContent();
+    }
+  }
+
+  renderContent() {
+    const apiName = this.get('dbinput').split('-')[0].trim();
+    const apiObject = this.getApiObject(apiName);
+    const path = this.generatePath(apiObject.json, this.get('dbinput'));
+    const childrenContainer = this.view?.getChildrenContainer();
+    if (childrenContainer) {
+      childrenContainer.innerHTML = eval(`apiObject.json${path}`);
+      //@ts-ignore
+      this.view.rteEnabled = true;
+      this.trigger('sync:content');
+    }
+  }
+
+  generatePath(obj: any, selectedOptionName: string): string | undefined {
+    const segments = selectedOptionName.split('-').slice(1);
+    let currentObj = obj;
+    let path = '';
+
+    for (const segment of segments) {
+      if (Array.isArray(currentObj)) {
+        const index = parseInt(segment, 10);
+        if (isNaN(index) || index < 0 || index >= currentObj.length) {
+          console.error(`Invalid array index: ${index}`);
+          return undefined;
+        }
+        path += `[${index}]`;
+        currentObj = currentObj[index];
+      } else if (typeof currentObj === 'object' && currentObj !== null) {
+        if (!(segment in currentObj)) {
+          console.error(`Property '${segment}' does not exist in object`);
+          return undefined;
+        }
+        path += `["${segment}"]`;
+        currentObj = currentObj[segment];
+      } else {
+        console.error(`Unexpected type encountered: ${typeof currentObj}`);
+        return undefined;
+      }
+    }
+
+    return path;
+  }
+
+  getApiObject(apiName: String) {
+    return this.em
+      .getWrapper()
+      ?.get('apis')
+      .find((obj: any) => obj.name === apiName);
   }
 
   setData() {
     const selectElement = this.getTrait('dbinput').view?.$input?.get(0) as HTMLSelectElement | undefined;
 
-    function generatePath(obj: any, selectedOptionName: string): string | undefined {
-      const segments = selectedOptionName.split('-').slice(1);
-      let currentObj = obj;
-      let path = '';
-
-      for (const segment of segments) {
-        if (Array.isArray(currentObj)) {
-          const index = parseInt(segment, 10);
-          if (isNaN(index) || index < 0 || index >= currentObj.length) {
-            console.error(`Invalid array index: ${index}`);
-            return undefined;
-          }
-          path += `[${index}]`;
-          currentObj = currentObj[index];
-        } else if (typeof currentObj === 'object' && currentObj !== null) {
-          if (!(segment in currentObj)) {
-            console.error(`Property '${segment}' does not exist in object`);
-            return undefined;
-          }
-          path += `["${segment}"]`;
-          currentObj = currentObj[segment];
-        } else {
-          console.error(`Unexpected type encountered: ${typeof currentObj}`);
-          return undefined;
-        }
-      }
-
-      return path;
-    }
-
     if (selectElement) {
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       const selectedText = selectedOption.text;
       const apiName = selectedText.split('-')[0].trim();
-
-      const apiObject = this.em
-        .getWrapper()
-        ?.get('apis')
-        .find((obj: any) => obj.name === apiName);
+      const apiObject = this.getApiObject(apiName);
 
       if (apiObject && apiObject.json) {
-        const generatedPath = generatePath(apiObject.json, selectedText);
+        const generatedPath = this.generatePath(apiObject.json, selectedText);
 
         if (generatedPath) {
           const script = `
@@ -137,14 +156,6 @@ export default class ComponentText extends Component {
       }
     } else {
       console.error('Select element not found');
-    }
-
-    const childrenContainer = this.view?.getChildrenContainer();
-    if (childrenContainer) {
-      childrenContainer.innerHTML = this.get('dbinput');
-      //@ts-ignore
-      this.view.rteEnabled = true;
-      this.trigger('sync:content');
     }
   }
 
