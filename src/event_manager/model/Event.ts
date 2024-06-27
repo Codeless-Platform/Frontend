@@ -120,29 +120,52 @@ export default class Event extends Model<EventProperties> {
     this.em = em;
     if (target && target.attributes.events) {
       const x = target.attributes.events as Events | undefined;
-      //@ts-ignore
-      const m = x.at(0)?.['type'];
-      if (m) {
-        if (m === 'Customized' && this.getType() !== 'Customized') {
-          // @ts-ignore
-          const neweventx = this.getEventx()?.filter(eventx => eventx.name !== x.at(0)?.['label']);
-          this.set('eventx', neweventx);
+
+      if (x && Array.isArray(x)) {
+        const firstEvent = x[0];
+        const m = firstEvent?.['type'];
+
+        if (m) {
+          if (m === 'Customized' && this.getType() !== 'Customized') {
+            const neweventx = this.getEventx()?.filter(eventx => eventx.name !== firstEvent['label']);
+            this.set('eventx', neweventx);
+          }
         }
       }
     }
-    this.set('handler', this.getCurrentHandlers());
+
+    this.setHandlers();
     this.listenTo(em, 'change:Events', this.updateHandlers);
     this.listenTo(em, 'change:Events', this.updateScript);
     this.on('change', this.updateScript);
+    if (this.getTargetValue()) {
+      setTimeout(() => {
+        this.renderEvents();
+      }, 1000);
+    }
   }
 
-  getCurrentHandlers(): [] {
-    if (this.em && this.em.get('EventManager')) return this.em.get('EventManager').handlers;
-    else return [];
+  async setHandlers() {
+    const handlers = await this.getCurrentHandlers();
+    this.set('handler', handlers);
+  }
+
+  getCurrentHandlers(): Promise<any[]> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const eventManager = this.em.get('EventManager');
+        const handlers = eventManager ? eventManager.handlers : [];
+        if (handlers) {
+          resolve(handlers);
+        } else {
+          resolve([]);
+        }
+      }, 200);
+    });
   }
 
   updateHandlers() {
-    this.set('handler', this.getCurrentHandlers());
+    this.setHandlers();
   }
 
   renderEvents() {
@@ -157,7 +180,7 @@ export default class Event extends Model<EventProperties> {
         if (neweventx && neweventx.length > 0 && !(neweventx.length === 1 && neweventx[0].value === 'none')) {
           this.target.addEvent([
             {
-              name: Allevents.length.toString(),
+              name: 'event' + Allevents.length.toString(),
               type: 'NotCustomized',
               eventx: neweventx,
             },
@@ -201,15 +224,15 @@ export default class Event extends Model<EventProperties> {
         }
 
         switch (handlresValue) {
-          case 'fullscreen':
-            flag = true;
-            m += `${elname}.requestFullscreen();});`;
-            break;
+          // case 'fullscreen':
+          //   flag = true;
+          //   m += `${elname}.requestFullscreen();});`;
+          //   break;
 
-          case 'resize':
-            flag = true;
-            m += `${elname}.style.width="200px";});`;
-            break;
+          // case 'resize':
+          //   flag = true;
+          //   m += `${elname}.style.width="200px";});`;
+          //   break;
 
           case 'redirecttourl':
             if (event.getUrl() !== '') {
@@ -447,7 +470,6 @@ export default class Event extends Model<EventProperties> {
       // @ts-ignore TODO update post component update
       value = target.getAttributes()[name];
     }
-
     return !isUndefined(value) ? value : '';
   }
 
@@ -474,7 +496,6 @@ export default class Event extends Model<EventProperties> {
         valueToSet = valueFalse;
       }
     }
-
     if (this.get('changeProp')) {
       target.set(name, valueToSet, opts);
     } else {
@@ -503,6 +524,7 @@ export default class Event extends Model<EventProperties> {
       this.set('handler', handlers);
 
       this.em.get('EventManager').handlers = handlers;
+      this.em.getWrapper()?.set('handlers', handlers);
       this.em.trigger('change:Events');
     }
   }

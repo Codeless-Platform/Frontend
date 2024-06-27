@@ -1,7 +1,11 @@
 import DomainViews from '../../domain_abstract/view/DomainViews';
 import EditorModel from '../../editor/model/Editor';
 import EventView from './EventView';
-
+interface Handler {
+  value: string;
+  blockly: string;
+  name: string;
+}
 export default class EventsView extends DomainViews {
   reuseView = true;
   em: EditorModel;
@@ -25,79 +29,59 @@ export default class EventsView extends DomainViews {
   }
 
   dothis() {
-    let handlercont = this.$el.find('.x')[0];
+    let handlercont = this.$el.find('.x').get(0) as HTMLElement | undefined;
+
     if (!handlercont) {
       let handlerContainer = document.createElement('div');
       handlerContainer.classList.add('x');
       handlercont = handlerContainer;
     }
+
     handlercont.style.cssText = 'text-align: left;padding: 0 0 15px 10px;border-bottom: 1px solid;';
-    let x = document.createElement('div');
-    x.classList.add('x');
-    let y = document.createElement('div');
-    let h = this.em.get('EventManager').handlers;
 
-    h = h.filter((ih: Record<string, any>) => ih.blockly !== '');
+    let handlers = this.em.get('EventManager').handlers.filter((ih: Record<string, any>) => ih.blockly !== '');
 
-    y.innerText = 'Handlers ';
-    x.appendChild(y);
-    let m = document.createElement('div');
-    m.classList.add('HandlerContainer');
-    h.forEach((oh: Record<string, any>) => {
-      let n = document.createElement('div');
-      n.style.height = '35px';
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('width', '25');
-      svg.setAttribute('height', '35');
-      const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-      polyline.setAttribute('points', '1,0 1,34 20,34');
-      polyline.setAttribute('fill', 'none');
-      polyline.setAttribute('stroke', 'gray');
-      polyline.setAttribute('stroke-width', '2');
-      polyline.setAttribute('stroke-linecap', 'round');
-      svg.appendChild(polyline);
-      n.appendChild(svg);
-      let txt = document.createElement('div');
-      txt.classList.add('button-like');
-      txt.classList.add(oh.value);
-      txt.style.cursor = 'pointer';
-      txt.innerHTML = oh.name;
-      n.appendChild(txt);
-      n.classList.add(oh.value);
-      if (oh.value !== 'newhandler') {
-        let trash = document.createElement('div');
-        trash.classList.add('fa');
-        trash.classList.add('fa-trash');
-        trash.classList.add(oh.value);
-        trash.style.marginLeft = '5px';
-        trash.style.fontSize = 'larger';
-        trash.style.cursor = 'pointer';
-        n.appendChild(trash);
-      }
-      m.appendChild(n);
-    });
-    x.append(m);
-    handlercont.innerHTML = x.innerHTML;
+    let handlersHtml = handlers
+      .map((oh: Handler) => {
+        return `<div style="height: 35px;" class="${
+          oh.value
+        }">\n  <svg width="25" height="35">\n    <polyline points="1,0 1,34 20,34" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round"></polyline>\n  </svg>
+      \n  <div class="button-like ${oh.value}" style="cursor: pointer;">${oh.name}</div>\n  ${
+          oh.value !== 'newhandler'
+            ? `<div class="fa fa-trash ${oh.value}" style="margin-left: 5px; font-size: larger; cursor: pointer;"></div>`
+            : ''
+        }\n</div>`;
+      })
+      .join('');
+
+    let contentHtml = `<div class="x">\n  <div>Handlers </div>\n  <div class="HandlerContainer">\n    ${handlersHtml}\n  </div>\n</div>`;
+
+    handlercont.innerHTML = contentHtml;
     this.el.insertBefore(handlercont, this.el.firstChild);
-    let listItems = this.$el.find('.button-like');
+
+    let listItems = this.$el.find('.button-like').get() as HTMLElement[];
     const th = this;
-    //@ts-ignore
-    for (let item of listItems) {
+
+    listItems.forEach(item => {
       item.addEventListener('click', function () {
-        let h = th.em.Events.handlers?.filter(handler => handler.value === item.classList[1])[0];
-        th.em.Editor.runCommand('edit-script', h);
+        let h = th.em.Events.handlers?.find(handler => handler.value === item.classList[1]);
+        if (h) {
+          th.em.Editor.runCommand('edit-script', h);
+        }
       });
-    }
-    listItems = this.$el.find('.fa-trash');
-    //@ts-ignore
-    for (let item of listItems) {
+    });
+
+    let trashItems = this.$el.find('.fa-trash').get() as HTMLElement[];
+
+    trashItems.forEach(item => {
       item.addEventListener('click', function () {
         let h = item.classList[2];
         let ev = th.em.getSelected()?.get('events')?.models[0];
         if (ev) ev.deleteHandler(h);
       });
-    }
+    });
   }
+
   /**
    * Update view collection
    * @private

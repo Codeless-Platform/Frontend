@@ -63,7 +63,7 @@ const deps: (new (em: EditorModel) => IModule)[] = [
   RichTextEditorModule,
   TraitManager,
   AnimationManager,
-  EventManager,
+  // EventManager,
   LayerManager,
   CanvasModule,
   CommandsModule,
@@ -270,6 +270,7 @@ export default class EditorModel extends Model {
     // Load modules
     deps.forEach(constr => this.loadModule(constr));
     storableDeps.forEach(constr => this.loadStorableModule(constr));
+    this.loadModule(EventManager);
     this.on('change:componentHovered', this.componentHovered, this);
     this.on('change:changesCount', this.updateChanges, this);
     this.on('change:readyLoad change:readyCanvas', this._checkReady, this);

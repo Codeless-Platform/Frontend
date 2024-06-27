@@ -59,14 +59,14 @@ export default class EventManager extends Module<EventManagerConfig & { pStylePr
     const model = new Model();
     this.model = model;
     this.types = typesDef;
-    this.handlers = [
-      { value: 'fullscreen', name: 'Fullscreen', logic: '', blockly: '' },
-      { value: 'resize', name: 'Resize', logic: '', blockly: '' },
-      { value: 'redirecttourl', name: 'Redirect to url', logic: '', blockly: '' },
-      { value: 'redirecttopage', name: 'Redirect to page', logic: '', blockly: '' },
-      { value: 'none', name: 'none', blockly: '' },
-      { value: 'newhandler', name: '&#43 New Handler', logic: '' },
-    ];
+    setTimeout(() => {
+      this.handlers = this.em.getWrapper()?.attributes.handlers || [
+        { value: 'redirecttourl', name: 'Redirect to url', logic: '', blockly: '' },
+        { value: 'redirecttopage', name: 'Redirect to page', logic: '', blockly: '' },
+        { value: 'none', name: 'none', blockly: '' },
+        { value: 'newhandler', name: '&#43 New Handler', logic: '' },
+      ];
+    }, 100);
 
     const upAll = debounce(() => this.__upSel(), 0);
     model.listenTo(em, 'component:toggled', upAll);
