@@ -83,7 +83,6 @@ export default class ComponentWrapper extends Component {
               name: '',
             };
             trait['name'] = `api${this.get('apis').length + 1}`;
-            //@ts-ignore
             this.addTrait([trait], {
               at: this.getTraits().length - 1,
             });
