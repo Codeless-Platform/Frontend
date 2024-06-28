@@ -107,7 +107,7 @@ export default class ComponentImage extends Component {
       this.addTrait(newtrait);
     }
     if (this.get('dbinput')) {
-      this.renderContent();
+      this.setData();
     }
   }
 
