@@ -362,7 +362,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
 
       for (let i = 0; i < 1000; i++) {
         em.Css.getAll().models.forEach(model => {
-          if (model.attributes['mediaText'] !== '') {
+          if (model.attributes['atRuleType'] === 'keyframes') {
             em.Css.remove(model);
           }
         });
