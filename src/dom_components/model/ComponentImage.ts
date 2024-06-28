@@ -116,11 +116,9 @@ export default class ComponentImage extends Component {
     const apiObject = this.getApiObject(apiName);
     if (apiObject) {
       const path = this.generatePath(apiObject.json, this.get('dbinput'));
-      console.log(this);
       if (path) {
         this.set({ src: this.em.Assets.add(eval(`apiObject.json${path}`)).getSrc() });
       }
-      console.log(this);
     }
   }
 
