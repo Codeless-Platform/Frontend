@@ -496,7 +496,6 @@ Component> {
    * Recreate the element of the view
    */
   reset() {
-    console.log(8);
     const { el } = this;
     // @ts-ignore
     this.el = '';
