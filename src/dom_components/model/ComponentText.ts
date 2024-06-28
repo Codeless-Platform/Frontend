@@ -128,7 +128,6 @@ export default class ComponentText extends Component {
   }
 
   getApiObject(apiName: String) {
-    console.log(this.em.getWrapper());
     return this.em
       .getWrapper()
       ?.get('apis')
