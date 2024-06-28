@@ -61,9 +61,8 @@ export default class ComponentImageView extends ComponentView {
    * @private
    * */
   updateSrc() {
-    console.log(5);
     const { model } = this;
-    console.log(model.addAttributes({ src: model.getSrcResult() }));
+    model.addAttributes({ src: model.getSrcResult() });
     this.updateClasses();
   }
 

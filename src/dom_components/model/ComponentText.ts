@@ -94,6 +94,7 @@ export default class ComponentText extends Component {
           this.trigger('sync:content');
         }
       }
+      this.setData();
     }
   }
 

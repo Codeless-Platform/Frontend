@@ -116,11 +116,9 @@ export default class ComponentImage extends Component {
     const apiObject = this.getApiObject(apiName);
     if (apiObject) {
       const path = this.generatePath(apiObject.json, this.get('dbinput'));
-      console.log(this);
       if (path) {
-        this.set({ src: this.em.Assets.add(eval(`apiObject.json${path}`)).getSrc() });
+        this.set('src', this.em.Assets.add(eval(`apiObject.json${path}`)).getSrc());
       }
-      console.log(this);
     }
   }
 
@@ -168,7 +166,6 @@ export default class ComponentImage extends Component {
   }
 
   setData() {
-    console.log(this.get('dbinput'));
     const selectedText = this.get('dbinput');
     const apiName = selectedText.split('-')[0].trim();
     const apiObject = this.getApiObject(apiName);
@@ -188,6 +185,7 @@ export default class ComponentImage extends Component {
     } else {
       console.error(`API object not found or invalid for name: ${apiName}`);
     }
+    this.renderContent();
   }
 
   initToolbar() {

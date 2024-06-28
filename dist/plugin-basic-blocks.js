@@ -279,7 +279,6 @@
                     content: {
                       type: 'link',
                       content: 'Link',
-                      style: { color: '#d983a6' },
                     },
                   })
                 ),
