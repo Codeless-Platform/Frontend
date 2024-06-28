@@ -94,7 +94,6 @@ export default class ComponentText extends Component {
           this.trigger('sync:content');
         }
       }
-      this.setData();
     }
   }
 
@@ -136,6 +135,7 @@ export default class ComponentText extends Component {
   }
 
   setData() {
+    console.log(1);
     const selectedText = this.get('dbinput');
     const apiName = selectedText.split('-')[0].trim();
     const apiObject = this.getApiObject(apiName);
@@ -147,7 +147,7 @@ export default class ComponentText extends Component {
         const script = `
           async function fetch${this.getId()}Data() {\n  try {\n    const res = await fetch('${
           apiObject.link
-        }');\n    if (!res.ok) throw new Error('Network response was not ok');\n    let userData = await res.json();\n    userData = Array.isArray(userData) ? userData : [userData];\n    const el = document.getElementById('${this.getId()}');\n    if (el) {\n      el.innerHTML = userData${generatedPath};\n    } else {\n      console.error('Element not found to set the innerHTML');\n    }\n  } catch (error) {\n    if (error instanceof Error) {\n      console.error('Error fetching data:', error.message);\n    } else {\n      console.error('Unknown error fetching data');\n    }\n  }\n}\nfetch${this.getId()}Data();\n`;
+        }');\n    if (!res.ok) throw new Error('Network response was not ok');\n    let userData = await res.json();\n    const el = document.getElementById('${this.getId()}');\n    if (el) {\n      el.innerHTML = userData${generatedPath};\n    } else {\n      console.error('Element not found to set the innerHTML');\n    }\n  } catch (error) {\n    if (error instanceof Error) {\n      console.error('Error fetching data:', error.message);\n    } else {\n      console.error('Unknown error fetching data');\n    }\n  }\n}\nfetch${this.getId()}Data();\n`;
         this.set('script-export', script);
       } else {
         console.error(`Generated path for selected option '${selectedText}' is invalid.`);
@@ -155,6 +155,7 @@ export default class ComponentText extends Component {
     } else {
       console.error(`API object not found or invalid for name: ${apiName}`);
     }
+    this.renderContent();
   }
 
   __checkInnerChilds() {
