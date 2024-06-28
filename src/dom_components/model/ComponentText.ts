@@ -76,7 +76,7 @@ export default class ComponentText extends Component {
       this.addTrait(newtrait);
     }
     if (this.get('dbinput')) {
-      this.renderContent();
+      this.setData();
     }
   }
 
@@ -128,6 +128,7 @@ export default class ComponentText extends Component {
   }
 
   getApiObject(apiName: String) {
+    console.log(this.em.getWrapper());
     return this.em
       .getWrapper()
       ?.get('apis')
@@ -135,11 +136,9 @@ export default class ComponentText extends Component {
   }
 
   setData() {
-    console.log(1);
     const selectedText = this.get('dbinput');
     const apiName = selectedText.split('-')[0].trim();
     const apiObject = this.getApiObject(apiName);
-
     if (apiObject && apiObject.json) {
       const generatedPath = this.generatePath(apiObject.json, selectedText);
 
