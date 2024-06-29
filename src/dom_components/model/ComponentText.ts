@@ -136,6 +136,7 @@ export default class ComponentText extends Component {
 
   setData() {
     const selectedText = this.get('dbinput');
+
     const apiName = selectedText.split('-')[0].trim();
     const apiObject = this.getApiObject(apiName);
     if (apiObject && apiObject.json) {

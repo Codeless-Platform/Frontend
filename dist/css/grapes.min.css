@@ -4164,3 +4164,7 @@ body.dark-mode {
   color: #ffdd12;
   transform: translateX(12px);
 }
+
+.no-text-decoration:hover {
+  text-decoration: none;
+}

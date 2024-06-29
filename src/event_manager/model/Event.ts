@@ -47,7 +47,7 @@ export interface EventProperties {
   max?: number;
   unit?: string;
   step?: number;
-  value?: string[];
+  value?: Record<string, any>;
   target?: Component;
   url?: string;
   page?: string;
@@ -103,8 +103,6 @@ export default class Event extends Model<EventProperties> {
         { value: 'none', name: 'none' },
       ],
       placeholder: '',
-      url: '',
-      page: '',
       target: this.target,
       changeProp: true,
     };
@@ -138,6 +136,7 @@ export default class Event extends Model<EventProperties> {
     this.listenTo(em, 'change:Events', this.updateHandlers);
     this.listenTo(em, 'change:Events', this.updateScript);
     this.on('change', this.updateScript);
+
     if (this.getTargetValue()) {
       setTimeout(() => {
         this.renderEvents();
@@ -172,9 +171,9 @@ export default class Event extends Model<EventProperties> {
     if (this.target) {
       let Allevents = this.target.getEvents();
       let lastEvent = Allevents[Allevents.length - 1];
-      if (lastEvent === this && lastEvent.getValue()[0]) {
+      if (lastEvent === this && lastEvent.getValue().event) {
         let neweventx = this.getEventx()?.filter(
-          eventx => !Allevents.some(event => event.getValue()[0] === eventx.value)
+          eventx => !Allevents.some(event => event.getValue().event === eventx.value)
         );
 
         if (neweventx && neweventx.length > 0 && !(neweventx.length === 1 && neweventx[0].value === 'none')) {
@@ -187,11 +186,10 @@ export default class Event extends Model<EventProperties> {
           ]);
         }
       }
-
       if (Allevents.length > 1) {
         let secondLastEvent = Allevents[Allevents.length - 2];
-        if (lastEvent.getValue()[0] === '' && secondLastEvent.getValue()[0] === '') {
-          this.target.removeEvent([(Allevents.length - 1).toString()]);
+        if (lastEvent.getValue().event === '' && secondLastEvent.getValue().event === '') {
+          this.target.removeEvent(['event' + (Allevents.length - 1)]);
         }
       }
     }
@@ -206,8 +204,8 @@ export default class Event extends Model<EventProperties> {
     let Handlers = this.getHandler();
 
     Allevents.forEach(event => {
-      let eventsValue = event.getValue()[0];
-      let handlresValue = event.getValue()[1];
+      let eventsValue = event.getValue().event;
+      let handlresValue = event.getValue().handler;
       let l = Handlers?.filter(handler => handler.value === handlresValue)[0];
 
       if (l) {
@@ -235,16 +233,16 @@ export default class Event extends Model<EventProperties> {
           //   break;
 
           case 'redirecttourl':
-            if (event.getUrl() !== '') {
+            if (event.getValue().handlerInput) {
               flag = true;
-              m += `window.location.href = '${event.getUrl()}';});`;
+              m += `window.location.href = '${event.getValue().handlerInput}';});`;
             }
             break;
 
           case 'redirecttopage':
-            if (event.getPage() !== '') {
+            if (event.getValue().handlerInput) {
               flag = true;
-              m += `window.location.href = '${event.getPage()}.html';});`;
+              m += `window.location.href = '${event.getValue().handlerInput}.html';});`;
             }
             break;
 
@@ -254,7 +252,7 @@ export default class Event extends Model<EventProperties> {
 
           case 'none':
             m = '';
-            event.setValue([eventsValue, '']);
+            event.setValue({ event: eventsValue, handler: '' });
             break;
 
           default:
@@ -266,15 +264,14 @@ export default class Event extends Model<EventProperties> {
 
         s += m;
       } else {
-        event.setValue(['', handlresValue]);
+        event.setValue({ event: '', handler: '' });
       }
     });
 
     if (!flag) s = '';
-
     // Ensuring the `handlresValue` is accessible in the conditional block
     let containsRedirect = Allevents.some(event => {
-      let handlresValue = event.getValue()[1];
+      let handlresValue = event.getValue().handler;
       return handlresValue === 'redirecttourl' || handlresValue === 'redirecttopage';
     });
 
@@ -318,13 +315,6 @@ export default class Event extends Model<EventProperties> {
   getHandler() {
     return this.get('handler');
   }
-  getUrl() {
-    return this.get('url');
-  }
-  getPage() {
-    return this.get('page');
-  }
-
   /**
    * Get the event name.
    * @returns {String}
@@ -538,6 +528,7 @@ export default class Event extends Model<EventProperties> {
       this.set('handler', [...handlers, { value: 'newhandler', name: '&#43 New Handler', logic: '' }]);
     }
     this.em.get('EventManager').handlers = this.getHandler();
+    this.em.getWrapper()?.set('handlers', this.getHandler());
     this.em.trigger('change:Events');
   }
 
