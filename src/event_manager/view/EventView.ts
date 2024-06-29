@@ -4,6 +4,7 @@ import Component from '../../dom_components/model/Component';
 import EditorModel from '../../editor/model/Editor';
 import { capitalize } from '../../utils/mixins';
 import Event from '../model/Event';
+import he from '../../i18n/locale/he';
 
 export default class EventView extends View<Event> {
   pfx: string;
@@ -122,32 +123,41 @@ export default class EventView extends View<Event> {
     let eel = this.getEInputElem(),
       hel = this.getHInputElem(),
       el = this.getInputElem();
+
+    const setValue = (eventValue: string, handler: string, extra = {}) => {
+      model.set('value', { event: eventValue, handler, ...extra });
+    };
+
+    const modelValue = model.getValue();
+
     if (hel.value === 'newhandler') {
-      this.em.Editor.runCommand('edit-script', { value: hel.value, name: '&#43 New Handler' });
-    } else {
-      if (type === 'NotCustomized') {
-        if (eel && !isUndefined(eel.value) && hel && !isUndefined(hel.value)) {
-          if (el && !isUndefined(el.value)) {
-            model.set('value', { event: eel.value, handler: hel.value, handlerInput: el.value });
+      this.em.Editor.runCommand('edit-script', { name: '&#43 New Handler', value: hel.value });
+    } else if (type === 'NotCustomized') {
+      if (eel && hel && !isUndefined(eel.value) && !isUndefined(hel.value)) {
+        if (el && !isUndefined(el.value)) {
+          if (hel.value === 'redirecttourl' && modelValue.handler === 'redirecttourl') {
+            setValue(eel.value, hel.value, { url: el.value });
+          } else if (hel.value === 'redirecttopage' && modelValue.handler === 'redirecttopage') {
+            setValue(eel.value, hel.value, { page: el.value });
           } else {
-            model.set('value', { event: eel.value, handler: hel.value });
+            setValue(eel.value, hel.value);
           }
+        } else {
+          setValue(eel.value, hel.value);
+        }
+      }
+    } else if (hel && !isUndefined(hel.value)) {
+      const eventValue = model.getEventx()?.find(event => event.name === model.getLabel())?.value;
+      if (el && !isUndefined(el.value)) {
+        if (hel.value === 'redirecttourl' && modelValue.handler === 'redirecttourl') {
+          setValue(eventValue, hel.value, { url: el.value });
+        } else if (hel.value === 'redirecttopage' && modelValue.handler === 'redirecttopage') {
+          setValue(eventValue, hel.value, { page: el.value });
+        } else {
+          setValue(eventValue, hel.value);
         }
       } else {
-        if (hel && !isUndefined(hel.value)) {
-          if (el && !isUndefined(el.value)) {
-            model.set('value', {
-              event: model.getEventx()?.find(event => event.name === model.getLabel())?.value,
-              handler: hel.value,
-              handlerInput: el.value,
-            });
-          } else {
-            this.model.set('value', {
-              event: model.getEventx()?.find(event => event.name === model.getLabel())?.value,
-              handler: hel.value,
-            });
-          }
-        }
+        setValue(eventValue, hel.value);
       }
     }
 
@@ -156,7 +166,7 @@ export default class EventView extends View<Event> {
       event,
     });
 
-    if (model.getValue().handler === 'redirecttopage') {
+    if (modelValue.handler === 'redirecttopage') {
       this.listenTo(this.em, 'page:add page:remove', this.rerender);
     } else {
       this.stopListening(this.em, 'page:add page:remove', this.rerender);
@@ -244,7 +254,7 @@ export default class EventView extends View<Event> {
       const type = 'text';
       const min = md.get('min');
       const max = md.get('max');
-      const value = model.getValue().handlerInput;
+      const value = model.getValue().url;
       const input: JQuery<HTMLInputElement> = $(`<input type="${type}">`);
       const i18nAttr = em.t(`eventManager.events.attributes.${name}`) || {};
       input.attr({
@@ -269,10 +279,10 @@ export default class EventView extends View<Event> {
     }
     return this.$input!.get(0);
   }
+
   getPageInputEl() {
     if (!this.$input) {
       const { model, em } = this;
-      const propName = model.get('name');
       let opts: Record<string, string>[] = [];
       const pages = model.em.Pages.getAll();
       pages.forEach(page => {
@@ -301,7 +311,7 @@ export default class EventView extends View<Event> {
 
       input += '</select>';
       this.$input = $(input);
-      const val = model.getTargetValue().handlerInput;
+      const val = model.getTargetValue().page;
       const valResult = values.indexOf(val) >= 0 ? val : model.get('default');
       !isUndefined(valResult) && this.$input!.val(valResult);
     }
