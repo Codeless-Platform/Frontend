@@ -1,9 +1,4 @@
-import { isFunction, isString, isUndefined } from 'underscore';
-import { $, SetOptions, View } from '../../common';
-import Component from '../../dom_components/model/Component';
-import EditorModel from '../../editor/model/Editor';
-import { capitalize } from '../../utils/mixins';
-import Event from '../model/Event';
+import { isFunction, isString } from 'underscore';
 import EventView from './EventView';
 
 export default class CustomEventView extends EventView {
@@ -42,7 +37,9 @@ export default class CustomEventView extends EventView {
     const { id } = model.attributes;
     const hasLabel = this.hasLabel && this.hasLabel();
     const cls = `${pfx}event`;
+    delete this.$einput;
     delete this.$hinput;
+    delete this.$input;
     const val = model.getTargetValue()[1];
     let tmpl = `<div class="${cls}">
       ${hasLabel ? `<div class="${ppfx}label-wrp" data-label></div>` : ''}
@@ -68,7 +65,7 @@ export default class CustomEventView extends EventView {
          ${
            this.templateInput
              ? isFunction(this.templateInput)
-               ? this.templateInput(this.getClbOpts(), 'data')
+               ? this.templateInput(this.getClbOpts(), 'url')
                : this.templateInput
              : ''
          }
@@ -87,7 +84,7 @@ export default class CustomEventView extends EventView {
          ${
            this.templateInput
              ? isFunction(this.templateInput)
-               ? this.templateInput(this.getClbOpts(), 'data')
+               ? this.templateInput(this.getClbOpts(), 'page')
                : this.templateInput
              : ''
          }
@@ -98,10 +95,10 @@ export default class CustomEventView extends EventView {
     hasLabel && this.renderLabel();
     this.renderField();
     if (val == 'redirecttourl') {
-      this.renderHandlerData();
+      this.renderHandlerData('url');
     }
     if (val == 'redirecttopage') {
-      this.renderHandlerData();
+      this.renderHandlerData('page');
     }
 
     this.el.className = `${cls}__wrp ${cls}__wrp-${id}`;

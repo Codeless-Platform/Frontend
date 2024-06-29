@@ -3790,7 +3790,7 @@
                 edit: 'Edit',
               },
             },
-            pages: { placeholder: 'page name', new: 'New Page +' },
+            pages: { placeholder: 'Page name', new: 'New Page +' },
             settings: {
               save: 'Save',
               generate: 'Generate',

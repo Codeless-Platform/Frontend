@@ -38,8 +38,8 @@ export default class EventsView extends DomainViews {
     }
 
     handlercont.style.cssText = 'text-align: left;padding: 0 0 15px 10px;border-bottom: 1px solid;';
-
-    let handlers = this.em.get('EventManager').handlers.filter((ih: Record<string, any>) => ih.blockly !== '');
+    console.log(this.em.get('EventManager').handlers);
+    let handlers = this.em.get('EventManager').handlers.filter((ih: Record<string, any>) => ih.logic !== '');
 
     let handlersHtml = handlers
       .map((oh: Handler) => {

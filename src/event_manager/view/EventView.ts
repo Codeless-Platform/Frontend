@@ -50,7 +50,7 @@ export default class EventView extends View<Event> {
     const { ppfx, clsField } = this;
     return `<div class="${clsField}">
       <div ${target}-input></div>
-      ${target !== 'data' ? this.arrowtemplate() : ''}
+      ${target !== 'url' ? this.arrowtemplate() : ''}
     </div>`;
   }
 
@@ -100,7 +100,13 @@ export default class EventView extends View<Event> {
     this.removed();
   }
 
-  init() {}
+  init() {
+    if (this.model.getValue().handler === 'redirecttopage') {
+      this.listenTo(this.em, 'page:add page:remove', this.rerender);
+    } else {
+      this.stopListening(this.em, 'page:add page:remove', this.rerender);
+    }
+  }
   removed() {}
   onRender(props: ReturnType<EventView['getClbOpts']>) {}
   onUpdate(props: ReturnType<EventView['getClbOpts']>) {}
@@ -111,7 +117,8 @@ export default class EventView extends View<Event> {
    * @private
    */
   onChange(event: Event) {
-    const { type } = this.model.attributes;
+    const { model } = this;
+    const { type } = model.attributes;
     let eel = this.getEInputElem(),
       hel = this.getHInputElem(),
       el = this.getInputElem();
@@ -120,27 +127,41 @@ export default class EventView extends View<Event> {
     } else {
       if (type === 'NotCustomized') {
         if (eel && !isUndefined(eel.value) && hel && !isUndefined(hel.value)) {
-          this.model.set('value', [eel.value, hel.value]);
+          if (el && !isUndefined(el.value)) {
+            model.set('value', { event: eel.value, handler: hel.value, handlerInput: el.value });
+          } else {
+            model.set('value', { event: eel.value, handler: hel.value });
+          }
         }
       } else {
         if (hel && !isUndefined(hel.value)) {
-          this.model.set('value', [
-            this.model.getEventx()?.find(event => event.name === this.model.getLabel())?.value,
-            hel.value,
-          ]);
+          if (el && !isUndefined(el.value)) {
+            model.set('value', {
+              event: model.getEventx()?.find(event => event.name === model.getLabel())?.value,
+              handler: hel.value,
+              handlerInput: el.value,
+            });
+          } else {
+            this.model.set('value', {
+              event: model.getEventx()?.find(event => event.name === model.getLabel())?.value,
+              handler: hel.value,
+            });
+          }
         }
       }
-      if (el && !isUndefined(el.value)) {
-        this.model.set('url', el.value);
-      }
-      if (el && !isUndefined(el.value)) {
-        this.model.set('page', el.value);
-      }
     }
+
     this.onEvent({
       ...this.getClbOpts(),
       event,
     });
+
+    if (model.getValue().handler === 'redirecttopage') {
+      this.listenTo(this.em, 'page:add page:remove', this.rerender);
+    } else {
+      this.stopListening(this.em, 'page:add page:remove', this.rerender);
+    }
+
     this.render();
   }
 
@@ -214,7 +235,7 @@ export default class EventView extends View<Event> {
    * @return {HTMLElement}
    * @private
    */
-  getInputEl() {
+  getURLInputEl() {
     if (!this.$input) {
       const { em, model } = this;
       const md = model;
@@ -223,7 +244,7 @@ export default class EventView extends View<Event> {
       const type = 'text';
       const min = md.get('min');
       const max = md.get('max');
-      const value = [''];
+      const value = model.getValue().handlerInput;
       const input: JQuery<HTMLInputElement> = $(`<input type="${type}">`);
       const i18nAttr = em.t(`eventManager.events.attributes.${name}`) || {};
       input.attr({
@@ -248,6 +269,46 @@ export default class EventView extends View<Event> {
     }
     return this.$input!.get(0);
   }
+  getPageInputEl() {
+    if (!this.$input) {
+      const { model, em } = this;
+      const propName = model.get('name');
+      let opts: Record<string, string>[] = [];
+      const pages = model.em.Pages.getAll();
+      pages.forEach(page => {
+        opts.push({ name: page.getName(), value: page.getName() });
+      });
+      const values: string[] = [];
+      let input = '<select>';
+
+      opts.forEach(el => {
+        let attrs = '';
+        let name, value, style;
+
+        if (isString(el)) {
+          name = el;
+          value = el;
+        } else {
+          name = el.name || el.label || el.value;
+          value = `${isUndefined(el.value) ? el.id : el.value}`.replace(/"/g, '&quot;');
+          style = el.style ? el.style.replace(/"/g, '&quot;') : '';
+          attrs += style ? ` style="${style}"` : '';
+        }
+        const resultName = name;
+        input += `<option value="${value}"${attrs}>${resultName}</option>`;
+        values.push(value);
+      });
+
+      input += '</select>';
+      this.$input = $(input);
+      const val = model.getTargetValue().handlerInput;
+      const valResult = values.indexOf(val) >= 0 ? val : model.get('default');
+      !isUndefined(valResult) && this.$input!.val(valResult);
+    }
+
+    return this.$input!.get(0);
+  }
+
   getEventInputEl() {
     if (!this.$einput) {
       const { model, em } = this;
@@ -276,7 +337,7 @@ export default class EventView extends View<Event> {
 
       input += '</select>';
       this.$einput = $(input);
-      const val = model.getTargetValue()[0];
+      const val = model.getTargetValue().event;
       const valResult = values.indexOf(val) >= 0 ? val : model.get('default');
       !isUndefined(valResult) && this.$einput!.val(valResult);
     }
@@ -312,7 +373,7 @@ export default class EventView extends View<Event> {
 
       input += '</select>';
       this.$hinput = $(input);
-      const val = model.getTargetValue()[1];
+      const val = model.getTargetValue().handler;
       const valResult = values.indexOf(val) >= 0 ? val : model.get('default');
       !isUndefined(valResult) && this.$hinput!.val(valResult);
     }
@@ -394,14 +455,18 @@ export default class EventView extends View<Event> {
     }
   }
 
-  renderHandlerData() {
+  renderHandlerData(targetData: string) {
     const { $el, appendInput, model } = this;
-    const inputs = $el.find('[data-input]');
+    const inputs = $el.find(`[${targetData}-input]`);
     const el = inputs[0];
     let tpl: HTMLElement | string | undefined = model.el;
 
     if (!tpl) {
-      tpl = this.getInputEl();
+      if (targetData === 'url') {
+        tpl = this.getURLInputEl();
+      } else if (targetData === 'page') {
+        tpl = this.getPageInputEl();
+      }
     }
     if (isString(tpl)) {
       el.innerHTML = tpl;
@@ -429,11 +494,13 @@ export default class EventView extends View<Event> {
   render() {
     const { $el, pfx, ppfx, model } = this;
     const { type, id } = model.attributes;
-    // const hasLabel = this.hasLabel && this.hasLabel();
+    delete this.$einput;
+    delete this.$hinput;
+    delete this.$input;
     const cls = `${pfx}event`;
     delete this.$hinput;
     delete this.$einput;
-    const val = model.getTargetValue()[1];
+    const handlerVal = model.getTargetValue().handler;
     let tmpl = `<div class="${cls}">
       <div class="${ppfx}label-wrp" data-label>
         <div class="gjs-label" title="Event">Event</div>
@@ -462,7 +529,7 @@ export default class EventView extends View<Event> {
         }
       </div>
     </div>`;
-    if (val == 'redirecttourl') {
+    if (handlerVal == 'redirecttourl') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
         <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
@@ -474,26 +541,26 @@ export default class EventView extends View<Event> {
          ${
            this.templateInput
              ? isFunction(this.templateInput)
-               ? this.templateInput(this.getClbOpts(), 'data')
+               ? this.templateInput(this.getClbOpts(), 'url')
                : this.templateInput
              : ''
          }
       </div>
       </div>`;
     }
-    if (val == 'redirecttopage') {
+    if (handlerVal == 'redirecttopage') {
       tmpl += `<div class="${cls}">
       <svg width="25" height="20">
         <polyline points="1,0 1,10 10,10" fill="none" stroke="gray" stroke-width="1">
       </svg>
       <div class="${ppfx}label-wrp" data-label>
-        <div class="gjs-label" title="Go to Page">Go to Page</div>
+        <div class="gjs-label" title="Go to Page">Page</div>
       </div>
       <div class="${ppfx}field-wrp ${ppfx}field-wrp--select">
          ${
            this.templateInput
              ? isFunction(this.templateInput)
-               ? this.templateInput(this.getClbOpts(), 'data')
+               ? this.templateInput(this.getClbOpts(), 'page')
                : this.templateInput
              : ''
          }
@@ -502,13 +569,12 @@ export default class EventView extends View<Event> {
     }
     $el.empty().append(tmpl);
     this.renderEventField();
-    if (val == 'redirecttourl') {
-      this.renderHandlerData();
-    }
-    if (val == 'redirecttopage') {
-      this.renderHandlerData();
-    }
 
+    if (handlerVal == 'redirecttourl') {
+      this.renderHandlerData('url');
+    } else if (handlerVal == 'redirecttopage') {
+      this.renderHandlerData('page');
+    }
     this.el.className = `${cls}__wrp ${cls}__wrp-${id}`;
     this.postUpdate();
     this.onRender(this.getClbOpts());
