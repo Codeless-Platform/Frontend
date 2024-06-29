@@ -561,6 +561,8 @@ export default class CanvasView extends ModuleView<Canvas> {
   //TODO change type after the ComponentView was updated to ts
   updateScript(view: any) {
     const model = view.model;
+    let ScriptWithoutRedirect = model.get('script').replace(/window.*;$/gm, '');
+    console.log(ScriptWithoutRedirect);
     const id = model.getId();
 
     if (!view.scriptContainer) {
@@ -574,7 +576,7 @@ export default class CanvasView extends ModuleView<Canvas> {
     // In editor, I make use of setTimeout as during the append process of elements
     // those will not be available immediately, therefore 'item' variable
     const script = document.createElement('script');
-    const scriptFn = model.getScriptString(model.get('script'));
+    const scriptFn = model.getScriptString(ScriptWithoutRedirect);
     const scriptFnStr = model.get('script-props') ? scriptFn : `function(){\n${scriptFn}\n;}`;
     const scriptProps = JSON.stringify(model.__getScriptProps());
     script.innerHTML = `
