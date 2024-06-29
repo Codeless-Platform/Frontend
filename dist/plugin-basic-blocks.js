@@ -279,6 +279,7 @@
                     content: {
                       type: 'link',
                       content: 'Link',
+                      classes: ['no-text-decoration'],
                     },
                   })
                 ),
