@@ -267,19 +267,8 @@ export default class Event extends Model<EventProperties> {
         event.setValue({ event: '', handler: '' });
       }
     });
-
     if (!flag) s = '';
-    // Ensuring the `handlresValue` is accessible in the conditional block
-    let containsRedirect = Allevents.some(event => {
-      let handlresValue = event.getValue().handler;
-      return handlresValue === 'redirecttourl' || handlresValue === 'redirecttopage';
-    });
-
-    if (containsRedirect) {
-      this.target.set('script-export', s);
-    } else {
-      this.target.set('script', s);
-    }
+    this.target.set('script', s);
   }
 
   setTarget(target: Component) {

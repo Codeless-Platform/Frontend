@@ -1992,14 +1992,6 @@ export default class Component extends StyleableModel<ComponentProperties> {
 
   updateEvents() {}
 
-  updateScript() {
-    let s = '';
-    if (this.get('click')) {
-      s = `var element = document.querySelector('#${this.getId()}');\nelement.addEventListener('click', function (event) {\n  console.log('Element clicked!');\n});`;
-    }
-    this.set('script', s);
-  }
-
   /**
    * Init toolbar
    * @private
