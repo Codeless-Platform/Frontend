@@ -4,7 +4,6 @@ import Component from '../../dom_components/model/Component';
 import EditorModel from '../../editor/model/Editor';
 import { capitalize } from '../../utils/mixins';
 import Event from '../model/Event';
-import he from '../../i18n/locale/he';
 
 export default class EventView extends View<Event> {
   pfx: string;

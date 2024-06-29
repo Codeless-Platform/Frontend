@@ -314,23 +314,13 @@ export default class FrameView extends ModuleView<Frame, HTMLIFrameElement> {
       }
     };
 
-    // el.onload = () => {
-    //   const { frameContent } = this.config;
-    //   if (frameContent) {
-    //     const doc = this.getDoc();
-    //     doc.open();
-    //     doc.write(frameContent);
-    //     doc.close();
-    //   }
-    //   em && em.trigger(`${evLoad}:before`, evOpts);
-    //   appendScript([...canvas.get('scripts')]);
-    // };
-
     el.onload = () => {
       const { frameContent } = this.config;
       if (frameContent) {
-        const iframe = document.createElement('iframe');
-        iframe.srcdoc = frameContent;
+        const doc = this.getDoc();
+        doc.open();
+        doc.write(frameContent);
+        doc.close();
       }
       em && em.trigger(`${evLoad}:before`, evOpts);
       appendScript([...canvas.get('scripts')]);
