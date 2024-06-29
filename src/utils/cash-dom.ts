@@ -644,13 +644,25 @@ function getEventsCache(ele) {
 } // @require core/guid.js
 // @require events/helpers/get_events_cache.js
 
+// function addEvent(ele, name, namespaces, callback) {
+//   callback.guid = callback.guid || guid++;
+//   var eventCache = getEventsCache(ele);
+//   eventCache[name] = eventCache[name] || [];
+//   eventCache[name].push([namespaces, callback]);
+//   ele.addEventListener(name, callback);
+// } // @require ./variables.js
+
 function addEvent(ele, name, namespaces, callback) {
   callback.guid = callback.guid || guid++;
   var eventCache = getEventsCache(ele);
   eventCache[name] = eventCache[name] || [];
   eventCache[name].push([namespaces, callback]);
-  ele.addEventListener(name, callback);
-} // @require ./variables.js
+
+  // Check if the event should be passive
+  const options = name === 'touchstart' || name === 'touchmove' ? { passive: true } : false;
+
+  ele.addEventListener(name, callback, options);
+}
 
 function parseEventName(eventName) {
   var parts = eventName.split(eventsNamespacesSeparator);

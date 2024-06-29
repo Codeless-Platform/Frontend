@@ -233,16 +233,16 @@ export default class Event extends Model<EventProperties> {
           //   break;
 
           case 'redirecttourl':
-            if (event.getValue().handlerInput) {
+            if (event.getValue().url) {
               flag = true;
-              m += `window.location.href = '${event.getValue().handlerInput}';});`;
+              m += `window.location.href = '${event.getValue().url}';});`;
             }
             break;
 
           case 'redirecttopage':
-            if (event.getValue().handlerInput) {
+            if (event.getValue().page) {
               flag = true;
-              m += `window.location.href = '${event.getValue().handlerInput}.html';});`;
+              m += `window.location.href = '${event.getValue().page}.html';});`;
             }
             break;
 

@@ -562,7 +562,6 @@ export default class CanvasView extends ModuleView<Canvas> {
   updateScript(view: any) {
     const model = view.model;
     let ScriptWithoutRedirect = model.get('script').replace(/window.*;$/gm, '');
-    console.log(ScriptWithoutRedirect);
     const id = model.getId();
 
     if (!view.scriptContainer) {
