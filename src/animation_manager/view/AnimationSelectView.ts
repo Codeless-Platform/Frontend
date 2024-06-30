@@ -1,8 +1,8 @@
 import { isString, isUndefined } from 'underscore';
 import { $ } from '../../common';
-import TraitView from './AnimationView';
+import AnimationView from './AnimationView';
 
-export default class TraitSelectView extends TraitView {
+export default class AnimationSelectView extends AnimationView {
   constructor(o = {}) {
     super(o);
     this.listenTo(this.model, 'change:options', this.rerender);
@@ -45,7 +45,7 @@ export default class TraitSelectView extends TraitView {
           attrs += style ? ` style="${style}"` : '';
         }
 
-        const resultName = em.t(`traitManager.traits.options.${propName}.${value}`) || name;
+        const resultName = em.t(`animationManager.animations.options.${propName}.${value}`) || name;
         return `<option value="${value}"${attrs}>${resultName}</option>`;
       };
 

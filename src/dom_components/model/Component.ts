@@ -337,6 +337,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
   /**
    * Hook method, called once the model is created
    */
+
   init() {
     this.on('change:animation', this.onAnimationChange);
     this.on('change:duration', this.onDurationChange);
@@ -344,11 +345,32 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.on('change:iteration', this.onIterationChange);
     this.on('change:direction', this.onDirectionChange);
   }
+
   onAnimationChange() {
     const { em } = this;
+    let componentId = this.getId();
+
+    switch (em.get('state')) {
+      case 'hover':
+        componentId += 'hover';
+        break;
+      case 'active':
+        componentId += 'active';
+        break;
+      case 'nth-of-type(2n)':
+        componentId += 'child';
+        break;
+      default:
+        componentId += 'state';
+        break;
+    }
 
     const animation = this.get('animation');
+    const uniqueAnimationName = `${animation}-${componentId}`;
+
     if (animation === 'none') {
+      this.removeKeyframes(componentId);
+
       this.set('duration', '');
       this.set('direction', '');
       this.set('delay', '');
@@ -359,548 +381,483 @@ export default class Component extends StyleableModel<ComponentProperties> {
       this.removeStyle('animation-duration');
       this.removeStyle('animation-delay');
       this.removeStyle('animation-direction');
-
-      for (let i = 0; i < 1000; i++) {
-        em.Css.getAll().models.forEach(model => {
-          if (model.attributes['atRuleType'] === 'keyframes') {
-            em.Css.remove(model);
-          }
-        });
-      }
+    } else {
+      this.removeKeyframes(componentId);
+      this.addAnimationKeyframes(uniqueAnimationName);
     }
+  }
+
+  removeKeyframes(componentId: string) {
+    const { em } = this;
+    for (let i = 0; i < 1000; i++) {
+      em.Css.getAll().models.forEach(model => {
+        if (model.attributes['mediaText'] && model.attributes['mediaText'].includes(componentId)) {
+          em.Css.remove(model);
+        }
+      });
+    }
+  }
+
+  addAnimationKeyframes(uniqueAnimationName: string) {
+    const { em } = this;
+    const animation = this.get('animation');
+
+    this.addStyle({ 'animation-name': uniqueAnimationName });
+
     switch (animation) {
       case 'fadein':
-        this.addStyle({ 'animation-name': animation });
-        em.Css.addRules(`@keyframes ${animation} { from { opacity: 1; } to { opacity: 0; } }`);
+        em.Css.addRules(`@keyframes ${uniqueAnimationName} { from { opacity: 1; } to { opacity: 0; } }`);
         break;
-
       case 'fadeindown':
-        this.addStyle({ 'animation-name': animation });
-
         em.Css.addRules(
-          ` @keyframes  ${animation}{ 0%{ opacity: 1 ;transform: translateY(-40px);} 100%{opacity:0; transform: translateY(0);}  }`
+          `@keyframes ${uniqueAnimationName} { 0% { opacity: 1; transform: translateY(-40px); } 100% { opacity: 0; transform: translateY(0); } }`
         );
-
         break;
-
       case 'fadeinup':
-        this.addStyle({ 'animation-name': animation });
-
         em.Css.addRules(
-          ` @keyframes  ${animation}{ 0%{ opacity: 1 ;transform: translate3d(0,40px,0);} 100%{opacity:0; transform:  translate3d(0,0,0);} }`
+          `@keyframes ${uniqueAnimationName} { 0% { opacity: 1; transform: translate3d(0,40px,0); } 100% { opacity: 0; transform: translate3d(0,0,0); } }`
         );
-
         break;
-
       case 'fadeinright':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{ 0%{ opacity: 1 ;transform: translateX(300px);} 100%{opacity:0; } }
-                `);
+        em.Css.addRules(
+          `@keyframes ${uniqueAnimationName} { 0% { opacity: 1; transform: translateX(300px); } 100% { opacity: 0; } }`
+        );
         break;
-
       case 'fadeinleft':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{ 0%{ opacity: 1 ;transform: translateX(-300px);} 100%{opacity:0; } }
-                `);
+        em.Css
+          .addRules(` @keyframes  ${uniqueAnimationName}{ 0%{ opacity: 1 ;transform: translateX(-300px);} 100%{opacity:0; } }
+                  `);
         break;
 
       case 'Bounce':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{ 0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-              40% {transform: translateY(-30px);}
-              60% {transform: translateY(-15px);}  }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{ 0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+                40% {transform: translateY(-30px);}
+                60% {transform: translateY(-15px);}  }`);
 
         break;
 
       case 'Flash':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{  0%, 50%, 100% {
-              opacity: 1;}
-              25%, 75% {
-              opacity: 0;} }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{  0%, 50%, 100% {
+                opacity: 1;}
+                25%, 75% {
+                opacity: 0;} }`);
 
         break;
 
       case 'Pulse':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% { transform: scale(1); }
-              50% { transform: scale(1.1); }
-              100% { transform: scale(1); }  }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }  }`);
 
         break;
 
       case 'Shake':
-        em.Css.addRules(` @keyframes  ${animation}{   0%, 100% {transform: translateX(0);}
-              10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
-              20%, 40%, 60%, 80% {transform: translateX(10px);} }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0%, 100% {transform: translateX(0);}
+                10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
+                20%, 40%, 60%, 80% {transform: translateX(10px);} }`);
 
         break;
 
       case 'Tada':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{    0% {transform: scale(1);}
-              10%, 20% {transform: scale(0.9) rotate(-3deg);}
-              30%, 50%, 70%, 90% {transform: scale(1.1) rotate(3deg);}
-              40%, 60%, 80% {transform: scale(1.1) rotate(-3deg);}
-              100% {transform: scale(1) rotate(0);}}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{    0% {transform: scale(1);}
+                10%, 20% {transform: scale(0.9) rotate(-3deg);}
+                30%, 50%, 70%, 90% {transform: scale(1.1) rotate(3deg);}
+                40%, 60%, 80% {transform: scale(1.1) rotate(-3deg);}
+                100% {transform: scale(1) rotate(0);}}`);
 
         break;
 
       case 'HeartBeat':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{     0% { transform:  scale(1); }
-              25% { transform:  scale(1); }
-              30% { transform:  scale(1.4); }
-              50% { transform:  scale(1.2); }
-              70% { transform:  scale(1.4); }
-              100% { transform:  scale(1); }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{     0% { transform:  scale(1); }
+                25% { transform:  scale(1); }
+                30% { transform:  scale(1.4); }
+                50% { transform:  scale(1.2); }
+                70% { transform:  scale(1.4); }
+                100% { transform:  scale(1); }}`);
 
         break;
 
       case 'BounceIn':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                opacity: 0;
-                transform: scale(.3);
-                }
-                50% {
-                opacity: 1;
-                transform: scale(1.05);
-                }
-                70% { transform: scale(.9); }
-                100% { transform: scale(1); }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  opacity: 0;
+                  transform: scale(.3);
+                  }
+                  50% {
+                  opacity: 1;
+                  transform: scale(1.05);
+                  }
+                  70% { transform: scale(.9); }
+                  100% { transform: scale(1); }}`);
 
         break;
 
       case 'BounceInLeft':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                opacity: 0;
-                transform: translateX(-2000px);
-                }
-                60% {
-                opacity: 1;
-                transform: translateX(30px);
-                }
-                80% { transform: translateX(-10px); }
-                100% { transform: translateX(0); }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  opacity: 0;
+                  transform: translateX(-2000px);
+                  }
+                  60% {
+                  opacity: 1;
+                  transform: translateX(30px);
+                  }
+                  80% { transform: translateX(-10px); }
+                  100% { transform: translateX(0); }}`);
 
         break;
 
       case 'BounceInRight':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                opacity: 0;
-                transform: translateX(2000px);
-                }
-                60% {
-                opacity: 1;
-                transform: translateX(-30px);
-                }
-                80% { transform: translateX(10px); }
-                100% { transform: translateX(0); }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  opacity: 0;
+                  transform: translateX(2000px);
+                  }
+                  60% {
+                  opacity: 1;
+                  transform: translateX(-30px);
+                  }
+                  80% { transform: translateX(10px); }
+                  100% { transform: translateX(0); }}`);
 
         break;
 
       case 'BounceInUp':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                opacity: 0;
-                transform: translateY(-2000px);
-                }
-                60% {
-                opacity: 1;
-                transform: translateY(30px);
-                }
-                80% { transform: translateY(-10px); }
-                100% { transform: translateY(0); }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  opacity: 0;
+                  transform: translateY(-2000px);
+                  }
+                  60% {
+                  opacity: 1;
+                  transform: translateY(30px);
+                  }
+                  80% { transform: translateY(-10px); }
+                  100% { transform: translateY(0); }}`);
 
         break;
 
       case 'BounceInDown':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                opacity: 0;
-                transform: translateY(2000px);
-                }
-                60% {
-                opacity: 1;
-                transform: translateY(-30px);
-                }
-                80% { transform: translateY(10px); }
-                100% { transform: translateY(0); }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  opacity: 0;
+                  transform: translateY(2000px);
+                  }
+                  60% {
+                  opacity: 1;
+                  transform: translateY(-30px);
+                  }
+                  80% { transform: translateY(10px); }
+                  100% { transform: translateY(0); }}`);
 
         break;
 
       case 'FlipInX':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{    0% {
-                transform: perspective(400px) rotateX(90deg);
-                opacity: 0;
-                }
-                40% {
-                transform: perspective(400px) rotateX(-10deg);
-                }
-                70% {
-                transform: perspective(400px) rotateX(10deg);
-                }
-                 100% {
-                transform: perspective(400px) rotateX(0deg);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{    0% {
+                  transform: perspective(400px) rotateX(90deg);
+                  opacity: 0;
+                  }
+                  40% {
+                  transform: perspective(400px) rotateX(-10deg);
+                  }
+                  70% {
+                  transform: perspective(400px) rotateX(10deg);
+                  }
+                   100% {
+                  transform: perspective(400px) rotateX(0deg);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'FlipInY':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{    0% {
-                transform: perspective(400px) rotateY(90deg);
-                opacity: 0;
-                }
-                40% {
-                transform: perspective(400px) rotateY(-10deg);
-                }
-                70% {
-                transform: perspective(400px) rotateY(10deg);
-                }
-                 100% {
-                transform: perspective(400px) rotateY(0deg);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{    0% {
+                  transform: perspective(400px) rotateY(90deg);
+                  opacity: 0;
+                  }
+                  40% {
+                  transform: perspective(400px) rotateY(-10deg);
+                  }
+                  70% {
+                  transform: perspective(400px) rotateY(10deg);
+                  }
+                   100% {
+                  transform: perspective(400px) rotateY(0deg);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'RotateIn':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{  0% {
-                transform-origin: center center;
-                transform: rotate(-200deg);
-                opacity: 0;
-                }
-                100% {
-                transform-origin: center center;
-                transform: rotate(0);
-                opacity: 1;
-                } }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{  0% {
+                  transform-origin: center center;
+                  transform: rotate(-200deg);
+                  opacity: 0;
+                  }
+                  100% {
+                  transform-origin: center center;
+                  transform: rotate(0);
+                  opacity: 1;
+                  } }`);
 
         break;
 
       case 'RotateInDownLeft':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                transform-origin: left bottom;
-                transform: rotate(-90deg);
-                opacity: 0;
-                }
-                100% {
-                transform-origin: left bottom;
-                transform: rotate(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  transform-origin: left bottom;
+                  transform: rotate(-90deg);
+                  opacity: 0;
+                  }
+                  100% {
+                  transform-origin: left bottom;
+                  transform: rotate(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'RotateInDownRight':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                transform-origin: left bottom;
-                transform: rotate(90deg);
-                opacity: 0;
-                }
-                100% {
-                transform-origin: left bottom;
-                transform: rotate(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  transform-origin: left bottom;
+                  transform: rotate(90deg);
+                  opacity: 0;
+                  }
+                  100% {
+                  transform-origin: left bottom;
+                  transform: rotate(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'RotateInUpRight':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                transform-origin: right bottom;
-                transform: rotate(-90deg);
-                opacity: 0;
-                }
-                100% {
-                transform-origin: right bottom;
-                transform: rotate(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  transform-origin: right bottom;
+                  transform: rotate(-90deg);
+                  opacity: 0;
+                  }
+                  100% {
+                  transform-origin: right bottom;
+                  transform: rotate(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'RotateInUpLeft':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% {
-                transform-origin: right bottom;
-                transform: rotate(90deg);
-                opacity: 0;
-                }
-                100% {
-                transform-origin: right bottom;
-                transform: rotate(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% {
+                  transform-origin: right bottom;
+                  transform: rotate(90deg);
+                  opacity: 0;
+                  }
+                  100% {
+                  transform-origin: right bottom;
+                  transform: rotate(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'SlideInDown':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   from {
-                transform: translateY(-100%);
-                opacity: 0;
-                }
-                to {
-                transform: translateY(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   from {
+                  transform: translateY(-100%);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: translateY(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'SlideInUp':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   from {
-                transform: translateY(100%);
-                opacity: 0;
-                }
-                to {
-                transform: translateY(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   from {
+                  transform: translateY(100%);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: translateY(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'SlideInLeft':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   from {
-                transform: translateX(-100%);
-                opacity: 0;
-                }
-                to {
-                transform: translateX(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   from {
+                  transform: translateX(-100%);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: translateX(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'SLideInRight':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   from {
-                transform: translateX(100%);
-                opacity: 0;
-                }
-                to {
-                transform: translateX(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   from {
+                  transform: translateX(100%);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: translateX(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'ZoomIn':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   from {
-                transform: scale(0);
-                opacity: 0;
-                }
-                to {
-                transform: scale(1);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   from {
+                  transform: scale(0);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: scale(1);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'ZoomInLeft':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   from {
-                transform: scale(0) translateX(-100%);
-                opacity: 0;
-                }
-                to {
-                transform: scale(1) translateX(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   from {
+                  transform: scale(0) translateX(-100%);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: scale(1) translateX(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'ZoomInRight':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{    from {
-                transform: scale(0) translateX(100%);
-                opacity: 0;
-                }
-                to {
-                transform: scale(1) translateX(0);
-                opacity: 1;
-                }}`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{    from {
+                  transform: scale(0) translateX(100%);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: scale(1) translateX(0);
+                  opacity: 1;
+                  }}`);
 
         break;
 
       case 'ZoomInUp':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   from {
-                transform: scale(0) translateY(100%);
-                opacity: 0;
-                }
-                to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-                }
-                }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   from {
+                  transform: scale(0) translateY(100%);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: scale(1) translateY(0);
+                  opacity: 1;
+                  }
+                  }`);
 
         break;
 
       case 'ZoomInDown':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   from {
-                transform: scale(0) translateY(-100%);
-                opacity: 0;
-                }
-                to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-                }
-                }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   from {
+                  transform: scale(0) translateY(-100%);
+                  opacity: 0;
+                  }
+                  to {
+                  transform: scale(1) translateY(0);
+                  opacity: 1;
+                  }
+                  }`);
 
         break;
 
       case 'Expand':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{    from {
-                transform: scale(1);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{    from {
+                  transform: scale(1);
+                    }
+                  to {
+                  transform: scale(2);
                   }
-                to {
-                transform: scale(2);
-                }
-                }`);
+                  }`);
 
         break;
 
       case 'Contract':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{    from {
-                transform: scale(1);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{    from {
+                  transform: scale(1);
+                    }
+                  to {
+                  transform: scale(0.5);
                   }
-                to {
-                transform: scale(0.5);
-                }
-                }`);
+                  }`);
 
         break;
 
       case 'Wobble':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{   0% { transform: translateX(0%); }
-                15% { transform: translateX(-25%) rotate(-5deg); }
-                30% { transform: translateX(20%) rotate(3deg); }
-                45% { transform: translateX(-15%) rotate(-3deg); }
-                60% { transform: translateX(10%) rotate(2deg); }
-                75% { transform: translateX(-5%) rotate(-1deg); }
-                100% { transform: translateX(0%); }
-                }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0% { transform: translateX(0%); }
+                  15% { transform: translateX(-25%) rotate(-5deg); }
+                  30% { transform: translateX(20%) rotate(3deg); }
+                  45% { transform: translateX(-15%) rotate(-3deg); }
+                  60% { transform: translateX(10%) rotate(2deg); }
+                  75% { transform: translateX(-5%) rotate(-1deg); }
+                  100% { transform: translateX(0%); }
+                  }`);
 
         break;
 
       case 'Jello':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{      from, 11.1%, to {
-                transform: none;
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{      from, 11.1%, to {
+                  transform: none;
+                  }
+                22.2% {
+                transform: skewX(-12.5deg) skewY(-12.5deg);
                 }
-              22.2% {
-              transform: skewX(-12.5deg) skewY(-12.5deg);
-              }
-              33.3% {
-              transform: skewX(6.25deg) skewY(6.25deg);
-              }
-              44.4% {
-              transform: skewX(-3.125deg) skewY(-3.125deg);
-              }
-              55.5% {
-              transform: skewX(1.5625deg) skewY(1.5625deg);
-              }
-              66.6% {
-              transform: skewX(-0.78125deg) skewY(-0.78125deg);
-              }
-              77.7% {
-            transform: skewX(0.390625deg) skewY(0.390625deg);
-              }
-              88.8% {
-              transform: skewX(-0.1953125deg) skewY(-0.1953125deg);
-              }
-                }`);
+                33.3% {
+                transform: skewX(6.25deg) skewY(6.25deg);
+                }
+                44.4% {
+                transform: skewX(-3.125deg) skewY(-3.125deg);
+                }
+                55.5% {
+                transform: skewX(1.5625deg) skewY(1.5625deg);
+                }
+                66.6% {
+                transform: skewX(-0.78125deg) skewY(-0.78125deg);
+                }
+                77.7% {
+              transform: skewX(0.390625deg) skewY(0.390625deg);
+                }
+                88.8% {
+                transform: skewX(-0.1953125deg) skewY(-0.1953125deg);
+                }
+                  }`);
 
         break;
 
       case 'Swing':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{    0%, 100% { transform: rotate(0deg); }
-                50% { transform: rotate(15deg); }
-                }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{    0%, 100% { transform: rotate(0deg); }
+                  50% { transform: rotate(15deg); }
+                  }`);
 
         break;
 
       case 'Skew':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{  0% { transform: skew(0deg); }
-                50% { transform: skew(30deg); }
-                100% { transform: skew(0deg); }
-                }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{  0% { transform: skew(0deg); }
+                  50% { transform: skew(30deg); }
+                  100% { transform: skew(0deg); }
+                  }`);
 
         break;
 
       case 'Blink':
-        this.addStyle({ 'animation-name': animation });
+        this.addStyle({ 'uniqueAnimationName-name': uniqueAnimationName });
 
-        em.Css.addRules(` @keyframes  ${animation}{   0%, 50%, 100% { opacity: 1; }
-                25%, 75% { opacity: 0; }
-                }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{   0%, 50%, 100% { opacity: 1; }
+                  25%, 75% { opacity: 0; }
+                  }`);
 
         break;
 
       case 'Vibrate':
-        this.addStyle({ 'animation-name': animation });
-
-        em.Css.addRules(` @keyframes  ${animation}{0% { transform: translate(0); }
-                20% { transform: translate(-2px, -2px); }
-                40% { transform: translate(2px, -2px); }
-                60% { transform: translate(-2px, 2px); }
-                80% { transform: translate(2px, 2px); }
-                100% { transform: translate(0); }
-                }`);
+        em.Css.addRules(` @keyframes  ${uniqueAnimationName}{0% { transform: translate(0); }
+                  20% { transform: translate(-2px, -2px); }
+                  40% { transform: translate(2px, -2px); }
+                  60% { transform: translate(-2px, 2px); }
+                  80% { transform: translate(2px, 2px); }
+                  100% { transform: translate(0); }
+                  }`);
 
         break;
 
