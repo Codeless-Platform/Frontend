@@ -18,7 +18,7 @@ export interface LocalStorageConfig {
 export default class LocalStorage implements IStorage<LocalStorageConfig> {
   async store(data: ProjectData, opts: LocalStorageConfig = {}) {
     if (this.hasLocal(opts, true)) {
-      localStorage.setItem(opts.key!, JSON.stringify(data));
+      sessionStorage.setItem(opts.key!, JSON.stringify(data));
     }
     return data;
   }
@@ -27,15 +27,15 @@ export default class LocalStorage implements IStorage<LocalStorageConfig> {
     let result = {};
 
     if (this.hasLocal(opts, true)) {
-      result = JSON.parse(localStorage.getItem(opts.key!) || '{}');
+      result = JSON.parse(sessionStorage.getItem(opts.key!) || '{}');
     }
 
     return result;
   }
 
   hasLocal(opts: LocalStorageConfig = {}, thr?: boolean) {
-    if (opts.checkLocal && (!hasWin() || !localStorage)) {
-      if (thr) throw new Error('localStorage not available');
+    if (opts.checkLocal && (!hasWin() || !sessionStorage)) {
+      if (thr) throw new Error('sessionStorage not available');
       return false;
     }
 
