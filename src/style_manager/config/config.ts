@@ -105,6 +105,7 @@ export default {
         'color',
         'line-height',
         'text-align',
+        'text-decoration',
         'text-shadow',
       ],
     },

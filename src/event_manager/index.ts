@@ -61,10 +61,10 @@ export default class EventManager extends Module<EventManagerConfig & { pStylePr
     this.types = typesDef;
     setTimeout(() => {
       this.handlers = this.em.getWrapper()?.attributes.handlers || [
-        { value: 'redirecttourl', name: 'Redirect to url', logic: '', blockly: '' },
-        { value: 'redirecttopage', name: 'Redirect to page', logic: '', blockly: '' },
-        { value: 'none', name: 'none', logic: '' },
-        { value: 'newhandler', name: '&#43 New Handler' },
+        { value: 'redirecttourl', name: 'Redirect to url' },
+        { value: 'redirecttopage', name: 'Redirect to page' },
+        { value: 'none', name: 'none' },
+        { value: 'newhandler', name: '&#43 New Handler', logic: '' },
       ];
     }, 100);
 
