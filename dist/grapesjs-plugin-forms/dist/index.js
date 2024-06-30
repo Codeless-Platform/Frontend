@@ -276,7 +276,7 @@
                       ],
                     },
                   ],
-                  events: [{ label: 'onclick', type: 'Customized' }, '0'],
+                  events: [{ label: 'onclick', type: 'Customized' }, 'event0'],
                 },
                 init: function () {
                   var e = this.components(),
