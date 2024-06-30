@@ -80,6 +80,7 @@ const commandsDef = [
   ['component-style-clear', 'ComponentStyleClear'],
   ['component-drag', 'ComponentDrag'],
   ['change-theme', 'ChangeTheme', 'change-theme'],
+  ['ai', 'ai', 'ai'],
   ['clear-page', 'ClearPage', 'clear-page'],
   ['undo', 'Undo', 'undo'],
   ['redo', 'Redo', 'redo'],

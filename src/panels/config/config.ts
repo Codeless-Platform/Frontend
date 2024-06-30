@@ -9,6 +9,7 @@ const oan = 'open-an';
 const ola = 'open-layers';
 const obl = 'open-blocks';
 const ful = 'fullscreen';
+const ai = 'ai';
 const prv = 'preview';
 const theme = 'change-theme';
 const clr = 'clear';
@@ -65,6 +66,13 @@ const config: PanelsConfig = {
           command: 'core:component-outline',
           context: swv,
           attributes: { title: 'View components' },
+        },
+        {
+          id: 'ai',
+          className: 'fa fa-comments',
+          command: ai,
+          context: ai,
+          attributes: { title: 'ai' },
         },
         {
           id: prv,
