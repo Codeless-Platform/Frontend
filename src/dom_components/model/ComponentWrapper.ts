@@ -91,6 +91,13 @@ export default class ComponentWrapper extends Component {
   }
 
   loadJsons() {
+    const openErrorModal = (content: string) => {
+      this.em.Editor.Modal.open({
+        title: 'Error',
+        content,
+        attributes: { class: 'max-width-500' },
+      });
+    };
     if (this.get('apis')) {
       this.get('apis').forEach(async (api: any) => {
         if (api.link && api.name) {
@@ -102,7 +109,7 @@ export default class ComponentWrapper extends Component {
             const json = await response.json();
             api.json = json;
           } catch (error) {
-            throw error;
+            openErrorModal(`Can't fetch ${api.name} API`);
           }
         }
       });
