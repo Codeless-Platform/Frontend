@@ -40,7 +40,8 @@ export default class CustomEventView extends EventView {
     delete this.$einput;
     delete this.$hinput;
     delete this.$input;
-    const val = model.getTargetValue()[1];
+    const val = model.getTargetValue().handler;
+    console.log(val);
     let tmpl = `<div class="${cls}">
       ${hasLabel ? `<div class="${ppfx}label-wrp" data-label></div>` : ''}
       <div class="${ppfx}field-wrp ${ppfx}field-wrp--select">

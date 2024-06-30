@@ -213,7 +213,11 @@ export default class Event extends Model<EventProperties> {
       }
 
       if (eventsValue !== 'none' && eventsValue !== undefined && eventsValue !== '') {
+        console.log(eventsValue);
         let m = `${elname}.addEventListener('${eventsValue}', function(event) {`;
+        if (eventsValue === 'load') {
+          m = `window.addEventListener('${eventsValue}', function(event) {`;
+        }
 
         if (l) {
           flag = true;

@@ -139,18 +139,18 @@ export default class ComponentImage extends Component {
         if (Array.isArray(currentObj)) {
           const index = parseInt(segment, 10);
           if (isNaN(index) || index < 0 || index >= currentObj.length) {
-            throw new Error(`Invalid array index: ${index}`);
+            console.error(`Invalid array index: ${index}`);
           }
           path += `[${index}]`;
           currentObj = currentObj[index];
         } else if (typeof currentObj === 'object' && currentObj !== null) {
           if (!(segment in currentObj)) {
-            throw new Error(`Property '${segment}' does not exist in object`);
+            console.error(`Property '${segment}' does not exist in object`);
           }
           path += `["${segment}"]`;
           currentObj = currentObj[segment];
         } else {
-          throw new Error(`Unexpected type encountered: ${typeof currentObj}`);
+          console.error(`Unexpected type encountered: ${typeof currentObj}`);
         }
       }
     } catch (error) {
