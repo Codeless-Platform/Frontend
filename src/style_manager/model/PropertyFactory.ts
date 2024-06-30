@@ -43,6 +43,7 @@ export default class PropertyFactory {
   optsFloat: Option[];
   optsPos: Option[];
   optsTextAlign: Option[];
+  optsTextDecoration: Option[];
   optsFlexAlign: Option[];
   optsJustCont: Option[];
   optsAlignCont: Option[];
@@ -87,6 +88,7 @@ export default class PropertyFactory {
     this.optsFloat = getOptions(['none', 'left', 'right']);
     this.optsPos = getOptions(['static', 'relative', 'absolute', 'fixed']);
     this.optsTextAlign = getOptions(['left', 'center', 'right', 'justify']);
+    this.optsTextDecoration = getOptions(['underline', 'none']);
     this.optsFlexAlign = getOptions(optsFlexAlign);
     this.optsJustCont = getOptions([...optsFlex, 'space-between', 'space-around', 'space-evenly']);
     this.optsAlignCont = getOptions([...optsFlex, 'space-between', 'space-around', 'stretch']);
@@ -241,6 +243,7 @@ export default class PropertyFactory {
       ['float', { type: this.typeRadio, default: 'none', options: this.optsFloat }],
       ['position', { default: 'static', options: this.optsPos }, 'float'],
       ['text-align', { default: 'left', options: this.optsTextAlign }, 'float'],
+      ['text-decoration', { default: 'none', options: this.optsTextDecoration }, 'float'],
 
       // Color types
       ['color', { type: this.typeColor, default: 'black', full: true }],
