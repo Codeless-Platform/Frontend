@@ -1,6 +1,7 @@
 import DomainViews from '../../domain_abstract/view/DomainViews';
 import EditorModel from '../../editor/model/Editor';
 import EventView from './EventView';
+import { isUndefined } from 'underscore';
 interface Handler {
   value: string;
   blockly: string;
@@ -38,7 +39,9 @@ export default class EventsView extends DomainViews {
     }
 
     handlercont.style.cssText = 'text-align: left;padding: 0 0 15px 10px;border-bottom: 1px solid;';
-    let handlers = this.em.get('EventManager').handlers.filter((ih: Record<string, any>) => ih.logic !== '');
+    let handlers = this.em
+      .get('EventManager')
+      .handlers.filter((ih: Record<string, any>) => isUndefined(ih.logic) === false);
 
     let handlersHtml = handlers
       .map((oh: Handler) => {
