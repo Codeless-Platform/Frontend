@@ -1,4 +1,4 @@
-import { bindAll, isNumber } from 'underscore';
+import { bindAll, constant, isNumber } from 'underscore';
 import { ModuleView } from '../../abstract';
 import { BoxRect, Coordinates, CoordinatesTypes, ElementRect } from '../../common';
 import Component from '../../dom_components/model/Component';
@@ -561,7 +561,9 @@ export default class CanvasView extends ModuleView<Canvas> {
   //TODO change type after the ComponentView was updated to ts
   updateScript(view: any) {
     const model = view.model;
-    let ScriptWithoutRedirect = model.get('script').replace(/window.*;$/gm, '');
+    const s = model.get('script');
+    let ScriptWithoutRedirect = '';
+    if (s) ScriptWithoutRedirect = String(s).replace(/window.*;$/gm, '');
     const id = model.getId();
 
     if (!view.scriptContainer) {
@@ -574,8 +576,9 @@ export default class CanvasView extends ModuleView<Canvas> {
     view.scriptContainer.innerHTML = '';
     // In editor, I make use of setTimeout as during the append process of elements
     // those will not be available immediately, therefore 'item' variable
+    console.log(s);
     const script = document.createElement('script');
-    const scriptFn = model.getScriptString(ScriptWithoutRedirect);
+    const scriptFn = model.getScriptString(s);
     const scriptFnStr = model.get('script-props') ? scriptFn : `function(){\n${scriptFn}\n;}`;
     const scriptProps = JSON.stringify(model.__getScriptProps());
     script.innerHTML = `
