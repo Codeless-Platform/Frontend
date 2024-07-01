@@ -203,14 +203,25 @@
                     });
                 },
                 addtoBlocks(e, t) {
-                  e.Blocks.add(t.getId(), {
-                    label:
-                      document.getElementById('block-name-input').value ||
-                      'Custom Block',
-                    media: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\n  <rect x="0" y="0" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="2" width="8" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="8" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="10" y="8" width="12" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="10" y="2" width="12" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="16" width="8" height="6" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="12" y="14" width="10" height="8" fill="none" stroke="currentColor" stroke-width="1"/>\n</svg>`,
-                    category: 'Custom',
-                    content: t.clone(),
+                  const newComp = t.clone();
+                  e.Components.addType(`${t.getId()}`, {
+                    model: {
+                      defalut: {
+                        components: [newComp],
+                      },
+                    },
                   });
+                  setTimeout(() => {
+                    e.Blocks.add(t.getId(), {
+                      label:
+                        document.getElementById('block-name-input').value ||
+                        'Custom Block',
+                      media: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\n  <rect x="0" y="0" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="2" width="8" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="8" width="6" height="6" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="10" y="8" width="12" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="10" y="2" width="12" height="4" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="2" y="16" width="8" height="6" fill="none" stroke="currentColor" stroke-width="1"/>\n  <rect x="12" y="14" width="10" height="8" fill="none" stroke="currentColor" stroke-width="1"/>\n</svg>`,
+                      category: 'Custom',
+                      content: { type: `${t.getId()}` },
+                    });
+                  }, 5000);
+                  document.getElementById('block-name-input').value = '';
                 },
                 getContent: function () {
                   var e = this.editor,
