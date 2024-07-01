@@ -56,17 +56,13 @@ export default class ComponentWrapper extends Component {
   }
 
   clearApis() {
-    console.log(this.APIs);
     this.APIs.forEach((api, index) => {
-      console.log(`api${index + 1}`);
       this.set(`api${index + 1}`, { name: '', link: '', json: '' });
     });
     this.set('apis', []);
-    console.log(this);
   }
 
   renderTraits() {
-    console.log(4);
     let index = this.get('apis').length - 1;
     for (let i = 1; i <= index; i++) {
       this.addTrait(
