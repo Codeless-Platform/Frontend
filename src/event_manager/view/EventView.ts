@@ -146,9 +146,7 @@ export default class EventView extends View<Event> {
         }
       }
     } else if (hel && !isUndefined(hel.value)) {
-      console.log(10);
       const eventValue = model.getEventx()?.find(event => event.name === model.getLabel())?.value;
-      console.log(model.getEventx());
       if (el && !isUndefined(el.value)) {
         if (hel.value === 'redirecttourl' && modelValue.handler === 'redirecttourl') {
           setValue(eventValue, hel.value, { url: el.value });
@@ -172,7 +170,6 @@ export default class EventView extends View<Event> {
     } else {
       this.stopListening(this.em, 'page:add page:remove', this.rerender);
     }
-    console.log(model.getValue());
 
     this.render();
   }
