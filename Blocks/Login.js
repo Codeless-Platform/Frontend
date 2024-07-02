@@ -89,106 +89,115 @@ login = (editor, opts = {}) => {
   editor.Components.addType('login-with-js', {
     model: {
       defaults: {
-        tagName: 'form',
+        tagName: 'section',
         components: `
+  <div class="form_container">
+    <form>
       <label for="email-field">Email:</label>
-      <input class="email" type="email" required></input>
+      <input id="email-field" class="email" type="email" required>
       <br>
-      
+
       <label for="pass-field">Password:</label>
-      <input class="pass" type="password" required></input>
+      <input id="pass-field" class="pass" type="password" required>
       <br>
-      
-      <input type="submit" value="Login" class="submitBtn" />
-      <style>
-      /* Default styles */
-      body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-          color: white;
-          background: linear-gradient(135deg, #222, #333);
-      }
-      
-      form {
-          max-width: 400px;
-          margin: 50px auto;
-          padding: 20px;
-          border-radius: 5px;
-          background-color: #333;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      }
-      
-      h1 {
-          text-align: center;
-      }
-      
-      label {
-          display: block;
-          margin-bottom: 5px;
-          font-weight: bold;
-      }
-      
-      input[type="email"],
-      input[type="password"] {
-          width: 100%;
-          padding: 10px;
-          margin-bottom: 15px;
-          border: 1px solid #555;
-          border-radius: 3px;
-          box-sizing: border-box;
-          font-size: 16px;
-          color: white;
-          background-color: #444;
-      }
-      
-      input[type="submit"] {
-          width: 100%;
-          padding: 10px;
-          border: none;
-          border-radius: 3px;
-          background-color: #007bff;
-          color: white;
-          font-size: 16px;
-          font-weight: bold;
-          cursor: pointer;
-      }
-      
-      input[type="submit"]:hover {
-          background-color: #0056b3;
-      }
-      
-      /* Media queries for tablet */
-      @media (max-width: 768px) {
-          form {
-              max-width: 300px;
-              padding: 15px;
-          }
-      
-          input[type="email"],
-          input[type="password"],
-          input[type="submit"] {
-              font-size: 14px;
-              padding: 8px;
-          }
-      }
-      
-      /* Media queries for mobile */
-      @media (max-width: 480px) {
-          form {
-              max-width: 250px;
-              padding: 10px;
-          }
-      
-          input[type="email"],
-          input[type="password"],
-          input[type="submit"] {
-              font-size: 12px;
-              padding: 5px;
-          }
-      }
-            </style>
+
+      <input type="submit" value="Login" class="submitBtn">
+    </form>
+  </div>
+   
       `,
+        styles: `     section{
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  color: #ccc;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form_container {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #ccc;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #555;
+  border-radius: 3px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #ccc;
+  background-color: #444;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #888;
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Media queries for tablet */
+@media (max-width: 768px) {
+  .form_container {
+    padding: 15px;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="submit"] {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+/* Media queries for mobile */
+@media (max-width: 480px) {
+  .form_container {
+    padding: 10px;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="submit"] {
+    font-size: 12px;
+    padding: 5px;
+  }
+}
+
+`,
         script: script1, // Pass editor as a parameter using bind
         droppable: false,
 

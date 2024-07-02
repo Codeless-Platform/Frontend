@@ -72,7 +72,7 @@ const config: PanelsConfig = {
           className: 'fa fa-comments',
           command: ai,
           context: ai,
-          attributes: { title: 'ai' },
+          attributes: { title: 'AI Chat' },
         },
         {
           id: prv,

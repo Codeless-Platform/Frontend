@@ -331,6 +331,25 @@ export default {
       ],
     });
     tour.addStep({
+      id: 'clear',
+      title: 'AI Chat',
+      text: 'We all need help from AI, so this will open a chat with AI that will help you through your journey while implementing your webpage.',
+      attachTo: {
+        element: '#ai',
+        on: 'top',
+      },
+      buttons: [
+        {
+          text: 'Back',
+          action: tour.back,
+        },
+        {
+          text: 'Next',
+          action: tour.next,
+        },
+      ],
+    });
+    tour.addStep({
       id: 'change-theme',
       title: 'Change Theme',
       text: "You can customize the theme of your editor, keeping in mind that it Initially follows the system's default mode.",
