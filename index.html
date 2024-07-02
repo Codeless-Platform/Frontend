@@ -1,334 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Codeless Platform</title>
-    <link rel="stylesheet" href="dist/css/grapes.min.css" />
-    <link rel="icon" href="imgs/icon 2.svg" type="image/x-icon" />
-    <link
-      rel="stylesheet"
-      href="./dist/grapesjs-project-manager/grapesjs-project-manager.min.css"
-    />
-    <script src="grapes.min.js"></script>
-    <script src="./dist/grapesjs-script-editor/grapesjs-script-editor.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="./dist/grapesjs-plugin-forms/dist/index.js"></script>
-    <script src="./dist/grapesjs-tailwind.min.js"></script>
-    <script src="./dist/grapesjs-parser-postcss/dist/index.js"></script>
-    <script src="./dist/plugin-export-to-zip.js"></script>
-    <script src="./dist/plugin-basic-blocks.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-    <script src="./Blocks/Login.js"></script>
-    <script src="./Blocks/loginTemp2.js"></script>
-    <script src="./Blocks/signup.js"></script>
-    <script src="./Blocks/sign&login.js"></script>
-    <script src="./Blocks/login&signup2.js"></script>
-    <script src="./Blocks/carousel.js"></script>
-    <!-- <script src="./Blocks/tailwind.js"></script> -->
-    <script src="./dist/grapesjs-project-manager/grapejs-project-manager.js"></script>
-    <script src="https://unpkg.com/blockly@11.0.0-beta.5"></script>
-    <script src="./dist/grapesjs-blockly/grapesjs-blockly.js"></script>
-    <script src="./dist/grapesjs-templates.js"></script>
-    <script src="./dist/grapesjs-pages-manager.js"></script>
-    <!-- <script src="./Blocks/Table.js"></script> -->
-    <script src="./dist/grapesjs-blocks-table/grapesjs-blocks-table.min.js"></script>
-    <!-- <script src="./dist/grapesjs-add-block/grapesjs-add-block.js"></script> -->
-    <script src="./dist/plugin-api-blocks.js"></script>
-    <script src="./dist/grapesjs-blocks-table(1).min.js"></script>
-    <link rel="stylesheet" href="./dist/shephered/shepherd.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shepherd.js/8.0.0/js/shepherd.js"></script>
 
+<head>
+  <meta charset="utf-8" />
+  <title>Codeless Platform</title>
+  <link rel="stylesheet" href="dist/css/grapes.min.css" />
+  <link rel="icon" href="imgs/icon 2.svg" type="image/x-icon" />
+  <link rel="stylesheet" href="./dist/grapesjs-project-manager/grapesjs-project-manager.min.css" />
+  <script src="grapes.min.js"></script>
+  <script src="./dist/grapesjs-script-editor/grapesjs-script-editor.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./dist/grapesjs-plugin-forms/dist/index.js"></script>
+  <script src="./dist/grapesjs-tailwind.min.js"></script>
+  <script src="./dist/grapesjs-parser-postcss/dist/index.js"></script>
+  <script src="./dist/plugin-export-to-zip.js"></script>
+  <script src="./dist/plugin-basic-blocks.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="./Blocks/Login.js"></script>
+  <script src="./Blocks/signup.js"></script>
+  <script src="./Blocks/sign&login.js"></script>
+  <script src="./Blocks/login&signup2.js"></script>
+  <script src="./Blocks/carousel.js"></script>
+  <!-- <script src="./Blocks/tailwind.js"></script> -->
+  <script src="./dist/grapesjs-project-manager/grapejs-project-manager.js"></script>
+  <script src="https://unpkg.com/blockly@11.0.0-beta.5"></script>
+  <script src="./dist/grapesjs-blockly/grapesjs-blockly.js"></script>
+  <script src="./dist/grapesjs-templates.js"></script>
+  <script src="./dist/grapesjs-pages-manager.js"></script>
+  <!-- <script src="./Blocks/Table.js"></script> -->
+  <script src="./dist/grapesjs-blocks-table/grapesjs-blocks-table.min.js"></script>
+  <!-- <script src="./dist/grapesjs-add-block/grapesjs-add-block.js"></script> -->
+  <script src="./dist/plugin-api-blocks.js"></script>
+  <script src="./dist/grapesjs-blocks-table(1).min.js"></script>
+  <link rel="stylesheet" href="./dist/shephered/shepherd.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shepherd.js/8.0.0/js/shepherd.js"></script>
+
+  <style>
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="gjs">
+    <div class="panel">
+      <div class="welcome">Welcome to</div>
+      <div class="big-title">
+        <img src="imgs/icon 2.svg" alt="Logo" class="logo" />
+        Codeless Platform
+      </div>
+      <div class="description">
+        Codeless empowers users to build websites or applications without
+        needing in-depth coding knowledge. It utilizes a drag-and-drop
+        interface, allowing users to visually design the front-end of their
+        websites or apps by placing elements like buttons, text boxes, images,
+        and forms onto a canvas, in addition to the ability for users to
+        export the generated code, users gain access to the HTML and CSS that
+        comprise their website's structure and styling.
+      </div>
+    </div>
     <style>
-      body,
-      html {
-        height: 100%;
-        margin: 0;
+      .panel {
+        width: 90%;
+        max-width: 700px;
+        border-radius: 3px;
+        padding: 30px 20px;
+        margin: 150px auto 0px;
+        background-color: rgb(33, 33, 52);
+        box-shadow: 0px 3px 10px 0px rgba(231, 25, 25, 0);
+        color: #ffffff;
+        font: caption;
+        font-weight: 100;
+      }
+
+      .welcome {
+        text-align: center;
+        font-weight: 100;
+        margin: 0px;
+      }
+
+      .logo {
+        width: 90px;
+        height: 90px;
+        margin-right: 30px;
+        margin-left: 50px;
+      }
+
+      .logo path {
+        pointer-events: none;
+        fill: none;
+        stroke-linecap: round;
+        stroke-width: 7;
+        stroke: #fff;
+      }
+
+      .big-title {
+        text-align: center;
+        font-size: 3.5rem;
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+      }
+
+      svg {
+        display: inline;
+        vertical-align: center;
+        fill: white;
+      }
+
+      .description {
+        text-align: justify;
+        font-size: 1rem;
+        line-height: 1.5rem;
       }
     </style>
-  </head>
+  </div>
 
-  <body>
-    <div id="gjs">
-      <div class="panel">
-        <div class="welcome">Welcome to</div>
-        <div class="big-title">
-          <img src="imgs/icon 2.svg" alt="Logo" class="logo" />
-          Codeless Platform
-        </div>
-        <div class="description">
-          Codeless empowers users to build websites or applications without
-          needing in-depth coding knowledge. It utilizes a drag-and-drop
-          interface, allowing users to visually design the front-end of their
-          websites or apps by placing elements like buttons, text boxes, images,
-          and forms onto a canvas, in addition to the ability for users to
-          export the generated code, users gain access to the HTML and CSS that
-          comprise their website's structure and styling.
-        </div>
-      </div>
-      <style>
-        .panel {
-          width: 90%;
-          max-width: 700px;
-          border-radius: 3px;
-          padding: 30px 20px;
-          margin: 150px auto 0px;
-          background-color: rgb(33, 33, 52);
-          box-shadow: 0px 3px 10px 0px rgba(231, 25, 25, 0);
-          color: #ffffff;
-          font: caption;
-          font-weight: 100;
-        }
+  <script type="text/javascript">
+    function toggleChat() {
+      const chatPopup = document.getElementById("chat-popup");
+      chatPopup.style.display =
+        chatPopup.style.display === "block" ? "none" : "block";
+    }
 
-        .welcome {
-          text-align: center;
-          font-weight: 100;
-          margin: 0px;
-        }
+    function sendMessage() {
+      const queryInput = document.getElementById("query");
+      const query = queryInput.value;
+      if (query.trim() === "") return;
 
-        .logo {
-          width: 90px;
-          height: 90px;
-          margin-right: 30px;
-          margin-left: 50px;
-        }
+      addMessage(query, "user");
+      queryInput.value = "";
 
-        .logo path {
-          pointer-events: none;
-          fill: none;
-          stroke-linecap: round;
-          stroke-width: 7;
-          stroke: #fff;
-        }
-
-        .big-title {
-          text-align: center;
-          font-size: 3.5rem;
-          margin: 15px 0;
-          display: flex;
-          align-items: center;
-        }
-
-        svg {
-          display: inline;
-          vertical-align: center;
-          fill: white;
-        }
-
-        .description {
-          text-align: justify;
-          font-size: 1rem;
-          line-height: 1.5rem;
-        }
-      </style>
-    </div>
-
-    <script type="text/javascript">
-      function toggleChat() {
-        const chatPopup = document.getElementById("chat-popup");
-        chatPopup.style.display =
-          chatPopup.style.display === "block" ? "none" : "block";
-      }
-
-      function sendMessage() {
-        const queryInput = document.getElementById("query");
-        const query = queryInput.value;
-        if (query.trim() === "") return;
-
-        addMessage(query, "user");
-        queryInput.value = "";
-
-        fetch(
-          "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyCcd7C97o2TTSOu96UF0UWzfHah5Vrvx5E",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              contents: [
-                {
-                  role: "user",
-                  parts: [
-                    {
-                      text: query,
-                    },
-                  ],
-                },
-              ],
-            }),
-          }
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            const botMessage =
-              data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-              "Sorry, I couldn't process that.";
-            addMessage(botMessage, "bot");
-          })
-          .catch((error) => {
-            addMessage("Error: " + error, "bot");
-          });
-      }
-
-      function addMessage(text, role) {
-        const chatBody = document.getElementById("chat-body");
-        const message = document.createElement("div");
-        message.className = "chat-message " + role;
-        message.innerText = text;
-        if (role === "user") {
-          message.style.cssText =
-            "margin-bottom: 10px; padding: 10px; border-radius: 10px; background-color: #7b79ff !important; color: white; text-align: right;";
-        } else {
-          message.style.cssText =
-            "margin-bottom: 10px; padding: 10px; border-radius: 10px; background-color: #f1f1f1; color: black; text-align: left;";
-        }
-        chatBody.appendChild(message);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }
-
-      var editor = grapesjs.init({
-        showOffsets: 1,
-        noticeOnUnload: 0,
-        container: "#gjs",
-        allowScripts: 1,
-        fromElement: true,
-        cssComposer: {},
-        plugins: [
-          "grapesjs-blockly",
-          "grapesjs-plugin-export",
-          "gjs-blocks-basic",
-          "grapesjs-plugin-forms",
-          "gjs-blocks-api",
-          "carousel",
-          "grapesjs-blocks-table",
-          // "grapesjs-add-block",
-          "grapesjs-blocks-api-table",
-          "grapesjs-project-manager",
-          // "table",
-          "grapesjs-tailwind",
-          "grapesjs-script-editor",
-          "grapesjs-parser-postcss",
-          "login",
-          "loginTemp2",
-          "signup",
-          "login_signup",
-          "login_signup2",
-          // "tailwind",
-          "grapesjs-templates",
-          "grapesjs-pages-manager",
-        ],
-         pluginsOpts: {
-          "grapesjs-plugin-export": {},
-          table: { containerId: "#gjs" },
-          "grapesjs-blocks-table": {},
-          "grapesjs-blocks-api-table": {},
-          // "grapesjs-add-block": {},
-          "gjs-blocks-basic": {},
-          "gjs-blocks-api": {},
-          "grapesjs-plugin-forms": {},
-          // "grapesjs-tailwind": {},
-          "grapesjs-script-editor": {},
-          "grapesjs-parser-postcss": {},
-          login: {},
-          loginTemp2: {},
-          signup: {},
-          login_signup: {},
-          login_signup2: {},
-          carousel: {},
-          "grapesjs-project-manager": {},
-          "grapesjs-templates": {
-            appendTo: "",
-            templatesType: "remote", // local or remote
-            templatesUrl: "./dist/templates/remote_templates.json", // if "templatesType" === "remote"
+      fetch(
+        "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=AIzaSyCcd7C97o2TTSOu96UF0UWzfHah5Vrvx5E",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-          "grapesjs-pages-manager": {},
-        },
-        canvas: {
-          styles: [
-            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css",
-            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css",
-          ],
-          scripts: [
-            "https://code.jquery.com/jquery-3.3.1.min.js",
-            "https://code.jquery.com/jquery-2.2.4.js",
-            "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js",
-            "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js",
-            "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js",
-            "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js",
-          ],
-        },
-
-        height: "100%",
-        fromElement: true,
-        storageManager: true,
-        storageManager: {
-          autoload: 1,
-        },
-      });
-
-      //to enable freeMove
-      // editor.getModel().set("dmode", "absolute");
-
-      const pageManager = editor.Pages;
-      editor.runCommand("open-pages");
-      pageManager.getAll()[0].setName("index");
-
-      editor.on("load", function () {
-        editor.getWrapper().set("stylable", true);
-      });
-
-      //for change theme
-      const prefersLightScheme = window.matchMedia(
-        "(prefers-color-scheme: light)"
-      );
-      const button = document.getElementById("change-theme");
-
-      // Initial theme state based on user preference
-      let isLightMode = prefersLightScheme.matches;
-
-      // Function to set the theme
-      function setTheme(isLightMode) {
-        if (isLightMode) {
-          console.log("User prefers light mode");
-          editor.runCommand("change-theme");
-          button.classList.remove("light-mode");
-          button.classList.add("dark-mode");
-          button.classList.add("checked");
-          button.classList.add("gjs-pn-active");
-          button.classList.add("gjs-four-color");
-        } else {
-          console.log("User prefers dark mode");
-          editor.stopCommand("change-theme");
-          button.classList.remove("dark-mode");
-          button.classList.remove("checked");
-          button.classList.add("light-mode");
-          button.classList.add("gjs-pn-active");
-          button.classList.add("gjs-four-color");
+          body: JSON.stringify({
+            contents: [
+              {
+                role: "user",
+                parts: [
+                  {
+                    text: query,
+                  },
+                ],
+              },
+            ],
+          }),
         }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const botMessage =
+            data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+            "Sorry, I couldn't process that.";
+          addMessage(botMessage, "bot");
+        })
+        .catch((error) => {
+          addMessage("Error: " + error, "bot");
+        });
+    }
+
+    function addMessage(text, role) {
+      const chatBody = document.getElementById("chat-body");
+      const message = document.createElement("div");
+      message.className = "chat-message " + role;
+      message.innerText = text;
+      if (role === "user") {
+        message.style.cssText =
+          "margin-bottom: 10px; padding: 10px; border-radius: 10px; background-color: #7b79ff !important; color: white; text-align: right;";
+      } else {
+        message.style.cssText =
+          "margin-bottom: 10px; padding: 10px; border-radius: 10px; background-color: #f1f1f1; color: black; text-align: left;";
       }
+      chatBody.appendChild(message);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
 
-      // Set initial theme
+    var editor = grapesjs.init({
+      showOffsets: 1,
+      noticeOnUnload: 0,
+      container: "#gjs",
+      allowScripts: 1,
+      fromElement: true,
+      cssComposer: {},
+      plugins: [
+        "grapesjs-blockly",
+        "grapesjs-plugin-export",
+        "gjs-blocks-basic",
+        "grapesjs-plugin-forms",
+        "gjs-blocks-api",
+        "carousel",
+        "grapesjs-blocks-table",
+        // "grapesjs-add-block",
+        "grapesjs-blocks-api-table",
+        "grapesjs-project-manager",
+        // "table",
+        "grapesjs-tailwind",
+        "grapesjs-script-editor",
+        "grapesjs-parser-postcss",
+        "login",
+        "signup",
+        "login_signup",
+        "login_signup2",
+        // "tailwind",
+        "grapesjs-templates",
+        "grapesjs-pages-manager",
+      ],
+      pluginsOpts: {
+        "grapesjs-plugin-export": {},
+        table: { containerId: "#gjs" },
+        "grapesjs-blocks-table": {},
+        "grapesjs-blocks-api-table": {},
+        // "grapesjs-add-block": {},
+        "gjs-blocks-basic": {},
+        "gjs-blocks-api": {},
+        "grapesjs-plugin-forms": {},
+        // "grapesjs-tailwind": {},
+        "grapesjs-script-editor": {},
+        "grapesjs-parser-postcss": {},
+        login: {},
+        signup: {},
+        login_signup: {},
+        login_signup2: {},
+        carousel: {},
+        "grapesjs-project-manager": {},
+        "grapesjs-templates": {
+          appendTo: "",
+          templatesType: "remote", // local or remote
+          templatesUrl: "./dist/templates/remote_templates.json", // if "templatesType" === "remote"
+        },
+        "grapesjs-pages-manager": {},
+      },
+      canvas: {
+        styles: [
+          "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css",
+          "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css",
+        ],
+        scripts: [
+          "https://code.jquery.com/jquery-3.3.1.min.js",
+          "https://code.jquery.com/jquery-2.2.4.js",
+          "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js",
+          "https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js",
+        ],
+      },
+
+      height: "100%",
+      fromElement: true,
+      storageManager: true,
+      storageManager: {
+        autoload: 1,
+      },
+    });
+
+    //to enable freeMove
+    // editor.getModel().set("dmode", "absolute");
+
+    const pageManager = editor.Pages;
+    editor.runCommand("open-pages");
+    pageManager.getAll()[0].setName("index");
+
+    editor.on("load", function () {
+      editor.getWrapper().set("stylable", true);
+    });
+
+    //for change theme
+    const prefersLightScheme = window.matchMedia(
+      "(prefers-color-scheme: light)"
+    );
+    const button = document.getElementById("change-theme");
+
+    // Initial theme state based on user preference
+    let isLightMode = prefersLightScheme.matches;
+
+    // Function to set the theme
+    function setTheme(isLightMode) {
+      if (isLightMode) {
+        console.log("User prefers light mode");
+        editor.runCommand("change-theme");
+        button.classList.remove("light-mode");
+        button.classList.add("dark-mode");
+        button.classList.add("checked");
+        button.classList.add("gjs-pn-active");
+        button.classList.add("gjs-four-color");
+      } else {
+        console.log("User prefers dark mode");
+        editor.stopCommand("change-theme");
+        button.classList.remove("dark-mode");
+        button.classList.remove("checked");
+        button.classList.add("light-mode");
+        button.classList.add("gjs-pn-active");
+        button.classList.add("gjs-four-color");
+      }
+    }
+
+    // Set initial theme
+    setTheme(isLightMode);
+
+    // Add event listener for the button click
+    button.addEventListener("click", () => {
+      // Toggle theme state
+      isLightMode = !isLightMode;
       setTheme(isLightMode);
+    });
 
-      // Add event listener for the button click
-      button.addEventListener("click", () => {
-        // Toggle theme state
-        isLightMode = !isLightMode;
-        setTheme(isLightMode);
-      });
+    editor.on("load", () => {
+      // Get the component you want to select
+      const component = editor.getWrapper().find(".panel")[0];
 
-      editor.on("load", () => {
-        // Get the component you want to select
-        const component = editor.getWrapper().find(".panel")[0];
+      if (component) {
+        editor.select(component);
+      }
+    });
+  </script>
+</body>
 
-        if (component) {
-          editor.select(component);
-        }
-      });
-    </script>
-  </body>
 </html>

@@ -1,119 +1,100 @@
 login_signup2 = (editor, opts = {}) => {
-    const script1 = function() {
-        const loginForm = document.querySelector('#login');
+  const script1 = function () {
+    const loginForm = document.querySelector('#login');
 
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-            const email = document.querySelector('.loginEmail').value;
-            const password = document.querySelector('.loginPass').value;
+      const email = document.querySelector('.loginEmail').value;
+      const password = document.querySelector('.loginPass').value;
 
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    identifier: email,
-                    password: password,
-                }),
-            };
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          identifier: email,
+          password: password,
+        }),
+      };
 
-            const apiLink = 'http://localhost:1337/api/auth/local';
-            const pageName = loginForm.getAttribute('pageName');
+      const apiLink = 'http://localhost:1337/api/auth/local';
+      const pageNameLogin = loginForm.getAttribute('pageName-login');
 
-            fetch(apiLink, requestOptions)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('User name or password are wrong,try again..');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    // console.log("Response from the server:", data);
-                    alert('Login Successfully');
-                    window.location.href = `${pageName}.html`;
-                })
-                .catch((error) => {
-                    document.querySelector('.loginEmail').value = '';
-                    document.querySelector('.loginPass').value = '';
-                    alert(error);
-                });
+      fetch(apiLink, requestOptions)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('User name or password are wrong,try again..');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // console.log("Response from the server:", data);
+          alert('Login Successfully');
+          window.location.href = `${pageNameLogin}.html`;
+        })
+        .catch((error) => {
+          document.querySelector('.loginEmail').value = '';
+          document.querySelector('.loginPass').value = '';
+          alert(error);
         });
+    });
 
-        const name_input = document.querySelector('.signupName');
-        const email_input = document.querySelector('.signupEmail');
-        const pass_input = document.querySelector('.signupPass');
-        const signupForm = document.querySelector('#signup');
+    const name_input = document.querySelector('.signupName');
+    const email_input = document.querySelector('.signupEmail');
+    const pass_input = document.querySelector('.signupPass');
+    const signupForm = document.querySelector('#signup');
 
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    signupForm.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-            const apiLink = 'http://localhost:1337/api/auth/local/register';
-            const pageName = signupForm.getAttribute('pageName');
+      const apiLink = 'http://localhost:1337/api/auth/local/register';
+      const pageNameSignup = signupForm.getAttribute('pageName-signup');
 
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: `{"username": "${name_input.value}","email": "${email_input.value}","password": "${pass_input.value}"}`,
-            };
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: `{"username": "${name_input.value}","email": "${email_input.value}","password": "${pass_input.value}"}`,
+      };
 
-            // Replace the API endpoint with your actual API endpoint
-            fetch(apiLink, requestOptions)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(
-                            'Username or email or password already taken,try again ...'
-                        );
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    // console.log("Response from the server:", data);
-                    alert('Sign Up Successfully');
-                    window.location.href = `${pageName}.html`;
-                })
-                .catch((error) => {
-                    document.querySelector('.signupName').value = '';
-                    document.querySelector('.signupPass').value = '';
-                    document.querySelector('.signupEmail').value = '';
+      // Replace the API endpoint with your actual API endpoint
+      fetch(apiLink, requestOptions)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              'Username or email or password already taken,try again ...'
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // console.log("Response from the server:", data);
+          alert('Sign Up Successfully');
+          window.location.href = `${pageNameSignup}.html`;
+        })
+        .catch((error) => {
+          document.querySelector('.signupName').value = '';
+          document.querySelector('.signupPass').value = '';
+          document.querySelector('.signupEmail').value = '';
 
-                    alert(error);
-                });
+          alert(error);
         });
-
-
-        const wrapper = document.querySelector(".wrapper"),
-            signupHeader = document.querySelector(".signupHeader"),
-            loginHeader = document.querySelector(".loginHeader");
-
-        loginHeader.addEventListener("click", () => {
-            wrapper.classList.add("active");
-        });
-        signupHeader.addEventListener("click", () => {
-            wrapper.classList.remove("active");
-        });
-
-    }
-    editor.Components.addType('login_signup2', {
-        model: {
-            defaults: {
-                tagName: 'div',
-                components: `
+    });
+  };
+  editor.Components.addType('login_signup2', {
+    model: {
+      defaults: {
+        tagName: 'section',
+        components: `
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" />
-                <div class="container">
+                <div class="section_container">
                     <input type="checkbox" id="flip">
-                    <div class="cover">
-                        <div class="front">
-                            <img src="https://via.placeholder.com/425x451" alt="">
-                        </div>
-                        <div class="back">
-                            <img class="backImg" src="https://via.placeholder.com/425x451" alt="">
-                        </div>
-                    </div>
+                            <img class="front cover" src="https://via.placeholder.com/425x451" alt="">
+                            <img class="backImg back cover" src="https://via.placeholder.com/425x451" alt="">
                     <div class="forms">
                         <div class="form-content">
                             <div class="login-form">
@@ -162,34 +143,31 @@ login_signup2 = (editor, opts = {}) => {
                         </div>
                     </div>
                 </div>
-                <style>
+                
+                `,
+        styles: `
                     * {
                         margin: 0;
                         padding: 0;
                         box-sizing: border-box;
                         font-family: "Poppins", sans-serif;
                     }
-                    
-                    body {
-                        min-height: 100vh;
+                       
+                        section{
+                        height:100vh;
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         background: #7d2ae8;
-                        padding: 30px;
-                    }
-                    
-                    .container {
-                        position: relative;
-                        max-width: 850px;
-                        width: 100%;
+                        }
+                    .section_container{
                         background: #fff;
                         padding: 40px 30px;
                         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
                         perspective: 2700px;
                     }
                     
-                    .container .cover {
+                    .section_container .cover {
                         position: absolute;
                         top: 0;
                         left: 50%;
@@ -201,12 +179,12 @@ login_signup2 = (editor, opts = {}) => {
                         transform-style: preserve-3d;
                     }
                     
-                    .container #flip:checked~.cover {
+                    .section_container #flip:checked~.cover {
                         transform: rotateY(-180deg);
                     }
                     
-                    .container .cover .front,
-                    .container .cover .back {
+                    .section_container .cover .front,
+                    .section_container .cover .back {
                         position: absolute;
                         top: 0;
                         left: 0;
@@ -219,8 +197,8 @@ login_signup2 = (editor, opts = {}) => {
                         backface-visibility: hidden;
                     }
                     
-                    .container .cover::before,
-                    .container .cover::after {
+                    .section_container .cover::before,
+                    .section_container .cover::after {
                         content: '';
                         position: absolute;
                         height: 100%;
@@ -230,13 +208,13 @@ login_signup2 = (editor, opts = {}) => {
                         z-index: 12;
                     }
                     
-                    .container .cover::after {
+                    .section_container .cover::after {
                         opacity: 0.3;
                         transform: rotateY(180deg);
                         backface-visibility: hidden;
                     }
                     
-                    .container .cover img {
+                    .section_container .cover img {
                         position: absolute;
                         height: 100%;
                         width: 100%;
@@ -244,7 +222,7 @@ login_signup2 = (editor, opts = {}) => {
                         z-index: 10;
                     }
                     
-                    .container .cover .text {
+                    .section_container .cover .text {
                         position: absolute;
                         z-index: 130;
                         height: 100%;
@@ -268,13 +246,13 @@ login_signup2 = (editor, opts = {}) => {
                         font-weight: 500;
                     }
                     
-                    .container .forms {
+                    .section_container .forms {
                         height: 100%;
                         width: 100%;
                         background: #fff;
                     }
                     
-                    .container .form-content {
+                    .section_container .form-content {
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
@@ -389,12 +367,12 @@ login_signup2 = (editor, opts = {}) => {
                         margin-top: 25px;
                     }
                     
-                    .container #flip {
+                    .section_container #flip {
                         display: none;
                     }
                     
                     @media (max-width: 730px) {
-                        .container .cover {
+                        .section_container .cover {
                             display: none;
                         }
                         .form-content .login-form,
@@ -404,31 +382,38 @@ login_signup2 = (editor, opts = {}) => {
                         .form-content .signup-form {
                             display: none;
                         }
-                        .container #flip:checked~.forms .signup-form {
+                        .section_container #flip:checked~.forms .signup-form {
                             display: block;
                         }
-                        .container #flip:checked~.forms .login-form {
+                        .section_container #flip:checked~.forms .login-form {
                             display: none;
                         }
                     }
-                </style>
                 `,
-                script: script1, // Pass editor as a parameter using bind
-                droppable: false,
-                traits: [{
-                    type: 'text',
-                    name: 'pageName',
-                    label: 'Go to Page',
-                    placeholder: 'name of page you want to go',
-                }, ],
-            },
-        },
-    });
+        script: script1, // Pass editor as a parameter using bind
+        droppable: false,
+        traits: [
+          {
+            type: 'text',
+            name: 'pageName-login',
+            label: 'Go to Page after login',
+            placeholder: 'name of page you want to go',
+          },
+          {
+            type: 'text',
+            name: 'pageName-signup',
+            label: 'Go to Page after signup',
+            placeholder: 'name of page you want to go',
+          },
+        ],
+      },
+    },
+  });
 
-    editor.BlockManager.add('login_signup2', {
-        label: 'login_signup',
-        media: '<img src="imgs/login_signup2.png" width ="50px" height="50px">',
-        category: 'Auth Pages',
-        content: { type: 'login_signup2' },
-    });
-}
+  editor.BlockManager.add('login_signup2', {
+    label: 'login_signup',
+    media: '<img src="imgs/login_signup2.png" width ="50px" height="50px">',
+    category: 'Auth Pages',
+    content: { type: 'login_signup2' },
+  });
+};
