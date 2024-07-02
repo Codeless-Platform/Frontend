@@ -34,7 +34,9 @@ export default class ComponentAPIText extends Component {
     let options: Record<string, any>[] = [];
     let obj: Record<string, any> = this.em.getWrapper()?.get('apis');
     pushOptions(obj);
-
+    function isImageUrl(url: string) {
+      return /\.(jpg|jpeg|png|gif|bmp|svg)$/i.test(url);
+    }
     function pushOptions(obj: Record<string, any>) {
       Object.keys(obj).forEach(key => {
         const item = obj[key];
@@ -53,7 +55,7 @@ export default class ComponentAPIText extends Component {
               processElement(optionValue, optionName);
             });
           } else {
-            options.push({ name: prefix, value: prefix });
+            if (!isImageUrl(element)) options.push({ name: prefix, value: prefix });
           }
         }
         if (name) processElement(json, name);

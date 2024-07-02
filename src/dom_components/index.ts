@@ -263,11 +263,6 @@ export default class ComponentManager extends ItemManagerModule<DomComponentsCon
       view: ComponentWrapperView,
     },
     {
-      id: 'default',
-      model: Component,
-      view: ComponentView,
-    },
-    {
       id: 'APIText',
       model: ComponentAPIText,
       view: ComponentTextView,
@@ -276,6 +271,11 @@ export default class ComponentManager extends ItemManagerModule<DomComponentsCon
       id: 'APIImage',
       model: ComponentAPIImage,
       view: ComponentImageView,
+    },
+    {
+      id: 'default',
+      model: Component,
+      view: ComponentView,
     },
   ];
 
