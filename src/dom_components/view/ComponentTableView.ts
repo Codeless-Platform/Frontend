@@ -6,4 +6,7 @@ export default class ComponentTableView extends ComponentView {
   tagName() {
     return 'div';
   }
+  onRender(opts: { editor: Editor; model: Component; el: HTMLElement }): void {
+    this.model.trigger('Rendered');
+  }
 }

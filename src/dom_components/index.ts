@@ -79,6 +79,8 @@ import ComponentText from './model/ComponentText';
 import ComponentTextNode from './model/ComponentTextNode';
 import ComponentVideo from './model/ComponentVideo';
 import ComponentWrapper from './model/ComponentWrapper';
+import ComponentAPIText from './model/ComponentAPIText';
+import ComponentAPIImage from './model/ComponentAPIImage';
 import Components from './model/Components';
 import { ComponentAdd, ComponentDefinition, ComponentDefinitionDefined } from './model/types';
 import ComponentCommentView from './view/ComponentCommentView';
@@ -264,6 +266,16 @@ export default class ComponentManager extends ItemManagerModule<DomComponentsCon
       id: 'default',
       model: Component,
       view: ComponentView,
+    },
+    {
+      id: 'APIText',
+      model: ComponentAPIText,
+      view: ComponentTextView,
+    },
+    {
+      id: 'APIImage',
+      model: ComponentAPIImage,
+      view: ComponentImageView,
     },
   ];
 

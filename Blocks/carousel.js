@@ -249,7 +249,7 @@ carousel = (editor, opts = {}) => {
         </g>
     </svg>
 `,
-    category: 'Custom',
+    category: 'Advanced',
     content: {
       type: 'carousel',
     },
