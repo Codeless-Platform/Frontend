@@ -390,7 +390,7 @@ export default {
     tour.addStep({
       id: 'devices',
       title: 'Devices for Responsive Webpage',
-      text: 'Devices are used to define different breakpoints for responsive design. Each device represents a specific screen size or device type, such as desktop, tablet, or mobile. These devices can be configured in the GrapesJS settings to define the available breakpoints and their corresponding widths. This allows you to create responsive layouts that adapt to different screen sizes and devices.',
+      text: 'Devices are used to define different breakpoints for responsive design. Each device represents a specific screen size or device type, such as desktop, tablet, or mobile. These devices can be configured in the Codeless settings to define the available breakpoints and their corresponding widths. This allows you to create responsive layouts that adapt to different screen sizes and devices.',
       attachTo: {
         element: '.gjs-devices',
         on: 'bottom',
@@ -410,7 +410,7 @@ export default {
     tour.addStep({
       id: 'end',
       title: 'Well Done!',
-      text: "Congratulations! You've completed the Editor Tour and are now ready to start building your webpages with GrapesJS.Let your creativity flow and enjoy the process of designing your next project!",
+      text: "Congratulations! You've completed the Editor Tour and are now ready to start building your webpages with Codeless.Let your creativity flow and enjoy the process of designing your next project!",
       attachTo: {
         element: 'body',
         on: 'top',
