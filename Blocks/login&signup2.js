@@ -1,89 +1,4 @@
 login_signup2 = (editor, opts = {}) => {
-  const script1 = function () {
-    const loginForm = document.querySelector('#login');
-
-    loginForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const email = document.querySelector('.loginEmail').value;
-      const password = document.querySelector('.loginPass').value;
-
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          identifier: email,
-          password: password,
-        }),
-      };
-
-      const apiLink = 'http://localhost:1337/api/auth/local';
-      const pageNameLogin = loginForm.getAttribute('pageName-login');
-
-      fetch(apiLink, requestOptions)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('User name or password are wrong,try again..');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          // console.log("Response from the server:", data);
-          alert('Login Successfully');
-          window.location.href = `${pageNameLogin}.html`;
-        })
-        .catch((error) => {
-          document.querySelector('.loginEmail').value = '';
-          document.querySelector('.loginPass').value = '';
-          alert(error);
-        });
-    });
-
-    const name_input = document.querySelector('.signupName');
-    const email_input = document.querySelector('.signupEmail');
-    const pass_input = document.querySelector('.signupPass');
-    const signupForm = document.querySelector('#signup');
-
-    signupForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const apiLink = 'http://localhost:1337/api/auth/local/register';
-      const pageNameSignup = signupForm.getAttribute('pageName-signup');
-
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: `{"username": "${name_input.value}","email": "${email_input.value}","password": "${pass_input.value}"}`,
-      };
-
-      // Replace the API endpoint with your actual API endpoint
-      fetch(apiLink, requestOptions)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              'Username or email or password already taken,try again ...'
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          // console.log("Response from the server:", data);
-          alert('Sign Up Successfully');
-          window.location.href = `${pageNameSignup}.html`;
-        })
-        .catch((error) => {
-          document.querySelector('.signupName').value = '';
-          document.querySelector('.signupPass').value = '';
-          document.querySelector('.signupEmail').value = '';
-
-          alert(error);
-        });
-    });
-  };
   editor.Components.addType('login_signup2', {
     model: {
       defaults: {
@@ -390,7 +305,107 @@ login_signup2 = (editor, opts = {}) => {
                         }
                     }
                 `,
-        script: script1, // Pass editor as a parameter using bind
+        script: `  
+        
+    const loginForm = document.querySelector('#login');
+                const section = document.querySelector('section');
+
+
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const email = document.querySelector('.loginEmail').value;
+      const password = document.querySelector('.loginPass').value;
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          identifier: email,
+          password: password,
+        }),
+      };
+
+      const apiLink = 'http://localhost:1337/api/auth/local';
+      const pageNameLogin = section.getAttribute('pageName-login');
+
+      fetch(apiLink, requestOptions)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('User name or password are wrong,try again..');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // console.log("Response from the server:", data);
+          alert('Login Successfully');
+          if(pageNameLogin===null){
+          return;
+          }else{
+            window.location.href = pageNameLogin+".html";
+          }
+        })
+        .catch((error) => {
+          document.querySelector('.loginEmail').value = '';
+          document.querySelector('.loginPass').value = '';
+          alert(error);
+        });
+    });
+
+    const name_input = document.querySelector(".signupName");
+const email_input = document.querySelector(".signupEmail");
+const pass_input = document.querySelector(".signupPass");
+const signupForm = document.querySelector("#signup");
+
+signupForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const apiLink = "http://localhost:1337/api/auth/local/register";
+  const pageNameSignup = section.getAttribute("pageName-signup");
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: name_input.value,
+      email: email_input.value,
+      password: pass_input.value,
+    }),
+  };
+
+  fetch(apiLink, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          "Username or email or password already taken, try again ..."
+        );
+      }
+      return response.json();
+    })
+    .then((data) => {
+      alert("Sign Up Successfully");
+      if(pageNameSignup===null){
+      return;
+      }
+      else{
+        window.location.href = pageNameSignup + ".html";
+      }
+    })
+    .catch((error) => {
+      name_input.value = "";
+      email_input.value = "";
+      pass_input.value = "";
+
+      alert(error);
+    });
+});
+
+
+`,
         droppable: false,
         traits: [
           {

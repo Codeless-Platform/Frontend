@@ -1,98 +1,4 @@
 signup = (editor, opts = {}) => {
-  // const script1 = function () {
-  //   const name_input = document.getElementsByClassName('name')[0];
-  //   const email_input = document.getElementsByClassName('email')[0];
-  //   const pass_input = document.getElementsByClassName('pass')[0];
-  //   const send_Btn = document.getElementsByClassName('signupBtn')[0];
-  //   const form = document.querySelector('form');
-
-  //   if (email_input.value === 'Initial value') {
-  //     email_input.focus();
-  //   }
-
-  //   send_Btn.addEventListener('click', function (e) {
-  //     if (
-  //       email_input.value !== '' &&
-  //       pass_input.value !== '' &&
-  //       name_input.value !== ''
-  //     ) {
-  //       e.preventDefault();
-
-  //       console.log('Your Name is:', name_input.value);
-  //       console.log('Your Email is:', email_input.value);
-  //       console.log('Your Pass is:', pass_input.value);
-
-  //       //const apiLink = 'http://localhost:1337/api/auth/local/register';
-  //       // const jwtToken = form.getAttribute('JwtToken');
-  //       apiLink = form.getAttribute('API');
-
-  //       // Include the JWT token in your request headers
-  //       const requestOptions = {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: `{"username": "${name_input.value}","email": "${email_input.value}","password": "${pass_input.value}"}`,
-  //       };
-
-  //       // Replace the API endpoint with your actual API endpoint
-  //       fetch(apiLink, requestOptions)
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           console.log('Response from the server:', data);
-  //           alert('Sign Up Successfully');
-  //         })
-  //         .catch((error) => {
-  //           console.error('Error:', error);
-  //         });
-  //     }
-  //   });
-  // };
-  const script1 = function () {
-    document.querySelector('.signupBtn').style.cursor = 'pointer';
-    const name_input = document.querySelector('.name');
-    const email_input = document.querySelector('.email');
-    const pass_input = document.querySelector('.pass');
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const apiLink = 'http://localhost:1337/api/auth/local/register';
-      const pageName = form.getAttribute('pageName');
-
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: `{"username": "${name_input.value}","email": "${email_input.value}","password": "${pass_input.value}"}`,
-      };
-
-      // Replace the API endpoint with your actual API endpoint
-      fetch(apiLink, requestOptions)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              'Username or email or password already taken,try again ...'
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          // console.log("Response from the server:", data);
-          alert('Sign Up Successfully');
-          window.location.href = `${pageName}.html`;
-        })
-        .catch((error) => {
-          document.querySelector('.name').value = '';
-          document.querySelector('.pass').value = '';
-          document.querySelector('.email').value = '';
-
-          alert(error);
-        });
-    });
-  };
   editor.Components.addType('signup-with-js', {
     model: {
       defaults: {
@@ -210,7 +116,56 @@ form {
                         font-size: 14px;
                     }
                 }`,
-        script: script1, // Pass editor as a parameter using bind
+        script: `const name_input = document.querySelector(".name");
+const email_input = document.querySelector(".email");
+const pass_input = document.querySelector(".pass");
+const form = document.querySelector("form");
+const section = document.querySelector("section");
+
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const apiLink = "http://localhost:1337/api/auth/local/register";
+  const pageNameSignup = section.getAttribute("pageName");
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: name_input.value,
+      email: email_input.value,
+      password: pass_input.value,
+    }),
+  };
+
+  fetch(apiLink, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          "Username or email or password already taken, try again ..."
+        );
+      }
+      return response.json();
+    })
+    .then((data) => {
+      alert("Sign Up Successfully");
+      if(pageNameSignup===null){
+      return;
+      }else{
+        window.location.href = pageNameSignup + ".html";
+      }
+    })
+    .catch((error) => {
+      name_input.value = "";
+      email_input.value = "";
+      pass_input.value = "";
+
+      alert(error);
+    });
+});`,
         droppable: false,
         traits: [
           {
@@ -220,18 +175,6 @@ form {
             placeholder: 'name of page you want to go',
           },
         ],
-      },
-      init() {
-        this.get('components').forEach((component) => {
-          if (component.is('input') && component.getEl().type === 'submit') {
-            component.addTrait({
-              type: 'text',
-              name: 'pageName',
-              label: 'Go to Page',
-              placeholder: 'Name of page you want to go',
-            });
-          }
-        });
       },
     },
   });
