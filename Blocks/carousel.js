@@ -3,48 +3,62 @@ carousel = (editor, opts = {}) => {
   editor.Components.addType('carousel', {
     model: {
       defaults: {
-        tageName: 'div',
-        components: `
-                <div class="slideshow-container">
-                <div class="mySlides ">
-                    <div class="numbertext">1 / 4</div>
-                    <img src="https://via.placeholder.com/800x400" alt="">
-                    <div class="text">Caption Text</div>
-                </div>
-        
-                <div class="mySlides ">
-                    <div class="numbertext">2 / 4</div>
-                    <img src="https://via.placeholder.com/800x400" alt="">
-                    <div class="text">Caption Two</div>
-                </div>
-        
-                <div class="mySlides ">
-                    <div class="numbertext">3 / 4</div>
-                    <img src="https://via.placeholder.com/800x400" alt="">
-                    <div class="text">Caption Three</div>
-                </div>
-                <div class="mySlides ">
-                <div class="numbertext">4 / 4</div>
-                <img src="https://via.placeholder.com/800x400" alt="">
-                <div class="text">Caption Four</div>
-            </div>
-        
-                <a class="prev" >❮</a>
-                <a class="next" >❯</a>
-        
-            </div>
-            <br>
-        
-            <div style="text-align:center">
-                <span class="dot dot1" ></span>
-                <span class="dot dot2" ></span>
-                <span class="dot dot3" ></span>
-                <span class="dot dot4" ></span>
+        tagName: 'div',
+        components: function () {
+          function getIntegerInput(promptMessage) {
+            let isValid = false;
+            let input;
 
-            </div>
-              
-      `,
-        styles: `  * {
+            while (!isValid) {
+              input = prompt(promptMessage);
+
+              // Check if the input is an integer
+              if (
+                input !== null &&
+                input.trim() !== '' &&
+                !isNaN(input) &&
+                Number.isInteger(parseFloat(input))
+              ) {
+                isValid = true;
+              } else {
+                alert('Invalid input. Please enter a valid integer.');
+              }
+            }
+
+            return parseInt(input, 10);
+          }
+
+          let numImages = getIntegerInput('Enter number of images:');
+
+          let slidesHtml = '';
+          for (let i = 1; i <= numImages; i++) {
+            slidesHtml += `
+                    <div class="mySlides">
+                      <div class="numbertext">${i} / ${numImages}</div>
+                      <img src="https://via.placeholder.com/800x400" alt="">
+                      <div class="text">Caption Text ${i}</div>
+                    </div>
+                  `;
+          }
+          return `
+                  <div class="slideshow-container">
+                    ${slidesHtml}
+                    <a class="prev">&lt;</a>
+                    <a class="next">&gt;</a>
+                  </div>
+                  <br>
+                  <div style="text-align:center">
+                    ${Array.from(
+                      { length: numImages },
+                      (_, index) => `
+                      <span class="dot dot${index + 1}"></span>
+                    `
+                    ).join('\n')}
+                  </div>
+                `;
+        },
+        styles: `
+               * {
                 box-sizing: border-box
             }
             
@@ -148,46 +162,58 @@ carousel = (editor, opts = {}) => {
                 .text {
                     font-size: 11px
                 }
-            }`,
-
-        script: `        let slideIndex = 1;
-                showSlides(slideIndex);
+            }
+              `,
+        script: `
         
-                function plusSlides(n) {
-                    showSlides(slideIndex += n);
-                }
-        
-                function currentSlide(n) {
-                    showSlides(slideIndex = n);
-                }
-                document.querySelector(".prev").addEventListener("click", () => plusSlides(-1));
-                document.querySelector(".next").addEventListener("click", () => plusSlides(1))
-                document.querySelector(".dot1").addEventListener("click", () => currentSlide(1));
-                document.querySelector(".dot2").addEventListener("click", () => currentSlide(2));
-                document.querySelector(".dot3").addEventListener("click", () => currentSlide(3));
-                document.querySelector(".dot4").addEventListener("click", () => currentSlide(4));
+
+          let slideIndex = 1;
+          showSlides(slideIndex);
+
+          function plusSlides(n) {
+            showSlides((slideIndex += n));
+          }
+
+          function currentSlide(n) {
+            showSlides((slideIndex = n));
+          }
+
+          document
+            .querySelector('.prev')
+            .addEventListener('click', () => plusSlides(-1));
+          document
+            .querySelector('.next')
+            .addEventListener('click', () => plusSlides(1));
+
+          Array.from(document.querySelectorAll('.dot')).forEach(
+            (dot, index) => {
+              dot.addEventListener('click', () => currentSlide(index + 1));
+            }
+          );
+
+          function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName('mySlides');
+            let dots = document.getElementsByClassName('dot');
+            if (n > slides.length) {
+              slideIndex = 1;
+            }
+            if (n < 1) {
+              slideIndex = slides.length;
+            }
+            for (i = 0; i < slides.length; i++) {
+              slides[i].style.display = 'none';
+            }
+            for (i = 0; i < dots.length; i++) {
+              dots[i].className = dots[i].className.replace(' active', '');
+            }
+            slides[slideIndex - 1].style.display = 'block';
+            dots[slideIndex - 1].className += ' active';
+          }
 
 
-                function showSlides(n) {
-                    let i;
-                    let slides = document.getElementsByClassName("mySlides");
-                    let dots = document.getElementsByClassName("dot");
-                    if (n > slides.length) {
-                        slideIndex = 1
-                    }
-                    if (n < 1) {
-                        slideIndex = slides.length
-                    }
-                    for (i = 0; i < slides.length; i++) {
-                        slides[i].style.display = "none";
-                    }
-                    for (i = 0; i < dots.length; i++) {
-                        dots[i].className = dots[i].className.replace(" active", "");
-                    }
-                    slides[slideIndex - 1].style.display = "block";
-                    dots[slideIndex - 1].className += " active";
-
-                }`,
+          
+        `,
       },
     },
   });
