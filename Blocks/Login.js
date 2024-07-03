@@ -1,91 +1,4 @@
 login = (editor, opts = {}) => {
-  // const script1 = function () {
-  //   const name_input = document.getElementsByClassName('name')[0];
-  //   const pass_input = document.getElementsByClassName('pass')[0];
-  //   const send_Btn = document.getElementsByClassName('sendBtn')[0];
-  //   const form = document.querySelector('form');
-
-  //   if (name_input.value === 'Initial value') {
-  //     name_input.focus();
-  //   }
-
-  //   send_Btn.addEventListener('click', function (e) {
-  //     if (name_input.value !== '' && pass_input.value !== '') {
-  //       e.preventDefault();
-
-  //       console.log('Your name is:', name_input.value);
-  //       console.log('Your Pass is:', pass_input.value);
-
-  //       // Include the JWT token in your request headers
-  //       const requestOptions = {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: `{"identifier": "${name_input.value}", "password": "${pass_input.value}"}`,
-  //       };
-
-  //       //const apiLink = 'http://localhost:1337/api/auth/local';
-  //       const apiLink = form.getAttribute('API');
-
-  //       // Replace the API endpoint with your actual API endpoint
-  //       fetch(apiLink, requestOptions)
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           console.log('Response from the server:', data);
-  //           alert('Login Successfully');
-  //         })
-  //         .catch((error) => {
-  //           console.error('Error:', error);
-  //           alert('Error', error);
-  //         });
-  //     }
-  //   });
-  // };
-  const script1 = function () {
-    document.querySelector('.submitBtn').style.cursor = 'pointer';
-
-    const loginForm = document.querySelector('form');
-
-    loginForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const email = document.querySelector('.email').value;
-      const password = document.querySelector('.pass').value;
-
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          identifier: email,
-          password: password,
-        }),
-      };
-
-      const apiLink = 'http://localhost:1337/api/auth/local';
-      const pageName = loginForm.getAttribute('pageName');
-
-      fetch(apiLink, requestOptions)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('User name or password are wrong,try again..');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          // console.log("Response from the server:", data);
-          alert('Login Successfully');
-          window.location.href = `${pageName}.html`;
-        })
-        .catch((error) => {
-          document.querySelector('.email').value = '';
-          document.querySelector('.pass').value = '';
-          alert(error);
-        });
-    });
-  };
   editor.Components.addType('login-with-js', {
     model: {
       defaults: {
@@ -198,7 +111,56 @@ input[type="submit"]:hover {
 }
 
 `,
-        script: script1, // Pass editor as a parameter using bind
+        script: ` 
+        document.querySelector('.submitBtn').style.cursor = 'pointer';
+
+    const login = document.querySelector('section');
+    const form =document.querySelector('form');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const email = document.querySelector('.email').value;
+      const password = document.querySelector('.pass').value;
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          identifier: email,
+          password: password,
+        }),
+      };
+
+      const apiLink = 'http://localhost:1337/api/auth/local';
+      const pageName = login.getAttribute('pageName');
+
+      fetch(apiLink, requestOptions)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('User name or password are wrong,try again..');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // console.log("Response from the server:", data);
+          alert('Login Successfully');
+          if(pageName===null){
+          return;
+          }else{
+            window.location.href = pageName + ".html";
+          }
+        })
+        .catch((error) => {
+          document.querySelector('.email').value = '';
+          document.querySelector('.pass').value = '';
+          alert(error);
+        });
+    });
+
+`,
         droppable: false,
 
         traits: [

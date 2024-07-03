@@ -42,8 +42,9 @@ carousel = (editor, opts = {}) => {
                 <span class="dot dot4" ></span>
 
             </div>
-            <style>
-            * {
+              
+      `,
+        styles: `  * {
                 box-sizing: border-box
             }
             
@@ -147,10 +148,7 @@ carousel = (editor, opts = {}) => {
                 .text {
                     font-size: 11px
                 }
-            }
-        </style>
-    
-      `,
+            }`,
 
         script: `        let slideIndex = 1;
                 showSlides(slideIndex);
