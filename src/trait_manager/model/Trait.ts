@@ -364,7 +364,19 @@ export default class Trait extends Model<TraitProperties> {
 
   async fetchApi(link: string): Promise<any> {
     try {
-      const response = await fetch(link);
+      const token = sessionStorage.getItem('jwt');
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json', // Adjust content type as needed
+      };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      const response = await fetch(link, {
+        headers,
+      });
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
