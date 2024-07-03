@@ -271,7 +271,7 @@ export default class Event extends Model<EventProperties> {
       }
     });
     if (!flag) s = '';
-    this.target.set('script', s);
+    this.target.set('script-custom', s);
   }
 
   setTarget(target: Component) {
