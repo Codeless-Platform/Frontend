@@ -98,7 +98,7 @@ const config: PanelsConfig = {
           id: clr,
           className: 'fa fa-trash',
           command: 'clear-page',
-          attributes: { title: 'Clear Page' },
+          attributes: { title: 'Clear Canvas' },
         },
         {
           id: un,
