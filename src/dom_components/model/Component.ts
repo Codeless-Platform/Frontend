@@ -153,6 +153,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
       styles: '', // Component related styles
       classes: '', // Array of classes
       script: '',
+      'script-custom': '',
       'script-props': '',
       'script-export': '',
       attributes: {},
@@ -955,6 +956,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
     this.initScriptProps();
     this.listenTo(this, 'change:script', this.scriptUpdated);
     this.listenTo(this, 'change:script-export', this.scriptUpdated);
+    this.listenTo(this, 'change:script-custom', this.scriptUpdated);
     this.listenTo(this, 'change:tagName', this.tagUpdated);
     this.listenTo(this, 'change:attributes', this.attrUpdated);
     this.listenTo(this, 'change:attributes:id', this._idUpdated);
@@ -1381,7 +1383,8 @@ export default class Component extends StyleableModel<ComponentProperties> {
         this.__getSymbols() ||
         // Components with script should always have an id
         this.get('script-export') ||
-        this.get('script')
+        this.get('script') ||
+        this.get('script-custom')
       ) {
         addId = true;
       }
@@ -2652,7 +2655,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
    * @private
    */
   getScriptString(script?: string | Function) {
-    let s = this.get('script') + this.get('script-export');
+    let s = this.get('script') + this.get('script-export') + this.get('script-custom');
     let scr;
     if (!isUndefined(script)) scr = script;
     else scr = s || '';

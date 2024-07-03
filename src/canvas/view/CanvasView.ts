@@ -561,7 +561,7 @@ export default class CanvasView extends ModuleView<Canvas> {
   //TODO change type after the ComponentView was updated to ts
   updateScript(view: any) {
     const model = view.model;
-    const s = model.get('script');
+    const s = model.get('script') + model.get('script-custom');
     let ScriptWithoutRedirect = '';
     if (s) ScriptWithoutRedirect = String(s).replace(/window.*;$/gm, '');
     const id = model.getId();

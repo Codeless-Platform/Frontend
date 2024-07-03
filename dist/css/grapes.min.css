@@ -1556,10 +1556,12 @@ span.CodeMirror-selectedtext {
 .gjs-trt-trait .gjs-label,
 .gjs-evt-event .gjs-label,
 .gjs-anm-animation .gjs-label {
+  margin-right: 1px;
   text-align: left;
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
 
 .gjs-guide-info {
   position: absolute;
@@ -4164,4 +4166,3 @@ body.dark-mode {
   color: #ffdd12;
   transform: translateX(12px);
 }
-
