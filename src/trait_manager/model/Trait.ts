@@ -313,7 +313,7 @@ export default class Trait extends Model<TraitProperties> {
     }
     if (this.getType() === 'api') {
       const { name, link } = value;
-      const apis = target.attributes.apis;
+      const apis = target.getAPIs();
 
       const existingApiIndex = apis.findIndex((api: Record<any, any>) => api.link === link);
       const existingNameIndex = apis.findIndex((api: Record<any, any>) => api.name === name);
@@ -332,11 +332,7 @@ export default class Trait extends Model<TraitProperties> {
       const handleFetchApi = async (link: string) => {
         try {
           const json = await this.fetchApi(link);
-          if (existingApiIndex !== -1) {
-            apis[existingApiIndex] = { name, link, json };
-          } else {
-            apis.push({ name, link, json });
-          }
+          valueToSet.json = json;
           target.trigger('change:apis');
         } catch (error) {
           console.error('Error fetching API:', error);
@@ -352,7 +348,7 @@ export default class Trait extends Model<TraitProperties> {
         openErrorModal('The API name already exists. Please use a different name.');
         this.view?.setInputValue({ name: '', link });
       } else {
-        handleFetchApi(link);
+        if (link) handleFetchApi(link);
       }
       target.set(this.getName(), valueToSet, opts);
     } else if (this.get('changeProp')) {
