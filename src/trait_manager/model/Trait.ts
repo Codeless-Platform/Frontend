@@ -357,12 +357,29 @@ export default class Trait extends Model<TraitProperties> {
       target.addAttributes({ [name]: valueToSet }, opts);
     }
   }
-
   async fetchApi(link: string): Promise<any> {
+    let response;
     try {
-      const response = await fetch(link);
+      const token = sessionStorage.getItem('jwt');
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
+      response = await fetch(link, {
+        headers,
+      });
+      console.log(response.status);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        if (response.status === 403) {
+          alert('First,You have to use one of dynamic blocks and signin or signup to get jwt token.');
+          throw new Error('Forbidden');
+        } else {
+          throw new Error('Network response was not ok');
+        }
       }
       const json = await response.json();
       return json;
@@ -372,6 +389,7 @@ export default class Trait extends Model<TraitProperties> {
         content: "Can't fetch this API",
         attributes: { class: 'max-width-500' },
       });
+
       throw error;
     }
   }
