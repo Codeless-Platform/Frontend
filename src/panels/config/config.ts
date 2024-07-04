@@ -120,13 +120,13 @@ const config: PanelsConfig = {
           id: sv,
           className: 'fa fa-floppy-o',
           command: 'save-as-grapesjs',
-          attributes: { title: 'save-as-grapesjs file' },
+          attributes: { title: 'save-as-codeless file' },
         },
         {
           id: op,
           className: 'fa fa-folder-open-o',
           command: 'open-grapesjs-file',
-          attributes: { title: 'Open grapesjs file' },
+          attributes: { title: 'Open codeless file' },
         },
         {
           id: ex,

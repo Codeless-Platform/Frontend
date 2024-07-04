@@ -212,26 +212,6 @@ export default {
     });
 
     tour.addStep({
-      id: 'gjs-clm-states',
-      title: 'States',
-      text: 'Here, you can change the state of your component to apply styles on different states:<br>State<br>Hover<br>Click',
-      attachTo: {
-        element: '#gjs-clm-states',
-        on: 'bottom',
-      },
-      buttons: [
-        {
-          text: 'Back',
-          action: tour.back,
-        },
-        {
-          text: 'Next',
-          action: tour.next,
-        },
-      ],
-    });
-
-    tour.addStep({
       id: 'export',
       title: 'Export To Zip',
       text: 'This allows you to export the whole project as a zip file and save it on your PC.',
@@ -253,8 +233,8 @@ export default {
 
     tour.addStep({
       id: 'open',
-      title: 'Open .grapesjs',
-      text: 'This allows you to open an existing GrapesJS file to modify it as you need.',
+      title: 'Open .codeless',
+      text: 'This allows you to open an existing codeless file to modify it as you need.',
       attachTo: {
         element: '#open',
         on: 'bottom',
@@ -273,8 +253,8 @@ export default {
 
     tour.addStep({
       id: 'save',
-      title: 'Save .grapesjs',
-      text: 'This allows you to save your project as a GrapesJS file, so you can return to it later.',
+      title: 'Save .codeless',
+      text: 'This allows you to save your project as a codeless file, so you can return to it later.',
       attachTo: {
         element: '#save',
         on: 'bottom',
@@ -371,7 +351,7 @@ export default {
     tour.addStep({
       id: 'toolbar',
       title: 'Toolbar',
-      text: 'Some commands help you while creating your webpage,<br>*first icon for deleting the component<br>*second icon for copying the component<br>*third icon for free moving the component<br>*fourth icon for going to the above component<br>*last icon for creating your own block.',
+      text: 'Some commands help you while creating your webpage,like delete or dublicate component.',
       attachTo: {
         element: '.gjs-toolbar',
         on: 'right',

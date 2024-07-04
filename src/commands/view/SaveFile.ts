@@ -18,7 +18,7 @@ function saveAsGrapesJsFile(data: ProjectData) {
 
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'project.grapesjs';
+  a.download = 'project.codeless';
   a.click();
 
   URL.revokeObjectURL(url);
