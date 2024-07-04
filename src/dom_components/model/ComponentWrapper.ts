@@ -115,34 +115,21 @@ export default class ComponentWrapper extends Component {
     };
 
     if (this.getAPIs()) {
-      this.getAPIs().forEach(async (api: any, index: number) => {
+      this.getAPIs().forEach(async (api: any) => {
         if (api.link && api.name) {
           try {
-            const token = sessionStorage.getItem('jwt');
-            const headers: Record<string, string> = {
-              'Content-Type': 'application/json', // Adjust content type as needed
-            };
-
-            if (token) {
-              headers.Authorization = `Bearer ${token}`;
-            }
-
-            const response = await fetch(api.link, {
-              headers,
-            });
-
+            const response = await fetch(api.link);
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
             const json = await response.json();
-            this.set(`api${index + 1}`, { name: api.name, link: api.link, json: json });
+            api.json = json;
           } catch (error) {
-            openErrorModal(`Can't fetch ${api.name} API at index ${index}`);
+            openErrorModal(`Can't fetch ${api.name} API`);
           }
         }
       });
     }
-
     this.trigger('change:apis');
   }
 

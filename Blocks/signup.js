@@ -152,8 +152,6 @@ form.addEventListener("submit", function (e) {
     })
     .then((data) => {
       alert("Sign Up Successfully");
-                const jwt=data.jwt;
-          sessionStorage.setItem('jwt', jwt);
 
       if(pageNameSignup===null){
       return;

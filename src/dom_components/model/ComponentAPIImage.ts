@@ -176,9 +176,9 @@ export default class ComponentAPIImage extends Component {
       const token = sessionStorage.getItem('jwt');
       if (generatedPath) {
         const script = `
-          async function fetch${this.getId()}Data() {\n  try {\n       const token = sessionStorage.getItem('jwt');\n  const headers= {\n'Content-Type': 'application/json', \n};\nif (token) {\nheaders.Authorization = 'Bearer  ${token}';\n}\nconst res = await fetch('${
+        async function fetch${this.getId()}Data() {\n  try {\n    const res = await fetch('${
           apiObject.link
-        }',{\n  headers,\n});\nif (!res.ok) throw new Error('Network response was not ok');\n    let userData = await res.json();\n    const el = document.getElementById('${this.getId()}');\n    if (el) {\n      el.src = userData${generatedPath};\n    } else {\n      console.error('Element not found to set the innerHTML');\n    }\n  } catch (error) {\n    if (error instanceof Error) {\n      console.error('Error fetching data:', error.message);\n    } else {\n      console.error('Unknown error fetching data');\n    }\n  }\n}\nfetch${this.getId()}Data();\n`;
+        }');\n    if (!res.ok) throw new Error('Network response was not ok');\n    let userData = await res.json();\n    const el = document.getElementById('${this.getId()}');\n    if (el) {\n      el.src = userData${generatedPath};\n    } else {\n      console.error('Element not found to set the innerHTML');\n    }\n  } catch (error) {\n    if (error instanceof Error) {\n      console.error('Error fetching data:', error.message);\n    } else {\n      console.error('Unknown error fetching data');\n    }\n  }\n}\nfetch${this.getId()}Data();\n`;
         this.set('script-export', script);
       } else {
         console.error(`Generated path for selected option '${selectedText}' is invalid.`);

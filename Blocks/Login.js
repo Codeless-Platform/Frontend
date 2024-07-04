@@ -147,8 +147,6 @@ input[type="submit"]:hover {
         .then((data) => {
           // console.log("Response from the server:", data);
           alert('Login Successfully');
-          const jwt=data.jwt;
-          sessionStorage.setItem('jwt', jwt);
           if(pageName===null){
           return;
           }else{
