@@ -7391,9 +7391,7 @@
                               (i = n.filename || h.filename),
                               (a = n.done || h.done),
                               (o = n.filenamePfx || h.filenamePfx),
-                              (l = i
-                                ? i(e)
-                                : ''.concat(o, '_').concat(Date.now(), '.zip')),
+                              (l = i ? i(e) : ''.concat(o).concat('.zip')),
                               t().saveAs(r, l),
                               null == a || a(),
                               [2]

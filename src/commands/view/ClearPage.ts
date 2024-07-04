@@ -19,6 +19,9 @@ export default {
         }
       });
     }
+    if (ed.Pages.getAll().length < 2) {
+      ed.Css.clear();
+    }
 
     ed.getWrapper()?.clearApis();
   },

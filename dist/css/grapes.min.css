@@ -1423,7 +1423,7 @@ span.CodeMirror-selectedtext {
   --gjs-color-red: #dd3636;
   --gjs-color-yellow: #ffca6f;
   --gjs-color-green: #62c462;
-  --gjs-left-width: 16%;
+  --gjs-left-width: 15%;
   --gjs-color-highlight: #71b7f1;
   --gjs-color-warn: #ffca6f;
   --gjs-handle-margin: -5px;
@@ -1556,12 +1556,10 @@ span.CodeMirror-selectedtext {
 .gjs-trt-trait .gjs-label,
 .gjs-evt-event .gjs-label,
 .gjs-anm-animation .gjs-label {
-  margin-right: 1px;
   text-align: left;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
 
 .gjs-guide-info {
   position: absolute;
@@ -4124,45 +4122,4 @@ button:hover,
   to {
     opacity: 0;
   }
-}
-
-body.light-mode {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-body.dark-mode {
-  background-color: #000000;
-  color: #ffffff;
-}
-
-#change-theme {
-  height: 22px;
-  width: 35px;
-  display: inline-block;
-  cursor: pointer;
-  background-color: #ccc;
-  position: relative;
-  border-radius: 34px;
-  transition: background-color 0.4s;
-}
-
-#change-theme:before {
-  font: normal normal normal 10px / 1 FontAwesome;
-  content: "\f186";
-  position: absolute;
-  height: 14px;
-  width: 14px;
-  background-color: white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.4s;
-}
-
-#change-theme.checked:before {
-  content: "\f185";
-  color: #ffdd12;
-  transform: translateX(12px);
 }
