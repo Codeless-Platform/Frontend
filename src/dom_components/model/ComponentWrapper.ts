@@ -14,7 +14,6 @@ export default class ComponentWrapper extends Component {
       draggable: false,
       components: [],
       json: {},
-      apis: [],
       traits: [
         {
           type: 'api',
@@ -59,7 +58,6 @@ export default class ComponentWrapper extends Component {
     this.APIs.forEach((api, index) => {
       this.set(`api${index + 1}`, { name: '', link: '', json: '' });
     });
-    this.set('apis', []);
   }
 
   renderTraits() {
@@ -115,8 +113,9 @@ export default class ComponentWrapper extends Component {
         attributes: { class: 'max-width-500' },
       });
     };
+
     if (this.getAPIs()) {
-      this.getAPIs().forEach(async (api: any) => {
+      this.getAPIs().forEach(async (api: any, index: number) => {
         if (api.link && api.name) {
           try {
             const response = await fetch(api.link);
@@ -124,13 +123,14 @@ export default class ComponentWrapper extends Component {
               throw new Error('Network response was not ok');
             }
             const json = await response.json();
-            api.json = json;
+            this.set(`api${index + 1}`, { name: api.name, link: api.link, json: json });
           } catch (error) {
-            openErrorModal(`Can't fetch ${api.name} API`);
+            openErrorModal(`Can't fetch ${api.name} API at index ${index}`);
           }
         }
       });
     }
+
     this.trigger('change:apis');
   }
 
