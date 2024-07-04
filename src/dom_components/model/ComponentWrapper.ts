@@ -118,7 +118,19 @@ export default class ComponentWrapper extends Component {
       this.getAPIs().forEach(async (api: any, index: number) => {
         if (api.link && api.name) {
           try {
-            const response = await fetch(api.link);
+            const token = sessionStorage.getItem('jwt');
+            const headers: Record<string, string> = {
+              'Content-Type': 'application/json', // Adjust content type as needed
+            };
+
+            if (token) {
+              headers.Authorization = `Bearer ${token}`;
+            }
+
+            const response = await fetch(api.link, {
+              headers,
+            });
+
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }

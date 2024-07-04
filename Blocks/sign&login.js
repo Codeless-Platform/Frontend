@@ -222,6 +222,9 @@ login_signup = (editor, opts = {}) => {
                 .then((data) => {
                   // console.log("Response from the server:", data);
                   alert('Login Successfully');
+                            const jwt=data.jwt;
+          sessionStorage.setItem('jwt', jwt);
+
                   if(pageNameLogin===null){
                   return;
                   }else{
@@ -269,6 +272,9 @@ login_signup = (editor, opts = {}) => {
             })
             .then((data) => {
               alert("Sign Up Successfully");
+                        const jwt=data.jwt;
+          sessionStorage.setItem('jwt', jwt);
+
               if(pageNameSignup===null){
               return;
               }else{
