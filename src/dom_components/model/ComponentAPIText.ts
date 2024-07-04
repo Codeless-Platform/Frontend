@@ -24,7 +24,7 @@ export default class ComponentAPIText extends Component {
   }
 
   startListeningtoApi() {
-    if (this.em.getWrapper()?.get('apis')) {
+    if (this.em.getWrapper()?.getAPIs()) {
       this.on('Rendered', this.setOptionsFromApi);
     }
     this.listenTo(this.em.getWrapper(), 'change:apis', this.setOptionsFromApi);
@@ -32,7 +32,8 @@ export default class ComponentAPIText extends Component {
 
   setOptionsFromApi() {
     let options: Record<string, any>[] = [];
-    let obj: Record<string, any> = this.em.getWrapper()?.get('apis');
+    //@ts-ignore
+    let obj: Record<string, any> = this.em.getWrapper()?.getAPIs();
     pushOptions(obj);
     function isImageUrl(url: string) {
       return /\.(jpg|jpeg|png|gif|bmp|svg)$/i.test(url);
@@ -132,7 +133,7 @@ export default class ComponentAPIText extends Component {
   getApiObject(apiName: String) {
     return this.em
       .getWrapper()
-      ?.get('apis')
+      ?.getAPIs()
       .find((obj: any) => obj.name === apiName);
   }
 

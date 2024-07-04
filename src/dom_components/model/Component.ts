@@ -987,6 +987,20 @@ export default class Component extends StyleableModel<ComponentProperties> {
     }
   }
 
+  getAPIs(): Record<string, any>[] {
+    let arr = [];
+    let i = 1;
+    while (true) {
+      const el = this.get(`api${i}`);
+      i++;
+      if (el) {
+        arr.push(el);
+      } else {
+        break;
+      }
+    }
+    return arr;
+  }
   __postAdd(opts: { recursive?: boolean } = {}) {
     const { em } = this;
     const um = em?.UndoManager;

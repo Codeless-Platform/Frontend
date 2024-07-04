@@ -43,12 +43,12 @@ export default class ComponentWrapper extends Component {
   }
 
   get APIs(): Record<string, any>[] {
-    return this.get('apis');
+    return this.getAPIs();
   }
 
   initialize(props: any, opts: any) {
     super.initialize(props, opts);
-    if (this.get('apis').length > 1) {
+    if (this.getAPIs().length > 1) {
       this.renderTraits();
     }
     this.addNewTrait();
@@ -63,7 +63,7 @@ export default class ComponentWrapper extends Component {
   }
 
   renderTraits() {
-    let index = this.get('apis').length - 1;
+    let index = this.getAPIs().length - 1;
     for (let i = 1; i <= index; i++) {
       this.addTrait(
         [
@@ -97,7 +97,7 @@ export default class ComponentWrapper extends Component {
               changeProp: true,
               name: '',
             };
-            trait['name'] = `api${this.get('apis').length + 1}`;
+            trait['name'] = `api${this.getAPIs().length + 1}`;
             this.addTrait([trait], {
               at: this.getTraits().length - 1,
             });
@@ -115,8 +115,8 @@ export default class ComponentWrapper extends Component {
         attributes: { class: 'max-width-500' },
       });
     };
-    if (this.get('apis')) {
-      this.get('apis').forEach(async (api: any) => {
+    if (this.getAPIs()) {
+      this.getAPIs().forEach(async (api: any) => {
         if (api.link && api.name) {
           try {
             const response = await fetch(api.link);
