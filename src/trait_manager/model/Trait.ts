@@ -375,7 +375,7 @@ export default class Trait extends Model<TraitProperties> {
       console.log(response.status);
       if (!response.ok) {
         if (response.status === 403) {
-          alert('First,You have to use one of dynamic blocks and signin or signup to get jwt token.');
+          alert('First,You have to use one of Auth blocks and signin or signup to get jwt token.');
           throw new Error('Forbidden');
         } else {
           throw new Error('Network response was not ok');
