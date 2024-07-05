@@ -394,7 +394,6 @@ export default class Trait extends Model<TraitProperties> {
       return json;
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log(error.message);
         if (error.message === '403') {
           openErrorModal(
             'This API is Authenticated,\n You have to use one of Auth blocks and sign in or sign up to get JWT token then fetch this API'
