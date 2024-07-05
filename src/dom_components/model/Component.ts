@@ -994,7 +994,7 @@ export default class Component extends StyleableModel<ComponentProperties> {
       const el = this.get(`api${i}`);
       i++;
       if (el) {
-        arr.push(el);
+        if (el.name || el.link) arr.push(el);
       } else {
         break;
       }
