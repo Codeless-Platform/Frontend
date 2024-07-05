@@ -32,12 +32,14 @@ export default class ComponentAPIText extends Component {
 
   setOptionsFromApi() {
     let options: Record<string, any>[] = [];
-    //@ts-ignore
-    let obj: Record<string, any> = this.em.getWrapper()?.getAPIs();
+    let obj: Record<string, any>[] = this.em.getWrapper()?.getAPIs() || [];
+
     pushOptions(obj);
+
     function isImageUrl(url: string) {
       return /\.(jpg|jpeg|png|gif|bmp|svg)$/i.test(url);
     }
+
     function pushOptions(obj: Record<string, any>) {
       Object.keys(obj).forEach(key => {
         const item = obj[key];
@@ -63,40 +65,22 @@ export default class ComponentAPIText extends Component {
       });
     }
 
-    const newtrait = [
-      {
-        type: 'select',
-        name: 'dbinput',
-        label: 'API Content',
-        placeholder: 'api for this page',
-        changeProp: true,
-        options: options,
-      },
-    ];
-
     if (options.length > 0 && this.em) {
       this.removeTrait('dbinput');
-      this.addTrait(newtrait);
+      this.addTrait([
+        {
+          type: 'select',
+          name: 'dbinput',
+          label: 'API Content',
+          placeholder: 'api for this page',
+          changeProp: true,
+          options: options,
+        },
+      ]);
     }
+
     if (this.get('dbinput')) {
       this.setData();
-    }
-  }
-
-  renderContent() {
-    const apiName = this.get('dbinput').split('-')[0].trim();
-    const apiObject = this.getApiObject(apiName);
-    if (apiObject) {
-      const path = this.generatePath(apiObject.json, this.get('dbinput'));
-      const childrenContainer = this.view?.getChildrenContainer();
-      if (path) {
-        if (childrenContainer) {
-          childrenContainer.innerHTML = eval(`apiObject.json${path}`);
-          //@ts-ignore
-          this.view.rteEnabled = true;
-          this.trigger('sync:content');
-        }
-      }
     }
   }
 
@@ -139,12 +123,10 @@ export default class ComponentAPIText extends Component {
 
   setData() {
     const selectedText = this.get('dbinput');
-
     const apiName = selectedText.split('-')[0].trim();
     const apiObject = this.getApiObject(apiName);
     if (apiObject && apiObject.json) {
       const generatedPath = this.generatePath(apiObject.json, selectedText);
-
       if (generatedPath) {
         const token = sessionStorage.getItem('jwt');
         const script = `async function fetch${this.getId()}Data() {\n  try {\n    ${
@@ -160,6 +142,23 @@ export default class ComponentAPIText extends Component {
       console.error(`API object not found or invalid for name: ${apiName}`);
     }
     this.renderContent();
+  }
+
+  renderContent() {
+    const apiName = this.get('dbinput').split('-')[0].trim();
+    const apiObject = this.getApiObject(apiName);
+    if (apiObject) {
+      const path = this.generatePath(apiObject.json, this.get('dbinput'));
+      const childrenContainer = this.view?.getChildrenContainer();
+      if (path) {
+        if (childrenContainer) {
+          childrenContainer.innerHTML = eval(`apiObject.json${path}`);
+          //@ts-ignore
+          this.view.rteEnabled = true;
+          this.trigger('sync:content');
+        }
+      }
+    }
   }
 
   __checkInnerChilds() {

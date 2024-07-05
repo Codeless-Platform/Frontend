@@ -57,10 +57,8 @@ export default class ComponentAPIImage extends Component {
 
   setOptionsFromApi() {
     let options: Record<string, any>[] = [];
-    //@ts-ignore
-    let obj: Record<string, any>[] = this.em.getWrapper()?.getAPIs();
+    let obj: Record<string, any>[] = this.em.getWrapper()?.getAPIs() || [];
     pushOptions(obj);
-
     function pushOptions(obj: Record<string, any>) {
       Object.keys(obj).forEach(key => {
         const item = obj[key];
@@ -92,34 +90,21 @@ export default class ComponentAPIImage extends Component {
       });
     }
 
-    const newtrait = [
-      {
-        type: 'select',
-        name: 'dbinput',
-        label: 'API Content',
-        placeholder: 'api for this page',
-        changeProp: true,
-        options: options,
-      },
-    ];
-
     if (options.length > 0 && this.em) {
       this.removeTrait('dbinput');
-      this.addTrait(newtrait);
+      this.addTrait([
+        {
+          type: 'select',
+          name: 'dbinput',
+          label: 'API Content',
+          placeholder: 'api for this page',
+          changeProp: true,
+          options: options,
+        },
+      ]);
     }
     if (this.get('dbinput')) {
       this.setData();
-    }
-  }
-
-  renderContent() {
-    const apiName = this.get('dbinput').split('-')[0].trim();
-    const apiObject = this.getApiObject(apiName);
-    if (apiObject) {
-      const path = this.generatePath(apiObject.json, this.get('dbinput'));
-      if (path) {
-        this.set('src', this.em.Assets.add(eval(`apiObject.json${path}`)).getSrc());
-      }
     }
   }
 
@@ -170,10 +155,8 @@ export default class ComponentAPIImage extends Component {
     const selectedText = this.get('dbinput');
     const apiName = selectedText.split('-')[0].trim();
     const apiObject = this.getApiObject(apiName);
-
     if (apiObject && apiObject.json) {
       const generatedPath = this.generatePath(apiObject.json, selectedText);
-
       if (generatedPath) {
         const token = sessionStorage.getItem('jwt');
         const script = `async function fetch${this.getId()}Data() {\n  try {\n    ${
@@ -189,6 +172,17 @@ export default class ComponentAPIImage extends Component {
       console.error(`API object not found or invalid for name: ${apiName}`);
     }
     this.renderContent();
+  }
+
+  renderContent() {
+    const apiName = this.get('dbinput').split('-')[0].trim();
+    const apiObject = this.getApiObject(apiName);
+    if (apiObject) {
+      const path = this.generatePath(apiObject.json, this.get('dbinput'));
+      if (path) {
+        this.set('src', this.em.Assets.add(eval(`apiObject.json${path}`)).getSrc());
+      }
+    }
   }
 
   initToolbar() {
