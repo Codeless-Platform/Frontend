@@ -351,6 +351,9 @@ export default class Trait extends Model<TraitProperties> {
       } else {
         if (link) {
           handleFetchApi(link);
+        } else {
+          valueToSet.json = '';
+          target.set(this.getName(), valueToSet, opts);
         }
       }
     } else if (this.get('changeProp')) {
