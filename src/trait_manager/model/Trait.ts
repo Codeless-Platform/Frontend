@@ -333,10 +333,10 @@ export default class Trait extends Model<TraitProperties> {
         try {
           const json = await this.fetchApi(link);
           valueToSet.json = json;
+          target.set(this.getName(), valueToSet, opts);
           target.trigger('change:apis');
         } catch (error) {
-          console.error('Error fetching API:', error);
-          openErrorModal("Can't fetch this API");
+          this.setValue({ name: name, link: '' });
           this.view?.setInputValue({ name, link: '' });
         }
       };
@@ -346,11 +346,13 @@ export default class Trait extends Model<TraitProperties> {
         this.view?.setInputValue({ name, link: '' });
       } else if (name && existingNameIndex !== -1 && existingApiIndex !== existingNameIndex) {
         openErrorModal('The API name already exists. Please use a different name.');
+        this.setValue({ name: '', link: link });
         this.view?.setInputValue({ name: '', link });
       } else {
-        if (link) handleFetchApi(link);
+        if (link) {
+          handleFetchApi(link);
+        }
       }
-      target.set(this.getName(), valueToSet, opts);
     } else if (this.get('changeProp')) {
       target.set(name, valueToSet, opts);
     } else {
@@ -358,6 +360,13 @@ export default class Trait extends Model<TraitProperties> {
     }
   }
   async fetchApi(link: string): Promise<any> {
+    const openErrorModal = (content: string) => {
+      this.em.Editor.Modal.open({
+        title: 'Error',
+        content,
+        attributes: { class: 'max-width-500' },
+      });
+    };
     let response;
     try {
       const token = sessionStorage.getItem('jwt');
@@ -372,23 +381,30 @@ export default class Trait extends Model<TraitProperties> {
       response = await fetch(link, {
         headers,
       });
-      console.log(response.status);
+
       if (!response.ok) {
         if (response.status === 403) {
-          alert('First,You have to use one of Auth blocks and signin or signup to get jwt token.');
-          throw new Error('Forbidden');
+          throw new Error('403');
         } else {
           throw new Error('Network response was not ok');
         }
       }
+
       const json = await response.json();
       return json;
-    } catch (error) {
-      this.em.Editor.Modal.open({
-        title: 'Error',
-        content: "Can't fetch this API",
-        attributes: { class: 'max-width-500' },
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+        if (error.message === '403') {
+          openErrorModal(
+            'This API is Authenticated,\n You have to use one of Auth blocks and sign in or sign up to get JWT token then fetch this API'
+          );
+        } else {
+          openErrorModal("Can't fetch this API");
+        }
+      } else {
+        openErrorModal('An unknown error occurred');
+      }
 
       throw error;
     }
