@@ -295,6 +295,21 @@ login_signup = (editor, opts = {}) => {
               formWrapper.classList.remove('active');
             });
             `,
+        droppable: false,
+        traits: [
+          {
+            type: 'text',
+            name: 'pageName-login',
+            label: 'Go to Page after login',
+            placeholder: 'name of page you want to go',
+          },
+          {
+            type: 'text',
+            name: 'pageName-signup',
+            label: 'Go to Page after signup',
+            placeholder: 'name of page you want to go',
+          },
+        ],
       },
     },
   });
