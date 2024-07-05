@@ -149,7 +149,7 @@ export default class ComponentAPIText extends Component {
         const token = sessionStorage.getItem('jwt');
         const script = `async function fetch${this.getId()}Data() {\n  try {\n    ${
           token
-            ? `const token = sessionStorage.getItem('jwt');\n    const headers = {\n      'Content-Type': 'application/json',\n    };\n    if (token) {\n      headers.Authorization = 'Bearer '+ token;\n     }\n    const res = await fetch('${apiObject.link}', {\n      headers,\n    });`
+            ? `const token = sessionStorage.getItem('jwt');\n    const headers = {\n      'Content-Type': 'application/json',\n    };\n    if (token) {\n      headers.Authorization = 'Bearer ' + token;\n     }\n    const res = await fetch('${apiObject.link}', {\n      headers,\n    });`
             : `const res = await fetch('${apiObject.link}');`
         }\n    if (!res.ok) throw new Error('Network response was not ok');\n    let userData = await res.json();\n    const el = document.getElementById('${this.getId()}');\n    if (el) {\n      el.innerHTML = userData${generatedPath};\n    } else {\n      console.error('Element not found to set the innerHTML');\n    }\n  } catch (error) {\n    if (error instanceof Error) {\n      console.error('Error fetching data:', error.message);\n    } else {\n      console.error('Unknown error fetching data');\n    }\n  }\n}\n\nfetch${this.getId()}Data();\n`;
         this.set('script-export', script);
