@@ -314,6 +314,7 @@ export default class Trait extends Model<TraitProperties> {
     if (this.getType() === 'api') {
       const { name, link } = value;
       const apis = target.getAPIs();
+
       const openErrorModal = (content: string) => {
         this.em.Editor.Modal.open({
           title: 'Error',
@@ -328,8 +329,15 @@ export default class Trait extends Model<TraitProperties> {
           valueToSet.json = json;
           return json;
         } catch (error) {
-          this.set('value', { name: name, link: '' });
-          this.view?.setInputValue({ name: name, link: '' });
+          const l = this.previousAttributes().value ? this.previousAttributes().value.link : '';
+          this.set('value', {
+            name: name,
+            link: l,
+          });
+          this.view?.setInputValue({
+            name: name,
+            link: l,
+          });
         }
       };
 
@@ -340,15 +348,12 @@ export default class Trait extends Model<TraitProperties> {
           const headers: Record<string, string> = {
             'Content-Type': 'application/json',
           };
-
           if (token) {
             headers.Authorization = `Bearer ${token}`;
           }
-
           response = await fetch(link, {
             headers,
           });
-
           if (!response.ok) {
             if (response.status === 403) {
               throw new Error('403');
@@ -356,7 +361,6 @@ export default class Trait extends Model<TraitProperties> {
               throw new Error('Network response was not ok');
             }
           }
-
           const json = await response.json();
           return json;
         } catch (error: unknown) {
@@ -375,7 +379,9 @@ export default class Trait extends Model<TraitProperties> {
           throw error;
         }
       };
+
       const existingApiIndex = apis.findIndex((api: Record<any, any>) => api.link === link);
+
       if (existingApiIndex !== -1) {
         // adding new link
         const anotherTrait = this.target
