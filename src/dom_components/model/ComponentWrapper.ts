@@ -97,7 +97,7 @@ export default class ComponentWrapper extends Component {
             };
             trait['name'] = `api${this.APIs.length + 1}`;
             this.addTrait([trait], {
-              at: this.getTraits().length,
+              at: this.getTraits().length - 1,
             });
           }
         },
