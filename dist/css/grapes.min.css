@@ -1562,7 +1562,6 @@ span.CodeMirror-selectedtext {
   overflow: hidden;
 }
 
-
 .gjs-guide-info {
   position: absolute;
 }
@@ -3867,6 +3866,9 @@ span.CodeMirror-selectedtext {
 
 .gjs-cm-editor#gjs-cm-javascript #gjs-cm-title {
   color: var(--gjs-secondary-color);
+}
+.CodeMirror-vscrollbar {
+  background-color: rgb(0, 0, 0, 0.2);
 }
 
 .gjs-cm-editor #gjs-cm-title {
