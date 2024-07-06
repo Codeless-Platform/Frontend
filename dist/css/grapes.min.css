@@ -3867,8 +3867,13 @@ span.CodeMirror-selectedtext {
 .gjs-cm-editor#gjs-cm-javascript #gjs-cm-title {
   color: var(--gjs-secondary-color);
 }
+
 .CodeMirror-vscrollbar {
   background-color: rgb(0, 0, 0, 0.2);
+}
+
+#gjs-clm-tag-label {
+  color: white;
 }
 
 .gjs-cm-editor #gjs-cm-title {
