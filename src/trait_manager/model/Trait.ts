@@ -324,12 +324,55 @@ export default class Trait extends Model<TraitProperties> {
 
       const handleFetchApi = async (link: string) => {
         try {
-          const json = await this.fetchApi(link);
+          const json = await fetchApi(link);
           valueToSet.json = json;
           return json;
         } catch (error) {
-          this.setValue({ name: name, link: '' });
-          this.view?.setInputValue({ name, link: '' });
+          this.set('value', { name: name, link: '' });
+          this.view?.setInputValue({ name: name, link: '' });
+        }
+      };
+
+      const fetchApi = async (link: string): Promise<any> => {
+        let response;
+        try {
+          const token = sessionStorage.getItem('jwt');
+          const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+          };
+
+          if (token) {
+            headers.Authorization = `Bearer ${token}`;
+          }
+
+          response = await fetch(link, {
+            headers,
+          });
+
+          if (!response.ok) {
+            if (response.status === 403) {
+              throw new Error('403');
+            } else {
+              throw new Error('Network response was not ok');
+            }
+          }
+
+          const json = await response.json();
+          return json;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            if (error.message === '403') {
+              openErrorModal(
+                'This API is Authenticated, You have to use one of Auth blocks and sign in or sign up to get JWT token then fetch this API'
+              );
+            } else {
+              openErrorModal("Can't fetch this API");
+            }
+          } else {
+            openErrorModal('An unknown error occurred');
+          }
+
+          throw error;
         }
       };
       const existingApiIndex = apis.findIndex((api: Record<any, any>) => api.link === link);
@@ -338,9 +381,15 @@ export default class Trait extends Model<TraitProperties> {
         const anotherTrait = this.target
           .getTraits()
           .find(trait => trait.attributes.value?.link === link && trait.attributes.name !== this.getName());
-        if (anotherTrait) {
-          this.setValue({ name: name, link: this.previousAttributes().value.link || '' });
-          this.view?.setInputValue({ name: name, link: this.previousAttributes().value.link || '' });
+        if (anotherTrait && link) {
+          this.set('value', {
+            name: name,
+            link: this.previousAttributes().value ? this.previousAttributes().value.link : '',
+          });
+          this.view?.setInputValue({
+            name: name,
+            link: this.previousAttributes().value ? this.previousAttributes().value.link : '',
+          });
           openErrorModal('You already added this API');
         } else {
           if (name) {
@@ -348,8 +397,14 @@ export default class Trait extends Model<TraitProperties> {
               .getTraits()
               .find(trait => trait.attributes.value?.name === name && trait.attributes.name !== this.getName());
             if (anotherTrait) {
-              this.setValue({ name: this.previousAttributes().value.name || '', link: link });
-              this.view?.setInputValue({ name: this.previousAttributes().value.name || '', link: link });
+              this.set('value', {
+                name: this.previousAttributes().value ? this.previousAttributes().value.name : '' || '',
+                link: link,
+              });
+              this.view?.setInputValue({
+                name: this.previousAttributes().value ? this.previousAttributes().value.name : '' || '',
+                link: link,
+              });
               openErrorModal('The API name already exists. Please use a different name.');
             } else {
               const data = target.get(`${this.getName()}`).json;
@@ -367,62 +422,22 @@ export default class Trait extends Model<TraitProperties> {
             }
           });
         } else if (name) {
-          target.set(this.getName(), valueToSet, opts);
+          const anotherTrait = this.target
+            .getTraits()
+            .find(trait => trait.attributes.value?.name === name && trait.attributes.name !== this.getName());
+          if (anotherTrait) {
+            this.view?.setInputValue({
+              name: this.previousAttributes().value ? this.previousAttributes().value.name : '' || '',
+              link: link,
+            });
+            openErrorModal('The API name already exists. Please use a different name.');
+          } else target.set(this.getName(), valueToSet, opts);
         }
       }
     } else if (this.get('changeProp')) {
       target.set(name, valueToSet, opts);
     } else {
       target.addAttributes({ [name]: valueToSet }, opts);
-    }
-  }
-  async fetchApi(link: string): Promise<any> {
-    const openErrorModal = (content: string) => {
-      this.em.Editor.Modal.open({
-        title: 'Error',
-        content,
-        attributes: { class: 'max-width-500' },
-      });
-    };
-    let response;
-    try {
-      const token = sessionStorage.getItem('jwt');
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
-
-      response = await fetch(link, {
-        headers,
-      });
-
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error('403');
-        } else {
-          throw new Error('Network response was not ok');
-        }
-      }
-
-      const json = await response.json();
-      return json;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        if (error.message === '403') {
-          openErrorModal(
-            'This API is Authenticated,\n You have to use one of Auth blocks and sign in or sign up to get JWT token then fetch this API'
-          );
-        } else {
-          openErrorModal("Can't fetch this API");
-        }
-      } else {
-        openErrorModal('An unknown error occurred');
-      }
-
-      throw error;
     }
   }
 
