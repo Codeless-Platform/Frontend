@@ -47,7 +47,7 @@ export default class ComponentWrapper extends Component {
 
   initialize(props: any, opts: any) {
     super.initialize(props, opts);
-    if (this.getAPIs().length > 1) {
+    if (this.APIs.length > 1) {
       this.renderTraits();
     }
     this.addNewTrait();
@@ -61,7 +61,7 @@ export default class ComponentWrapper extends Component {
   }
 
   renderTraits() {
-    let index = this.getAPIs().length - 1;
+    let index = this.APIs.length - 1;
     for (let i = 1; i <= index; i++) {
       this.addTrait(
         [
@@ -73,7 +73,7 @@ export default class ComponentWrapper extends Component {
           },
         ],
         {
-          at: this.getTraits().length - 1,
+          at: this.getTraits().length,
         }
       );
     }
@@ -95,9 +95,9 @@ export default class ComponentWrapper extends Component {
               changeProp: true,
               name: '',
             };
-            trait['name'] = `api${this.getAPIs().length + 1}`;
+            trait['name'] = `api${this.APIs.length + 1}`;
             this.addTrait([trait], {
-              at: this.getTraits().length - 1,
+              at: this.getTraits().length,
             });
           }
         },
@@ -113,9 +113,9 @@ export default class ComponentWrapper extends Component {
         attributes: { class: 'max-width-500' },
       });
     };
-
-    if (this.getAPIs()) {
-      this.getAPIs().forEach(async (api: any, index: number) => {
+    const apis = this.APIs;
+    if (apis) {
+      apis.forEach(async (api: any, index: number) => {
         if (api.link && api.name) {
           try {
             const token = sessionStorage.getItem('jwt');

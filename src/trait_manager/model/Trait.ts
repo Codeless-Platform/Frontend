@@ -314,13 +314,6 @@ export default class Trait extends Model<TraitProperties> {
     if (this.getType() === 'api') {
       const { name, link } = value;
       const apis = target.getAPIs();
-
-      const existingApiIndex = apis.findIndex((api: Record<any, any>) => api.link === link);
-      const existingNameIndex = apis.findIndex((api: Record<any, any>) => api.name === name);
-      const n = this.target
-        .getTraits()
-        .find(trait => trait.attributes.value?.link === link && trait.attributes.name !== this.getName());
-
       const openErrorModal = (content: string) => {
         this.em.Editor.Modal.open({
           title: 'Error',
@@ -333,26 +326,47 @@ export default class Trait extends Model<TraitProperties> {
         try {
           const json = await this.fetchApi(link);
           valueToSet.json = json;
-          target.set(this.getName(), valueToSet, opts);
-          target.trigger('change:apis');
+          return json;
         } catch (error) {
           this.setValue({ name: name, link: '' });
           this.view?.setInputValue({ name, link: '' });
         }
       };
-
-      if (existingApiIndex !== -1 && n) {
-        openErrorModal('You already added this API');
-        this.view?.setInputValue({ name, link: '' });
-      } else if (name && existingNameIndex !== -1 && existingApiIndex !== existingNameIndex) {
-        openErrorModal('The API name already exists. Please use a different name.');
-        this.setValue({ name: '', link: link });
-        this.view?.setInputValue({ name: '', link });
+      const existingApiIndex = apis.findIndex((api: Record<any, any>) => api.link === link);
+      if (existingApiIndex !== -1) {
+        // adding new link
+        const anotherTrait = this.target
+          .getTraits()
+          .find(trait => trait.attributes.value?.link === link && trait.attributes.name !== this.getName());
+        if (anotherTrait) {
+          this.setValue({ name: name, link: this.previousAttributes().value.link || '' });
+          this.view?.setInputValue({ name: name, link: this.previousAttributes().value.link || '' });
+          openErrorModal('You already added this API');
+        } else {
+          if (name) {
+            const anotherTrait = this.target
+              .getTraits()
+              .find(trait => trait.attributes.value?.name === name && trait.attributes.name !== this.getName());
+            if (anotherTrait) {
+              this.setValue({ name: this.previousAttributes().value.name || '', link: link });
+              this.view?.setInputValue({ name: this.previousAttributes().value.name || '', link: link });
+              openErrorModal('The API name already exists. Please use a different name.');
+            } else {
+              const data = target.get(`${this.getName()}`).json;
+              target.set(this.getName(), { link: link, name: name, json: data }, opts);
+              target.trigger('change:apis', { previousName: this.previousAttributes().value.name, currentName: name });
+            }
+          }
+        }
       } else {
         if (link) {
-          handleFetchApi(link);
-        } else {
-          valueToSet.json = '';
+          handleFetchApi(link).then(() => {
+            if (valueToSet.json) {
+              target.set(this.getName(), valueToSet, opts);
+              target.trigger('change:apis');
+            }
+          });
+        } else if (name) {
           target.set(this.getName(), valueToSet, opts);
         }
       }
