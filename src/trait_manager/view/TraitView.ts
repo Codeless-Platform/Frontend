@@ -99,7 +99,7 @@ export default class TraitView extends View<Trait> {
     const extraEl = this.getExtraInputElem();
     if (this.model.getType() == 'api') {
       if (el && extraEl && !isUndefined(el.value) && !isUndefined(extraEl.value)) {
-        this.model.set('value', { link: el.value, name: extraEl.value });
+        this.model.set('value', { name: extraEl.value, link: el.value });
       }
     } else if (el && !isUndefined(el.value)) {
       this.model.set('value', el.value);

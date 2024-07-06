@@ -315,12 +315,6 @@ export default class Trait extends Model<TraitProperties> {
       const { name, link } = value;
       const apis = target.getAPIs();
 
-      const existingApiIndex = apis.findIndex((api: Record<any, any>) => api.link === link);
-      const existingNameIndex = apis.findIndex((api: Record<any, any>) => api.name === name);
-      const n = this.target
-        .getTraits()
-        .find(trait => trait.attributes.value?.link === link && trait.attributes.name !== this.getName());
-
       const openErrorModal = (content: string) => {
         this.em.Editor.Modal.open({
           title: 'Error',
@@ -331,84 +325,125 @@ export default class Trait extends Model<TraitProperties> {
 
       const handleFetchApi = async (link: string) => {
         try {
-          const json = await this.fetchApi(link);
+          const json = await fetchApi(link);
           valueToSet.json = json;
-          target.set(this.getName(), valueToSet, opts);
-          target.trigger('change:apis');
+          return json;
         } catch (error) {
-          this.setValue({ name: name, link: '' });
-          this.view?.setInputValue({ name, link: '' });
+          const l = this.previousAttributes().value ? this.previousAttributes().value.link : '';
+          this.set('value', {
+            name: name,
+            link: l,
+          });
+          this.view?.setInputValue({
+            name: name,
+            link: l,
+          });
         }
       };
 
-      if (existingApiIndex !== -1 && n) {
-        openErrorModal('You already added this API');
-        this.view?.setInputValue({ name, link: '' });
-      } else if (name && existingNameIndex !== -1 && existingApiIndex !== existingNameIndex) {
-        openErrorModal('The API name already exists. Please use a different name.');
-        this.setValue({ name: '', link: link });
-        this.view?.setInputValue({ name: '', link });
+      const fetchApi = async (link: string): Promise<any> => {
+        let response;
+        try {
+          const token = sessionStorage.getItem('jwt');
+          const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+          };
+          if (token) {
+            headers.Authorization = `Bearer ${token}`;
+          }
+          response = await fetch(link, {
+            headers,
+          });
+          if (!response.ok) {
+            if (response.status === 403) {
+              throw new Error('403');
+            } else {
+              throw new Error('Network response was not ok');
+            }
+          }
+          const json = await response.json();
+          return json;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            if (error.message === '403') {
+              openErrorModal(
+                'This API is Authenticated, You have to use one of Auth blocks and sign in or sign up to get JWT token then fetch this API'
+              );
+            } else {
+              openErrorModal("Can't fetch this API");
+            }
+          } else {
+            openErrorModal('An unknown error occurred');
+          }
+
+          throw error;
+        }
+      };
+
+      const existingApiIndex = apis.findIndex((api: Record<any, any>) => api.link === link);
+
+      if (existingApiIndex !== -1) {
+        // adding new link
+        const anotherTrait = this.target
+          .getTraits()
+          .find(trait => trait.attributes.value?.link === link && trait.attributes.name !== this.getName());
+        if (anotherTrait && link) {
+          this.set('value', {
+            name: name,
+            link: this.previousAttributes().value ? this.previousAttributes().value.link : '',
+          });
+          this.view?.setInputValue({
+            name: name,
+            link: this.previousAttributes().value ? this.previousAttributes().value.link : '',
+          });
+          openErrorModal('You already added this API');
+        } else {
+          if (name) {
+            const anotherTrait = this.target
+              .getTraits()
+              .find(trait => trait.attributes.value?.name === name && trait.attributes.name !== this.getName());
+            if (anotherTrait) {
+              this.set('value', {
+                name: this.previousAttributes().value ? this.previousAttributes().value.name : '' || '',
+                link: link,
+              });
+              this.view?.setInputValue({
+                name: this.previousAttributes().value ? this.previousAttributes().value.name : '' || '',
+                link: link,
+              });
+              openErrorModal('The API name already exists. Please use a different name.');
+            } else {
+              const data = target.get(`${this.getName()}`).json;
+              target.set(this.getName(), { link: link, name: name, json: data }, opts);
+              target.trigger('change:apis', { previousName: this.previousAttributes().value.name, currentName: name });
+            }
+          }
+        }
       } else {
         if (link) {
-          handleFetchApi(link);
-        } else {
-          valueToSet.json = '';
-          target.set(this.getName(), valueToSet, opts);
+          handleFetchApi(link).then(() => {
+            if (valueToSet.json) {
+              target.set(this.getName(), valueToSet, opts);
+              target.trigger('change:apis');
+            }
+          });
+        } else if (name) {
+          const anotherTrait = this.target
+            .getTraits()
+            .find(trait => trait.attributes.value?.name === name && trait.attributes.name !== this.getName());
+          if (anotherTrait) {
+            this.view?.setInputValue({
+              name: this.previousAttributes().value ? this.previousAttributes().value.name : '' || '',
+              link: link,
+            });
+            openErrorModal('The API name already exists. Please use a different name.');
+          } else target.set(this.getName(), valueToSet, opts);
         }
       }
     } else if (this.get('changeProp')) {
       target.set(name, valueToSet, opts);
     } else {
       target.addAttributes({ [name]: valueToSet }, opts);
-    }
-  }
-  async fetchApi(link: string): Promise<any> {
-    const openErrorModal = (content: string) => {
-      this.em.Editor.Modal.open({
-        title: 'Error',
-        content,
-        attributes: { class: 'max-width-500' },
-      });
-    };
-    let response;
-    try {
-      const token = sessionStorage.getItem('jwt');
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
-
-      response = await fetch(link, {
-        headers,
-      });
-
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error('403');
-        } else {
-          throw new Error('Network response was not ok');
-        }
-      }
-
-      const json = await response.json();
-      return json;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        if (error.message === '403') {
-          openErrorModal(
-            'This API is Authenticated,\n You have to use one of Auth blocks and sign in or sign up to get JWT token then fetch this API'
-          );
-        } else {
-          openErrorModal("Can't fetch this API");
-        }
-      } else {
-        openErrorModal('An unknown error occurred');
-      }
-
-      throw error;
     }
   }
 
