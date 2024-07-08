@@ -55,7 +55,7 @@ export default class ComponentAPIImage extends Component {
     this.listenTo(this.em.getWrapper(), 'change:apis', this.setOptionsFromApi);
   }
 
-  setOptionsFromApi(opts: Record<string, any>) {
+  setOptionsFromApi() {
     let options: Record<string, any>[] = [];
     let obj: Record<string, any>[] = this.em.getWrapper()?.getAPIs() || [];
     pushOptions(obj);
@@ -86,7 +86,7 @@ export default class ComponentAPIImage extends Component {
             }
           }
         }
-        if (name && json) processElement(json, name);
+        if (name) processElement(json, name);
       });
     }
 
@@ -103,15 +103,7 @@ export default class ComponentAPIImage extends Component {
         },
       ]);
     }
-    const dbinput = this.get('dbinput');
-    if (dbinput) {
-      if (opts) {
-        if (opts.previousName === dbinput.split('-')[0].trim()) {
-          const hyphenIndex = dbinput.indexOf('-');
-          const rightPart = dbinput.substring(hyphenIndex).trim();
-          this.set('dbinput', opts.currentName + rightPart);
-        }
-      }
+    if (this.get('dbinput')) {
       this.setData();
     }
   }
@@ -187,9 +179,8 @@ export default class ComponentAPIImage extends Component {
     const apiObject = this.getApiObject(apiName);
     if (apiObject) {
       const path = this.generatePath(apiObject.json, this.get('dbinput'));
-      if (path) {
-        this.set('src', this.em.Assets.add(eval(`apiObject.json${path}`)).getSrc());
-      }
+      let src = path ? this.em.Assets.add(eval(`apiObject.json${path}`)).getSrc() : result(this, 'defaults').src;
+      this.set('src', src);
     }
   }
 
