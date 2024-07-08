@@ -157,13 +157,11 @@ export default class ComponentAPIText extends Component {
     if (apiObject) {
       const path = this.generatePath(apiObject.json, this.get('dbinput'));
       const childrenContainer = this.view?.getChildrenContainer();
-      if (path) {
-        if (childrenContainer) {
-          childrenContainer.innerHTML = eval(`apiObject.json${path}`);
-          //@ts-ignore
-          this.view.rteEnabled = true;
-          this.trigger('sync:content');
-        }
+      if (childrenContainer) {
+        childrenContainer.innerHTML = path ? eval(`apiObject.json${path}`) : 'Insert your text here';
+        //@ts-ignore
+        this.view.rteEnabled = true;
+        this.trigger('sync:content');
       }
     }
   }
