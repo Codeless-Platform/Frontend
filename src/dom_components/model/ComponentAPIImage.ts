@@ -55,7 +55,7 @@ export default class ComponentAPIImage extends Component {
     this.listenTo(this.em.getWrapper(), 'change:apis', this.setOptionsFromApi);
   }
 
-  setOptionsFromApi() {
+  setOptionsFromApi(opts: Record<string, any>) {
     let options: Record<string, any>[] = [];
     let obj: Record<string, any>[] = this.em.getWrapper()?.getAPIs() || [];
     pushOptions(obj);
@@ -103,7 +103,15 @@ export default class ComponentAPIImage extends Component {
         },
       ]);
     }
-    if (this.get('dbinput')) {
+    const dbinput = this.get('dbinput');
+    if (dbinput) {
+      if (opts) {
+        if (opts.previousName === dbinput.split('-')[0].trim()) {
+          const hyphenIndex = dbinput.indexOf('-');
+          const rightPart = dbinput.substring(hyphenIndex).trim();
+          this.set('dbinput', opts.currentName + rightPart);
+        }
+      }
       this.setData();
     }
   }
